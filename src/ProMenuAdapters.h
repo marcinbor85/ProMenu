@@ -13,11 +13,11 @@ constexpr int LCD_RS = 8, LCD_EN = 9, LCD_D4 = 4, LCD_D5 = 5, LCD_D6 = 6, LCD_D7
 constexpr int LCD_WIDTH = 16;
 constexpr int LCD_HEIGHT = 2;
 
-class DisplayLiquidCrystal: public promenu::DisplayInterface {
+class LcdShieldDisplay: public promenu::DisplayInterface {
 
 public:
     
-    DisplayLiquidCrystal(
+    LcdShieldDisplay(
         int width = LCD_WIDTH, int height = LCD_HEIGHT,
         int rs = LCD_RS, int en = LCD_EN, int d4 = LCD_D4, int d5 = LCD_D5, int d6 = LCD_D6, int d7 = LCD_D7
     ):
@@ -65,7 +65,7 @@ private:
     };
 };
 
-constexpr int BUTTON_PIN = A0;
+constexpr int BUTTON_ADC_PIN = A0;
 
 constexpr int BUTTON_ADC_ACCEPT_RANGE = 50;
 
@@ -78,7 +78,7 @@ class LcdShieldButtons: smartbutton::SmartButtonInterface {
 
 public:
     LcdShieldButtons(promenu::MenuManager &manager,
-        int buttonPin = BUTTON_PIN,
+        int buttonAdcPin = BUTTON_ADC_PIN,
         int buttonAdcAcceptRange = BUTTON_ADC_ACCEPT_RANGE,
         int buttonUpThreshhold = BUTTON_UP_ADC_VALUE,
         int buttonDownThreshold = BUTTON_DOWN_ADC_VALUE,
@@ -86,7 +86,7 @@ public:
         int buttonSelectThreshold = BUTTON_SELECT_ACS_VALUE
     ):
         manager(manager),
-        buttonPin(buttonPin),
+        buttonAdcPin(buttonAdcPin),
         buttonAdcAcceptRange(buttonAdcAcceptRange),
         buttonUpThreshold(buttonUpThreshhold),
         buttonDownThreshold(buttonDownThreshold),
@@ -102,8 +102,6 @@ public:
         buttonSelect(this) {};
 
     void begin() {
-        pinMode(this->buttonPin, INPUT);
-
         this->buttonUp.begin();
         this->buttonDown.begin();
         this->buttonBack.begin();
@@ -113,7 +111,7 @@ public:
     void process() {
         int val;
 
-        val = analogRead(this->buttonPin);
+        val = getAdcValue(this->buttonAdcPin);
 
         this->isButtonUpPressed = false;
         this->isButtonDownPressed = false;
@@ -193,7 +191,7 @@ private:
     bool isButtonBackPressed;
     bool isButtonSelectPressed;
     
-    const int buttonPin;
+    const int buttonAdcPin;
     const int buttonAdcAcceptRange;
 
     const int buttonUpThreshold;

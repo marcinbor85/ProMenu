@@ -56,6 +56,7 @@ bool Menu::next()
 void Menu::reset()
 {
     this->currentPos = 0;
+    this->startPos = 0;
 }
 
 };

@@ -6,6 +6,8 @@
 namespace promenu {
 
 constexpr unsigned long (*getTickValue)() = millis;
+constexpr bool (*getGpioState)(int) = digitalRead;
+constexpr int (*getAdcValue)(int) = analogRead;
 
 };
 
