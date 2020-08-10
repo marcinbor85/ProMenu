@@ -30,8 +30,6 @@ public:
     void enterToMenu(Menu *menu);
     void backToMenu(Menu *menu);
 
-    void update();
-
 private:
     MenuManager() = delete;
     MenuManager(const MenuManager&) = delete;
@@ -39,6 +37,8 @@ private:
 
     DisplayInterface &display;
     Menu *currentMenu;
+
+    void update();
 };
 
 };

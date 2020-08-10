@@ -8,21 +8,18 @@ void MenuManager::begin(Menu *menu)
 {
     this->display.begin();
     this->enterToMenu(menu);
+    this->update();
 }
 
 void MenuManager::enterToMenu(Menu *menu)
 {
     menu->begin(this);
     this->currentMenu = menu;
-    
-    this->update();
 }
 
 void MenuManager::backToMenu(Menu *menu)
 {
     this->currentMenu = menu;
-
-    this->update();
 }
 
 void MenuManager::update()
@@ -76,6 +73,7 @@ bool MenuManager::back()
     } else {
         this->currentMenu->reset();
     }
+    this->update();
 }
 
 bool MenuManager::select()
