@@ -5,6 +5,10 @@ namespace promenu {
 
 void MenuItemSubmenu::select(MenuManager *manager) {
     manager->enterToMenu(&this->submenu);
-}   
+}
+
+void MenuItemSubmenu::getDisplayText(char *text, int maxSize) {
+    snprintf(text, maxSize, ":%s", this->getName());
+}
 
 };

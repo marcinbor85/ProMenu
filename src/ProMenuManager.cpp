@@ -26,6 +26,7 @@ void MenuManager::update()
 {
     int posCount = this->currentMenu->getItemsNum();
     int yMax = this->display.getHeight();
+    char name[this->display.getWidth()];
 
     this->display.clear();
 
@@ -41,7 +42,8 @@ void MenuManager::update()
         if ((y == yMax - 1 && (pos < posCount - 1)))
             this->display.setText(this->display.getWidth() - 1, yMax - 1, "\x02");
 
-        this->display.setText(1, y, this->currentMenu->getItem(pos)->getName());
+        this->currentMenu->getItem(pos)->getDisplayText(name, sizeof(name));
+        this->display.setText(1, y, name);
 
         if (pos >= posCount - 1)
             break;

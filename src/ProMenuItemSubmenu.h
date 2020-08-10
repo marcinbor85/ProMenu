@@ -15,6 +15,7 @@ public:
         submenu(submenu) {};
     
     virtual void select(MenuManager *manager);
+    virtual void getDisplayText(char *text, int maxSize);
 
 private:
     Menu &submenu;

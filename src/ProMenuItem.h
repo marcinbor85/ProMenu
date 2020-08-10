@@ -20,6 +20,10 @@ public:
     int getId() { return this->id; };
     const char* getName() { return this->name; };
 
+    virtual void getDisplayText(char *text, int maxSize) {
+        snprintf(text, maxSize, "%s", this->name);
+    }
+
 private:
     const int id;
     const char *name;
