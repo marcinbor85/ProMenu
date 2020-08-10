@@ -13,9 +13,23 @@ using namespace promenu::adapters;
 constexpr int LED_PIN = 13;
 constexpr int BACKLIGHT_PIN = 10;
 
-DisplayLiquidCrystal display{};
+LcdShieldDisplay display{};
 
 MenuManager menuManager(display);
+
+const MenuItemAction action21(11, "Toggle", [](MenuItem *item, MenuManager *manager) {
+    return 0;
+});
+
+const MenuItemAction action22(12, "Action", [](MenuItem *item, MenuManager *manager) {
+    return 0;
+});
+
+const MenuItem *menuMiscItems[] = {
+    &action21, &action22
+};
+
+Menu menuMisc(1, "misc", menuMiscItems, 2);
 
 const MenuItemAction action11(11, "Led OFF", [](MenuItem *item, MenuManager *manager) {
     digitalWrite(LED_PIN, LOW);
@@ -44,12 +58,13 @@ const MenuItem *menuActionItems[] = {
 Menu menuAction(1, "actions", menuActionItems, 4);
 
 const MenuItemSubmenu menuActionItemSubmenu(1, "Actions", menuAction);
+const MenuItemSubmenu menuMiscItemSubmenu(2, "Misc", menuMisc);
 
 const MenuItem *rootItems[] = {
-    &menuActionItemSubmenu
+    &menuActionItemSubmenu, &menuMiscItemSubmenu
 };
 
-Menu menuRoot(1, "root", rootItems, 1);
+Menu menuRoot(1, "root", rootItems, 2);
 
 LcdShieldButtons buttons(menuManager);
 
