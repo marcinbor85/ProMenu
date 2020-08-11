@@ -39,6 +39,10 @@ public:
         lcd.createChar(0x01, arrowUp);
         lcd.createChar(0x02, arrowDown);
     }
+
+    virtual void end() {
+        lcd.clear();
+    }
     
     LiquidCrystal lcd;
 

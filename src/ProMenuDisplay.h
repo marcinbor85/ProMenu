@@ -13,6 +13,7 @@ public:
     virtual void setText(int x, int y, const char *text) = 0;
     virtual void clear() = 0;
     virtual void begin() {};
+    virtual void end() {};
 
     int getWidth() { return this->width; };
     int getHeight() { return this->height; };
