@@ -5,7 +5,7 @@
 
 namespace promenu {
 
-class MenuItem;
+class MenuManager;
 
 class MenuItemCheckboxInterface {
 
@@ -17,9 +17,7 @@ public:
 class MenuItemCheckbox: public MenuItem {
 
 public:
-    MenuItemCheckbox(int id, char *name, MenuItemCheckboxInterface &interface):
-        MenuItem(id, name),
-        interface(interface) {};
+    MenuItemCheckbox(int id, char *name, MenuItemCheckboxInterface &interface);
     
     virtual void select(MenuManager *manager);
     virtual void getDisplayText(char *text, int maxSize);

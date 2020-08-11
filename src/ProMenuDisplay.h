@@ -6,17 +6,15 @@ namespace promenu {
 class DisplayInterface {
 
 public:
-    DisplayInterface(int width, int height):
-        width(width),
-        height(height) {};
+    DisplayInterface(int width, int height);
 
     virtual void setText(int x, int y, const char *text) = 0;
     virtual void clear() = 0;
-    virtual void begin() {};
-    virtual void end() {};
+    virtual void begin();
+    virtual void end();
 
-    int getWidth() { return this->width; };
-    int getHeight() { return this->height; };
+    int getWidth();
+    int getHeight();
     
 private:
     DisplayInterface() = delete;

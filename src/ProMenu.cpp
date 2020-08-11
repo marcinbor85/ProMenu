@@ -1,7 +1,22 @@
 #include "ProMenu.h"
+
 #include "ProMenuManager.h"
+#include "ProMenuItem.h"
+#include "ProMenuDisplay.h"
 
 namespace promenu {
+
+Menu::Menu(int id, char *name, MenuItem **items, int itemsNum):
+    id(id),
+    name(name),
+    items(items),
+    itemsNum(itemsNum),
+    currentPos(0),
+    startPos(0),
+    prevMenu(NULL)
+{
+
+}
 
 void Menu::begin(MenuManager *manager, int pos)
 {
@@ -61,6 +76,31 @@ void Menu::reset()
 {
     this->currentPos = 0;
     this->startPos = 0;
+}
+
+int Menu::getItemsNum()
+{
+    return this->itemsNum;
+}
+
+MenuItem* Menu::getItem(int i)
+{
+    return this->items[i];
+}
+
+MenuItem* Menu::getCurrentItem()
+{
+    return this->items[this->currentPos];
+}
+
+int Menu::getCurrentPos()
+{
+    return this->currentPos;
+}
+
+int Menu::getStartPos()
+{
+    return this->startPos;
 }
 
 };

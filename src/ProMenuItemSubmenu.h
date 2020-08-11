@@ -5,14 +5,13 @@
 
 namespace promenu {
 
-class MenuItem;
+class MenuManager;
+class Menu;
 
 class MenuItemSubmenu: public MenuItem {
 
 public:
-    MenuItemSubmenu(int id, char *name, Menu &submenu):
-        MenuItem(id, name),
-        submenu(submenu) {};
+    MenuItemSubmenu(int id, char *name, Menu &submenu);
     
     virtual void select(MenuManager *manager);
     virtual void getDisplayText(char *text, int maxSize);

@@ -1,8 +1,18 @@
 #include "ProMenuManager.h"
-#include "ProMenu.h"
+
+#include "ProMenuDisplay.h"
+#include "ProMenuManager.h"
 #include "ProMenuItem.h"
+#include "ProMenu.h"
 
 namespace promenu {
+
+MenuManager::MenuManager(DisplayInterface &display):
+    display(display),
+    currentMenu(NULL)
+{
+
+}
 
 void MenuManager::begin(Menu *menu)
 {
@@ -98,6 +108,16 @@ bool MenuManager::select()
 {
     this->currentMenu->getCurrentItem()->select(this);
     this->update();
+}
+
+Menu* MenuManager::getCurrentMenu()
+{
+    return this->currentMenu;
+}
+
+DisplayInterface& MenuManager::getDisplay()
+{
+    return this->display;
 }
 
 };

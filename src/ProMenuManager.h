@@ -1,19 +1,18 @@
 #ifndef PRO_MENU_MANAGER_H
 #define PRO_MENU_MANAGER_H
 
-#include "ProMenuDefs.h"
-#include "ProMenuDisplay.h"
+#include <stddef.h>
 
 namespace promenu {
 
+class DisplayInterface;
+class MenuManager;
 class Menu;
 
 class MenuManager {
 
 public:
-    MenuManager(DisplayInterface &display):
-        display(display),
-        currentMenu(NULL) {};
+    MenuManager(DisplayInterface &display);
 
     void begin(Menu *menu);
     void end();
@@ -25,8 +24,8 @@ public:
 
     void process();
 
-    Menu* getCurrentMenu() { return this->currentMenu; };
-    DisplayInterface& getDisplay() { return this->display; };
+    Menu* getCurrentMenu();
+    DisplayInterface& getDisplay();
 
     void enterToMenu(Menu *menu);
     void backToMenu(Menu *menu);

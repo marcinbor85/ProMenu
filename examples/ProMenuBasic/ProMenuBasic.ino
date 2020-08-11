@@ -3,9 +3,9 @@
 #include <ProMenu.h>
 #include <ProMenuManager.h>
 #include <ProMenuItem.h>
-#include <ProMenuItemAction.h>
-#include <ProMenuItemSubmenu.h>
 #include <ProMenuItemCheckbox.h>
+#include <ProMenuItemSubmenu.h>
+#include <ProMenuItemAction.h>
 #include <ProMenuAdapters.h>
 
 using namespace promenu;
