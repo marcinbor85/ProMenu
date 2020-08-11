@@ -17,6 +17,20 @@ LcdShieldDisplay display{};
 
 MenuManager menuManager(display);
 
+const MenuItemAction action31(11, "Enable", [](MenuItem *item, MenuManager *manager) {
+    return 0;
+});
+
+const MenuItemAction action32(12, "Disable", [](MenuItem *item, MenuManager *manager) {
+    return 0;
+});
+
+const MenuItem *menuMisc2Items[] = {
+    &action31, &action32
+};
+
+Menu menuMisc2(1, "misc3", menuMisc2Items, sizeof(menuMisc2Items) / sizeof(menuMisc2Items[0]));
+
 const MenuItemAction action21(11, "Toggle", [](MenuItem *item, MenuManager *manager) {
     return 0;
 });
@@ -29,7 +43,7 @@ const MenuItem *menuMiscItems[] = {
     &action21, &action22
 };
 
-Menu menuMisc(1, "misc", menuMiscItems, 2);
+Menu menuMisc(1, "misc", menuMiscItems, sizeof(menuMiscItems) / sizeof(menuMiscItems[0]));
 
 const MenuItemAction action11(11, "Led OFF", [](MenuItem *item, MenuManager *manager) {
     digitalWrite(LED_PIN, LOW);
@@ -55,16 +69,17 @@ const MenuItem *menuActionItems[] = {
     &action11, &action12, &action13, &action14
 };
 
-Menu menuAction(1, "actions", menuActionItems, 4);
+Menu menuAction(1, "actions", menuActionItems, sizeof(menuActionItems) / sizeof(menuActionItems[0]));
 
 const MenuItemSubmenu menuActionItemSubmenu(1, "Actions", menuAction);
 const MenuItemSubmenu menuMiscItemSubmenu(2, "Misc", menuMisc);
+const MenuItemSubmenu menuMisc2ItemSubmenu(3, "Misc2", menuMisc2);
 
 const MenuItem *rootItems[] = {
-    &menuActionItemSubmenu, &menuMiscItemSubmenu
+    &menuActionItemSubmenu, &menuMiscItemSubmenu, &menuMisc2ItemSubmenu
 };
 
-Menu menuRoot(1, "root", rootItems, 2);
+Menu menuRoot(1, "root", rootItems, sizeof(rootItems) / sizeof(rootItems[0]));
 
 LcdShieldButtons buttons(menuManager);
 
