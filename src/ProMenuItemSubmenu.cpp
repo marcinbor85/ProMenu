@@ -8,7 +8,8 @@ void MenuItemSubmenu::select(MenuManager *manager) {
 }
 
 void MenuItemSubmenu::getDisplayText(char *text, int maxSize) {
-    snprintf(text, maxSize, ":%s", this->getName());
+    strncpy(text, ":", maxSize);
+    strncat(text, this->getName(), maxSize - 1);
 }
 
 };

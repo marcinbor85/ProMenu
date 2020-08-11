@@ -32,7 +32,6 @@ public:
     MenuItem* getCurrentItem() { return this->items[this->currentPos]; };
     int getCurrentPos() { return this->currentPos; };
     int getStartPos() { return this->startPos; };
-    Menu* getPrevMenu() { return this->prevMenu; };
 
 private:
     const int id;

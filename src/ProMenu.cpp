@@ -20,7 +20,11 @@ void Menu::begin(MenuManager *manager, int pos)
 
 void Menu::end()
 {
-    this->manager->backToMenu(this->prevMenu);
+    if (this->prevMenu != NULL) {
+        this->manager->backToMenu(this->prevMenu);
+    } else {
+        this->reset();
+    }
 }
 
 bool Menu::prev()

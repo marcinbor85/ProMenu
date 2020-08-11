@@ -69,12 +69,7 @@ bool MenuManager::down()
 
 bool MenuManager::back()
 {
-    Menu *prev = this->currentMenu->getPrevMenu();
-    if (prev != NULL) {
-        this->currentMenu->end();
-    } else {
-        this->currentMenu->reset();
-    }
+    this->currentMenu->end();
     this->update();
 }
 

@@ -21,7 +21,7 @@ public:
     const char* getName() { return this->name; };
 
     virtual void getDisplayText(char *text, int maxSize) {
-        snprintf(text, maxSize, "%s", this->name);
+        strncpy(text, this->name, maxSize);
     }
 
 private:
