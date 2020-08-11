@@ -25,6 +25,8 @@ public:
     MenuItem* getCurrentItem();
     int getCurrentPos();
     int getStartPos();
+    int getId();
+    const char* getName();
 
 private:
     const int id;

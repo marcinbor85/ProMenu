@@ -5,18 +5,18 @@
 
 namespace promenu {
 
-MenuItemAction::MenuItemAction(int id, char *name, Action action):
+MenuItemAction::MenuItemAction(int id, char *name, MenuItemActionInterface &interface):
     MenuItem(id, name),
-    action(action)
+    interface(interface)
 {
 
 }
 
-void MenuItemAction::select(MenuManager *manager)
+void MenuItemAction::select(MenuManager &manager)
 {
-    int ret;
-    ret = this->action(this, manager);
-    manager->getDisplay().clear();
+    MenuItemCallbackSource source = {this, &manager};
+
+    this->interface.action(source);
 }   
 
 };

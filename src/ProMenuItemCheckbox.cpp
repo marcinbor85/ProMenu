@@ -13,15 +13,19 @@ MenuItemCheckbox::MenuItemCheckbox(int id, char *name, MenuItemCheckboxInterface
 
 }
 
-void MenuItemCheckbox::select(MenuManager *manager)
+void MenuItemCheckbox::select(MenuManager &manager)
 {
-    this->interface.setSelected(!this->interface.isSelected());
+    MenuItemCallbackSource source = {this, &manager};
+
+    this->interface.setSelected(source, !this->interface.isSelected(source));
 }
 
-void MenuItemCheckbox::getDisplayText(char *text, int maxSize)
+void MenuItemCheckbox::getDisplayText(MenuManager &manager, char *text, int maxSize)
 {
+    MenuItemCallbackSource source = {this, &manager};
+
     strncpy(text, "[", maxSize);
-    strncat(text, (this->interface.isSelected() == false) ? " " : "x", maxSize - 1);
+    strncat(text, (this->interface.isSelected(source) == false) ? " " : "x", maxSize - 1);
     strncat(text, "]", maxSize - 2);    
     strncat(text, this->getName(), maxSize - 3);
 }

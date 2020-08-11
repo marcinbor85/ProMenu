@@ -103,4 +103,15 @@ int Menu::getStartPos()
     return this->startPos;
 }
 
+int Menu::getId()
+{
+    return this->id;
+}
+
+const char* Menu::getName()
+{
+    return this->name;
+}
+
+
 };

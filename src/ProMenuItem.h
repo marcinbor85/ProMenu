@@ -4,18 +4,23 @@
 namespace promenu {
 
 class MenuManager;
+class MenuItem;
+
+struct MenuItemCallbackSource {
+    MenuItem *item;
+    MenuManager *manager;
+};
 
 class MenuItem {
 
 public:
     MenuItem(int id, char *name);
 
-    virtual void select(MenuManager *manager) = 0;
+    virtual void select(MenuManager &manager) = 0;
+    virtual void getDisplayText(MenuManager &manager, char *text, int maxSize);
 
     int getId();
     const char* getName();
-
-    virtual void getDisplayText(char *text, int maxSize);
 
 private:
     const int id;

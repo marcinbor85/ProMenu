@@ -7,17 +7,21 @@ namespace promenu {
 
 class MenuManager;
 
+class MenuItemActionInterface {
+
+public:
+    virtual void action(MenuItemCallbackSource &source) = 0;
+};
+
 class MenuItemAction: public MenuItem {
 
 public:
-    using Action = int (*)(MenuItem *item, MenuManager *manager);
+    MenuItemAction(int id, char *name, MenuItemActionInterface &interface);
 
-    MenuItemAction(int id, char *name, Action action);
-
-    virtual void select(MenuManager *manager);
+    virtual void select(MenuManager &manager);
     
 private:
-    Action action;
+    MenuItemActionInterface &interface;
 
 };
 

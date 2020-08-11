@@ -67,7 +67,7 @@ void MenuManager::redraw()
         if ((y == yMax && (pos < posCount - 1)))
             this->display.setText(xMax, yMax, "\x02");
 
-        this->currentMenu->getItem(pos)->getDisplayText(name, sizeof(name));
+        this->currentMenu->getItem(pos)->getDisplayText(*this, name, sizeof(name));
         this->display.setText(1, y, name);
 
         if (pos >= posCount - 1)
@@ -106,7 +106,7 @@ bool MenuManager::back()
 
 bool MenuManager::select()
 {
-    this->currentMenu->getCurrentItem()->select(this);
+    this->currentMenu->getCurrentItem()->select(*this);
     this->update();
 }
 
