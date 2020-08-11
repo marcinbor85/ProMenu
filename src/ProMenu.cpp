@@ -36,7 +36,7 @@ void Menu::begin(MenuManager *manager, int pos)
 void Menu::end()
 {
     if (this->prevMenu != NULL) {
-        this->manager->backToMenu(this->prevMenu);
+        this->manager->backToMenu(*this->prevMenu);
     } else {
         this->reset();
     }

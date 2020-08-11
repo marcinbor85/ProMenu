@@ -27,8 +27,8 @@ public:
     Menu* getCurrentMenu();
     DisplayInterface& getDisplay();
 
-    void enterToMenu(Menu *menu);
-    void backToMenu(Menu *menu);
+    void enterToMenu(Menu &menu);
+    void backToMenu(Menu &menu);
 
 private:
     MenuManager() = delete;

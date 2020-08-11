@@ -13,12 +13,12 @@ class Menu {
 public:
     Menu(int id, char *name, MenuItem **items, int itemsNum);
     
-    void begin(MenuManager *manager, int pos = 0);
-    void end();
-    void reset();
+    virtual void begin(MenuManager *manager, int pos = 0);
+    virtual void end();
+    virtual void reset();
 
-    bool prev();
-    bool next();
+    virtual bool prev();
+    virtual bool next();
 
     int getItemsNum();
     MenuItem* getItem(int i);

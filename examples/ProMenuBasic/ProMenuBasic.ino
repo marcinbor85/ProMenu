@@ -6,6 +6,7 @@
 #include <ProMenuItemCheckbox.h>
 #include <ProMenuItemSubmenu.h>
 #include <ProMenuItemAction.h>
+#include <ProMenuItemNumber.h>
 #include <ProMenuAdapters.h>
 
 using namespace promenu;
@@ -90,9 +91,9 @@ Menu menuMisc2(1, "misc3", menuMisc2Items, sizeof(menuMisc2Items) / sizeof(menuM
 
 
 const MenuItemAction action21(12, "Toggle", actionManager);
-const MenuItemAction action22(13, "Action", actionManager);
+const MenuItemNumber number1(13, "Value", 0, 100);
 
-const MenuItem *menuMiscItems[] = {&action21, &action22};
+const MenuItem *menuMiscItems[] = {&action21, &number1};
 Menu menuMisc(1, "misc", menuMiscItems, sizeof(menuMiscItems) / sizeof(menuMiscItems[0]));
 
 

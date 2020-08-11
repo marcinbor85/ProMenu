@@ -17,7 +17,7 @@ MenuManager::MenuManager(DisplayInterface &display):
 void MenuManager::begin(Menu *menu)
 {
     this->display.begin();
-    this->enterToMenu(menu);
+    this->enterToMenu(*menu);
     this->update();
 }
 
@@ -27,15 +27,15 @@ void MenuManager::end()
     this->display.end();
 }
 
-void MenuManager::enterToMenu(Menu *menu)
+void MenuManager::enterToMenu(Menu &menu)
 {
-    menu->begin(this);
-    this->currentMenu = menu;
+    menu.begin(this);
+    this->currentMenu = &menu;
 }
 
-void MenuManager::backToMenu(Menu *menu)
+void MenuManager::backToMenu(Menu &menu)
 {
-    this->currentMenu = menu;
+    this->currentMenu = &menu;
 }
 
 void MenuManager::update()

@@ -16,7 +16,7 @@ MenuItemSubmenu::MenuItemSubmenu(int id, char *name, Menu &submenu):
 
 void MenuItemSubmenu::select(MenuManager &manager)
 {
-    manager.enterToMenu(&this->submenu);
+    manager.enterToMenu(this->submenu);
 }
 
 void MenuItemSubmenu::getDisplayText(MenuManager &manager, char *text, int maxSize)
