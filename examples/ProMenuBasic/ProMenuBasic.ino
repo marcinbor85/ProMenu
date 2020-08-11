@@ -5,6 +5,7 @@
 #include <ProMenuItem.h>
 #include <ProMenuItemAction.h>
 #include <ProMenuItemSubmenu.h>
+#include <ProMenuItemCheckbox.h>
 #include <ProMenuAdapters.h>
 
 using namespace promenu;
@@ -17,6 +18,20 @@ LcdShieldDisplay display{};
 
 MenuManager menuManager(display);
 
+class BitValue: public MenuItemCheckboxInterface {
+public:
+    virtual bool isSelected() {
+        return value;
+    }
+    virtual void setSelected(bool val) {
+        this->value = val;
+    }
+    bool value;
+};
+
+BitValue val1;
+BitValue val2;
+
 const MenuItemAction action31(11, "Enable", [](MenuItem *item, MenuManager *manager) {
     return 0;
 });
@@ -25,8 +40,11 @@ const MenuItemAction action32(12, "Disable", [](MenuItem *item, MenuManager *man
     return 0;
 });
 
+const MenuItemCheckbox checkbox1(13, "Feature1", val1);
+const MenuItemCheckbox checkbox2(14, "Feature2", val2);
+
 const MenuItem *menuMisc2Items[] = {
-    &action31, &action32
+    &action31, &action32, &checkbox1, &checkbox2
 };
 
 Menu menuMisc2(1, "misc3", menuMisc2Items, sizeof(menuMisc2Items) / sizeof(menuMisc2Items[0]));
