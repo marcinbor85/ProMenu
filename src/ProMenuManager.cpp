@@ -11,6 +11,12 @@ void MenuManager::begin(Menu *menu)
     this->update();
 }
 
+void MenuManager::end()
+{
+    this->currentMenu = NULL;
+    this->display.end();
+}
+
 void MenuManager::enterToMenu(Menu *menu)
 {
     menu->begin(this);
@@ -24,23 +30,32 @@ void MenuManager::backToMenu(Menu *menu)
 
 void MenuManager::update()
 {
+    this->needRedraw = true;
+}
+
+void MenuManager::redraw()
+{
     int posCount = this->currentMenu->getItemsNum();
-    int yMax = this->display.getHeight();
-    char name[this->display.getWidth()];
+    int yMax = this->display.getHeight() - 1;
+    int xMax = this->display.getWidth() - 1;
+    int startPos = this->currentMenu->getStartPos();
+    int currentPos = this->currentMenu->getCurrentPos();
+
+    char name[xMax];
 
     this->display.clear();
 
-    for (int y = 0; y < yMax; y++) {
-        int pos = this->currentMenu->getStartPos() + y;
+    for (int y = 0; y <= yMax; y++) {
+        int pos = startPos + y;
 
-        if (pos == this->currentMenu->getCurrentPos())
+        if (pos == currentPos)
             this->display.setText(0, y, ">");
         
         if ((y == 0) && (pos > 0))
-            this->display.setText(this->display.getWidth() - 1, 0, "\x01");
+            this->display.setText(xMax, 0, "\x01");
         
-        if ((y == yMax - 1 && (pos < posCount - 1)))
-            this->display.setText(this->display.getWidth() - 1, yMax - 1, "\x02");
+        if ((y == yMax && (pos < posCount - 1)))
+            this->display.setText(xMax, yMax, "\x02");
 
         this->currentMenu->getItem(pos)->getDisplayText(name, sizeof(name));
         this->display.setText(1, y, name);
@@ -52,7 +67,13 @@ void MenuManager::update()
 
 void MenuManager::process()
 {
+    if (this->currentMenu == NULL)
+        return;
 
+    if (this->needRedraw != false) {
+        this->needRedraw = false;
+        this->redraw();
+    }
 }
 
 bool MenuManager::up()

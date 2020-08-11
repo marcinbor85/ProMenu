@@ -16,6 +16,7 @@ public:
         currentMenu(NULL) {};
 
     void begin(Menu *menu);
+    void end();
 
     bool up();
     bool down();
@@ -39,6 +40,9 @@ private:
     Menu *currentMenu;
 
     void update();
+    void redraw();
+
+    bool needRedraw;
 };
 
 };
