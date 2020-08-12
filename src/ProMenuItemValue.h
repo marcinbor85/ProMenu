@@ -8,26 +8,23 @@ namespace promenu {
 
 class MenuManager;
 class Menu;
-template <class T> class MenuItemValue;
+class MenuItemValue;
 
-template <class T>
 class MenuItemValueInterface {
 
 public:
-    virtual void init(MenuItemValue<T> &item);
-    virtual T getMin(MenuItemValue<T> &item) = 0;
-    virtual T getMax(MenuItemValue<T> &item) = 0;
-    virtual void setValue(MenuItemValue<T> &item, T value) = 0;
-    virtual T getValue(MenuItemValue<T> &item) = 0;
-    virtual bool save(MenuItemValue<T> &item) = 0;
-    virtual void cancel(MenuItemValue<T> &item) = 0;
+    virtual void init(MenuItemValue &item) = 0;
+    virtual bool prevValue(MenuItemValue &item) = 0;
+    virtual bool nextValue(MenuItemValue &item) = 0;
+    virtual void getValueText(MenuItemValue &item, char *text, int maxSize) = 0;
+    virtual bool save(MenuItemValue &item) = 0;
+    virtual void cancel(MenuItemValue &item) = 0;
 };
 
-template <class T>
 class MenuItemValue: public MenuItem, public Menu {
 
 public:
-    MenuItemValue(int id, char *name, MenuItemValueInterface<T> &interface);
+    MenuItemValue(int id, char *name, MenuItemValueInterface &interface);
     
     virtual bool select();
     virtual void getRenderName(char *text, int maxSize);
@@ -39,7 +36,7 @@ public:
     virtual bool enter();
 
 private:
-    MenuItemValueInterface<T> &interface;
+    MenuItemValueInterface &interface;
 };
 
 };

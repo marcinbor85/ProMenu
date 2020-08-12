@@ -8,8 +8,7 @@
 
 namespace promenu {
 
-template <class T>
-MenuItemValue<T>::MenuItemValue(int id, char *name, MenuItemValueInterface<T> &interface):
+MenuItemValue::MenuItemValue(int id, char *name, MenuItemValueInterface &interface):
     MenuItem(id, name),
     Menu(id, name, NULL, 0),
     interface(interface)
@@ -17,29 +16,44 @@ MenuItemValue<T>::MenuItemValue(int id, char *name, MenuItemValueInterface<T> &i
 
 }
 
-template <class T>
-bool MenuItemValue<T>::select()
+bool MenuItemValue::select()
 {
     this->interface.init(*this);
     this->menu->getMenuManager().enterToMenu(*this);
     return true;
 }
 
-template <class T>
-void MenuItemValue<T>::getRenderName(char *text, int maxSize)
+void MenuItemValue::getRenderName(char *text, int maxSize)
 {
-    snprintf(text, maxSize, "[%d] %s", this->interface.getValue(*this), this->MenuItem::name);
+    char value[maxSize];
+
+    this->interface.getValueText(*this, value, sizeof(value));
+
+    strncpy(text, "[", maxSize);
+    maxSize -= 1;
+    strncat(text, value, maxSize);
+    maxSize -= strlen(value);
+    strncat(text, "] ", maxSize);
+    maxSize -= 2;
+    strncat(text, this->MenuItem::name, maxSize);    
 }
 
-template <class T>
-void MenuItemValue<T>::getCustomText(int y, char *text, int maxSize)
+void MenuItemValue::getCustomText(int y, char *text, int maxSize)
 {
+    char value[maxSize];
+
     switch (y) {
     case 0:
         strncpy(text, this->MenuItem::name, maxSize);
         break;
     case 1:
-        snprintf(text, maxSize, "> %d <", this->interface.getValue(*this));
+        this->interface.getValueText(*this, value, sizeof(value));
+
+        strncpy(text, ">", maxSize);
+        maxSize -= 1;
+        strncat(text, value, maxSize);
+        maxSize -= strlen(value);
+        strncat(text, "<", maxSize);
         break;
     default:
         if (maxSize > 0)
@@ -48,44 +62,28 @@ void MenuItemValue<T>::getCustomText(int y, char *text, int maxSize)
     }
 }
 
-template <class T>
-bool MenuItemValue<T>::prev()
+bool MenuItemValue::prev()
 {
-    T val = this->interface.getValue(*this);
-    if (val == this->interface.getMin(*this)) {
-        return false;
-    }
-
-    this->interface.setValue(*this, val - 1);
-    return true;
+    return this->interface.prevValue(*this);
 }
 
-template <class T>
-bool MenuItemValue<T>::next()
+bool MenuItemValue::next()
 {
-    T val = this->interface.getValue(*this);
-    if (val == this->interface.getMax(*this)) {
-        return false;
-    }
-
-    this->interface.setValue(*this, val + 1);
-    return true;
+    return this->interface.nextValue(*this);
 }
 
-template <class T>
-bool MenuItemValue<T>::exit()
+bool MenuItemValue::exit()
 {
     this->interface.cancel(*this);
     this->end();
+    return true;
 }
 
-template <class T>
-bool MenuItemValue<T>::enter()
+bool MenuItemValue::enter()
 {
     this->interface.save(*this);
     this->end();
+    return true;
 }
-
-template class MenuItemValue<int>;
 
 };
