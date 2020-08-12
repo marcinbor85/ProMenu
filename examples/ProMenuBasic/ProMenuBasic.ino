@@ -67,59 +67,109 @@ public:
 
 ActionManager actionManager;
 
-
-template <class T>
-class ValueManager: public MenuItemValueInterface<T> {
+class ValueLongManager: public MenuItemValueInterface {
 
 public:
-    virtual void init(MenuItemValue<T> &item)
+    ValueLongManager():
+        minMaxValue({{-100,100}, {0, 100}}) {};
+
+    virtual void init(MenuItemValue &item)
     {
         int i = item.MenuItem::getId();
         this->tempValue[i] = this->currentValue[i];
     }
-    virtual T getMin(MenuItemValue<T> &item)
-    {
-        switch (item.MenuItem::getId()) {
-        case 0:
-            return 0;
-        }
-        return 0;
-    }
-    virtual T getMax(MenuItemValue<T> &item)
-    {
-        switch (item.MenuItem::getId()) {
-        case 0:
-            return 10;
-        }
-        return 0;
-    }
-    virtual void setValue(MenuItemValue<T> &item, T value)
+    virtual bool prevValue(MenuItemValue &item)
     {
         int i = item.MenuItem::getId();
-        this->tempValue[i]= value;
+        if (this->tempValue[i] > this->minMaxValue[i][0]) {
+            this->tempValue[i]--;
+            return true;
+        }
+        return false;
     }
-    virtual T getValue(MenuItemValue<T> &item)
+    virtual bool nextValue(MenuItemValue &item)
     {
         int i = item.MenuItem::getId();
-        return this->tempValue[i];
+        if (this->tempValue[i] < this->minMaxValue[i][1]) {
+            this->tempValue[i]++;
+            return true;
+        }
+        return false;
     }
-    virtual bool save(MenuItemValue<T> &item)
+    virtual void getValueText(MenuItemValue &item, char *text, int maxSize)
+    {
+        int i = item.MenuItem::getId();
+        snprintf(text, maxSize, "%ld", this->tempValue[i]);
+    }
+    virtual bool save(MenuItemValue &item)
     {
         int i = item.MenuItem::getId();
         this->currentValue[i] = this->tempValue[i];
         return true;
     }
-    virtual void cancel(MenuItemValue<T> &item)
+    virtual void cancel(MenuItemValue &item)
     {
         this->init(item);
     }
 
-    T tempValue[1];
-    T currentValue[1];
+    long tempValue[2];
+    long currentValue[2];
+
+    const long minMaxValue[2][2];
 };
 
-ValueManager<int> valueIntManager;
+ValueLongManager valueLongManager;
 
+class ValueTriStateManager: public MenuItemValueInterface {
+
+public:
+    ValueTriStateManager():
+        valueNames({"LOW", "MID", "HIGH"}),
+        valueNamesNum((sizeof(this->valueNames) / sizeof(this->valueNames[0]))) {};
+
+    virtual void init(MenuItemValue &item)
+    {
+        int i = item.MenuItem::getId();
+        this->tempValue[i] = this->currentValue[i];
+    }
+    virtual bool prevValue(MenuItemValue &item)
+    {
+        int i = item.MenuItem::getId();
+        if (--this->tempValue[i] < 0)
+            this->tempValue[i] = valueNamesNum - 1;
+        return true;
+    }
+    virtual bool nextValue(MenuItemValue &item)
+    {
+        int i = item.MenuItem::getId();
+        if (++this->tempValue[i] >= valueNamesNum)
+            this->tempValue[i] = 0;
+        return true;
+    }
+    virtual void getValueText(MenuItemValue &item, char *text, int maxSize)
+    {
+        int i = item.MenuItem::getId();
+        snprintf(text, maxSize, "%s", this->valueNames[this->tempValue[i]]);
+    }
+    virtual bool save(MenuItemValue &item)
+    {
+        int i = item.MenuItem::getId();
+        this->currentValue[i] = this->tempValue[i];
+        return true;
+    }
+    virtual void cancel(MenuItemValue &item)
+    {
+        this->init(item);
+    }
+
+    int tempValue[1];
+    int currentValue[1];
+
+    const char *valueNames[3];
+    const int valueNamesNum;
+};
+
+ValueTriStateManager valueTriStateManager;
 
 const MenuItemAction action31(10, "Enable", actionManager);
 const MenuItemAction action32(11, "Disable", actionManager);
@@ -130,10 +180,11 @@ const MenuItem *menuMisc2Items[] = {&action31, &action32, &checkbox1, &checkbox2
 Menu menuMisc2(1, "misc3", menuMisc2Items, sizeof(menuMisc2Items) / sizeof(menuMisc2Items[0]));
 
 
-const MenuItemAction action21(12, "Toggle", actionManager);
-const MenuItemValue<int> number1(0, "Value", valueIntManager);
+const MenuItemValue triState1(0, "State", valueTriStateManager);
+const MenuItemValue number1(0, "ValueS", valueLongManager);
+const MenuItemValue number2(1, "ValueU", valueLongManager);
 
-const MenuItem *menuMiscItems[] = {&action21, &number1};
+const MenuItem *menuMiscItems[] = {&triState1, &number1, &number2};
 Menu menuMisc(1, "misc", menuMiscItems, sizeof(menuMiscItems) / sizeof(menuMiscItems[0]));
 
 
