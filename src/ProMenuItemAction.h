@@ -6,11 +6,13 @@
 namespace promenu {
 
 class MenuManager;
+class Menu;
+class MenuItemAction;
 
 class MenuItemActionInterface {
 
 public:
-    virtual void action(MenuItemCallbackSource &source) = 0;
+    virtual void action(MenuItemAction &item) = 0;
 };
 
 class MenuItemAction: public MenuItem {
@@ -18,7 +20,7 @@ class MenuItemAction: public MenuItem {
 public:
     MenuItemAction(int id, char *name, MenuItemActionInterface &interface);
 
-    virtual void select(MenuManager &manager);
+    virtual bool select();
     
 private:
     MenuItemActionInterface &interface;

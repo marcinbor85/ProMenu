@@ -4,6 +4,8 @@
 #include "ProMenuItem.h"
 #include "ProMenuDisplay.h"
 
+#include <string.h>
+
 namespace promenu {
 
 Menu::Menu(int id, char *name, MenuItem **items, int itemsNum):
@@ -72,6 +74,17 @@ bool Menu::next()
     return ret;
 }
 
+bool Menu::exit()
+{
+    this->end();
+    return true;
+}
+
+bool Menu::enter()
+{
+    return this->getCurrentItem().selectFromMenu(this);
+}
+
 void Menu::reset()
 {
     this->currentPos = 0;
@@ -83,14 +96,14 @@ int Menu::getItemsNum()
     return this->itemsNum;
 }
 
-MenuItem* Menu::getItem(int i)
+MenuItem& Menu::getItem(int i)
 {
-    return this->items[i];
+    return *this->items[i];
 }
 
-MenuItem* Menu::getCurrentItem()
+MenuItem& Menu::getCurrentItem()
 {
-    return this->items[this->currentPos];
+    return *this->items[this->currentPos];
 }
 
 int Menu::getCurrentPos()
@@ -111,6 +124,17 @@ int Menu::getId()
 const char* Menu::getName()
 {
     return this->name;
+}
+
+void Menu::getCustomText(int y, char *text, int maxSize)
+{
+    if (maxSize > 0)
+        text[0] = 0;
+}
+
+MenuManager& Menu::getMenuManager()
+{
+    return *this->manager;
 }
 
 

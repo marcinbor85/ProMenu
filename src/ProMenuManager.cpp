@@ -45,33 +45,40 @@ void MenuManager::update()
 
 void MenuManager::redraw()
 {
-    int posCount = this->currentMenu->getItemsNum();
+    int posMax = this->currentMenu->getItemsNum() - 1;
     int yMax = this->display.getHeight() - 1;
     int xMax = this->display.getWidth() - 1;
     int startPos = this->currentMenu->getStartPos();
     int currentPos = this->currentMenu->getCurrentPos();
 
-    char name[xMax];
+    char text[this->display.getWidth()];
 
     this->display.clear();
 
-    for (int y = 0; y <= yMax; y++) {
-        int pos = startPos + y;
+    if (posMax >= 0) {
+        for (int y = 0; y <= yMax; y++) {
+            int pos = startPos + y;
 
-        if (pos == currentPos)
-            this->display.setText(0, y, ">");
-        
-        if ((y == 0) && (pos > 0))
-            this->display.setText(xMax, 0, "\x01");
-        
-        if ((y == yMax && (pos < posCount - 1)))
-            this->display.setText(xMax, yMax, "\x02");
+            if (pos == currentPos)
+                this->display.setText(0, y, ">");
+            
+            if ((y == 0) && (pos > 0))
+                this->display.setText(xMax, 0, "\x01");
+            
+            if ((y == yMax && (pos < posMax)))
+                this->display.setText(xMax, yMax, "\x02");
 
-        this->currentMenu->getItem(pos)->getDisplayText(*this, name, sizeof(name));
-        this->display.setText(1, y, name);
+            this->currentMenu->getItem(pos).getRenderName(text, sizeof(text) - 2);
+            this->display.setText(1, y, text);
 
-        if (pos >= posCount - 1)
-            break;
+            if (pos >= posMax)
+                break;
+        }
+    } else {
+        for (int y = 0; y <= yMax; y++) {
+            this->currentMenu->getCustomText(y, text, sizeof(text));
+            this->display.setText(0, y, text);
+        }
     }
 }
 
@@ -100,13 +107,13 @@ bool MenuManager::down()
 
 bool MenuManager::back()
 {
-    this->currentMenu->end();
+    this->currentMenu->exit();
     this->update();
 }
 
 bool MenuManager::select()
 {
-    this->currentMenu->getCurrentItem()->select(*this);
+    this->currentMenu->enter();
     this->update();
 }
 

@@ -6,7 +6,7 @@
 #include <ProMenuItemCheckbox.h>
 #include <ProMenuItemSubmenu.h>
 #include <ProMenuItemAction.h>
-#include <ProMenuItemNumber.h>
+#include <ProMenuItemValue.h>
 #include <ProMenuAdapters.h>
 
 using namespace promenu;
@@ -21,39 +21,26 @@ MenuManager menuManager(display);
 
 class CheckboxManager: public MenuItemCheckboxInterface {
 public:
-    virtual bool isSelected(MenuItemCallbackSource &source)
+    virtual bool isSelected(MenuItemCheckbox &item)
     {
-        switch (source.item->getId()) {
-        case 1:
-            return value1;
-        case 2:
-            return value2;
-        }
-        return false;
+        int i = item.getId();
+        return this->value[i];
     }
-    virtual void setSelected(MenuItemCallbackSource &source, bool val)
+    virtual void setSelected(MenuItemCheckbox &item, bool val)
     {
-        switch (source.item->getId()) {
-        case 1:
-            this->value1 = val;
-            break;
-        case 2:
-            this->value2 = val;
-            break;
-        }
-        return false;
+        int i = item.getId();
+        this->value[i] = val;
     }
-    bool value1;
-    bool value2;
+    bool value[2];
 };
 
 CheckboxManager checkboxManager;
 
 class ActionManager: public MenuItemActionInterface {
 public:
-    virtual void action(MenuItemCallbackSource &source)
+    virtual void action(MenuItemAction &item)
     {
-        switch (source.item->getId()) {
+        switch (item.getId()) {
         case 10:
             break;
         case 11:
@@ -81,17 +68,70 @@ public:
 ActionManager actionManager;
 
 
+template <class T>
+class ValueManager: public MenuItemValueInterface<T> {
+
+public:
+    virtual void init(MenuItemValue<T> &item)
+    {
+        int i = item.MenuItem::getId();
+        this->tempValue[i] = this->currentValue[i];
+    }
+    virtual T getMin(MenuItemValue<T> &item)
+    {
+        switch (item.MenuItem::getId()) {
+        case 0:
+            return 0;
+        }
+        return 0;
+    }
+    virtual T getMax(MenuItemValue<T> &item)
+    {
+        switch (item.MenuItem::getId()) {
+        case 0:
+            return 10;
+        }
+        return 0;
+    }
+    virtual void setValue(MenuItemValue<T> &item, T value)
+    {
+        int i = item.MenuItem::getId();
+        this->tempValue[i]= value;
+    }
+    virtual T getValue(MenuItemValue<T> &item)
+    {
+        int i = item.MenuItem::getId();
+        return this->tempValue[i];
+    }
+    virtual bool save(MenuItemValue<T> &item)
+    {
+        int i = item.MenuItem::getId();
+        this->currentValue[i] = this->tempValue[i];
+        return true;
+    }
+    virtual void cancel(MenuItemValue<T> &item)
+    {
+        this->init(item);
+    }
+
+    T tempValue[1];
+    T currentValue[1];
+};
+
+ValueManager<int> valueIntManager;
+
+
 const MenuItemAction action31(10, "Enable", actionManager);
 const MenuItemAction action32(11, "Disable", actionManager);
-const MenuItemCheckbox checkbox1(1, "Feature1", checkboxManager);
-const MenuItemCheckbox checkbox2(2, "Feature2", checkboxManager);
+const MenuItemCheckbox checkbox1(0, "Feature1", checkboxManager);
+const MenuItemCheckbox checkbox2(1, "Feature2", checkboxManager);
 
 const MenuItem *menuMisc2Items[] = {&action31, &action32, &checkbox1, &checkbox2};
 Menu menuMisc2(1, "misc3", menuMisc2Items, sizeof(menuMisc2Items) / sizeof(menuMisc2Items[0]));
 
 
 const MenuItemAction action21(12, "Toggle", actionManager);
-const MenuItemNumber number1(13, "Value", 0, 100);
+const MenuItemValue<int> number1(0, "Value", valueIntManager);
 
 const MenuItem *menuMiscItems[] = {&action21, &number1};
 Menu menuMisc(1, "misc", menuMiscItems, sizeof(menuMiscItems) / sizeof(menuMiscItems[0]));

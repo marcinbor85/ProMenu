@@ -6,12 +6,19 @@ namespace promenu {
 
 MenuItem::MenuItem(int id, char *name):
     id(id),
-    name(name)
+    name(name),
+    menu(NULL)
 {
 
 }
 
-void MenuItem::getDisplayText(MenuManager &manager, char *text, int maxSize)
+bool MenuItem::selectFromMenu(Menu *menu)
+{
+    this->menu = menu;
+    return this->select();
+}
+
+void MenuItem::getRenderName(char *text, int maxSize)
 {
     strncpy(text, this->name, maxSize);
 }
@@ -24,6 +31,11 @@ int MenuItem::getId()
 const char* MenuItem::getName()
 {
     return this->name;
+}
+
+Menu* MenuItem::getMenu()
+{
+    return this->menu;
 }
 
 };

@@ -14,15 +14,16 @@ MenuItemSubmenu::MenuItemSubmenu(int id, char *name, Menu &submenu):
 
 }
 
-void MenuItemSubmenu::select(MenuManager &manager)
+bool MenuItemSubmenu::select()
 {
-    manager.enterToMenu(this->submenu);
+    this->menu->getMenuManager().enterToMenu(this->submenu);
+    return true;
 }
 
-void MenuItemSubmenu::getDisplayText(MenuManager &manager, char *text, int maxSize)
+void MenuItemSubmenu::getRenderName(char *text, int maxSize)
 {
     strncpy(text, ":", maxSize);
-    strncat(text, this->getName(), maxSize - 1);
+    strncat(text, this->name, maxSize - 1);
 }
 
 };

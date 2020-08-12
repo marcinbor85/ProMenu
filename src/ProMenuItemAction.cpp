@@ -2,6 +2,7 @@
 
 #include "ProMenuManager.h"
 #include "ProMenuDisplay.h"
+#include "ProMenu.h"
 
 namespace promenu {
 
@@ -12,11 +13,10 @@ MenuItemAction::MenuItemAction(int id, char *name, MenuItemActionInterface &inte
 
 }
 
-void MenuItemAction::select(MenuManager &manager)
+bool MenuItemAction::select()
 {
-    MenuItemCallbackSource source = {this, &manager};
-
-    this->interface.action(source);
+    this->interface.action(*this);
+    return true;
 }   
 
 };

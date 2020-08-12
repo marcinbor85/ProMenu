@@ -6,12 +6,13 @@
 namespace promenu {
 
 class MenuManager;
+class MenuItemCheckbox;
 
 class MenuItemCheckboxInterface {
 
 public:
-    virtual void setSelected(MenuItemCallbackSource &source, bool value) = 0;
-    virtual bool isSelected(MenuItemCallbackSource &source) = 0;
+    virtual void setSelected(MenuItemCheckbox &item, bool value) = 0;
+    virtual bool isSelected(MenuItemCheckbox &item) = 0;
 };
 
 class MenuItemCheckbox: public MenuItem {
@@ -19,8 +20,8 @@ class MenuItemCheckbox: public MenuItem {
 public:
     MenuItemCheckbox(int id, char *name, MenuItemCheckboxInterface &interface);
     
-    virtual void select(MenuManager &manager);
-    virtual void getDisplayText(MenuManager &manager, char *text, int maxSize);
+    virtual bool select();
+    virtual void getRenderName(char *text, int maxSize);
 
 private:
     MenuItemCheckboxInterface &interface;

@@ -5,26 +5,27 @@ namespace promenu {
 
 class MenuManager;
 class MenuItem;
-
-struct MenuItemCallbackSource {
-    MenuItem *item;
-    MenuManager *manager;
-};
+class Menu;
 
 class MenuItem {
 
 public:
     MenuItem(int id, char *name);
 
-    virtual void select(MenuManager &manager) = 0;
-    virtual void getDisplayText(MenuManager &manager, char *text, int maxSize);
+    virtual bool select() = 0;
+    virtual void getRenderName(char *text, int maxSize);
+
+    bool selectFromMenu(Menu *menu);
 
     int getId();
     const char* getName();
 
-private:
+    Menu* getMenu();
+
+protected:
     const int id;
     const char *name;
+    Menu *menu;
 };
 
 };

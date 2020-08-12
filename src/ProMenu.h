@@ -19,14 +19,21 @@ public:
 
     virtual bool prev();
     virtual bool next();
+    virtual bool exit();
+    virtual bool enter();
+
+    virtual void getCustomText(int y, char *text, int maxSize);
 
     int getItemsNum();
-    MenuItem* getItem(int i);
-    MenuItem* getCurrentItem();
+    MenuItem& getItem(int i);
+    MenuItem& getCurrentItem();
+
     int getCurrentPos();
     int getStartPos();
     int getId();
     const char* getName();
+
+    MenuManager& getMenuManager();
 
 private:
     const int id;
