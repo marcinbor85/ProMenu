@@ -93,15 +93,15 @@ void MenuManager::process()
     }
 }
 
-bool MenuManager::up()
+bool MenuManager::up(int repeat)
 {
-    this->currentMenu->prev();
+    while (repeat-- > 0) this->currentMenu->prev();
     this->update();
 }
 
-bool MenuManager::down()
+bool MenuManager::down(int repeat)
 {
-    this->currentMenu->next();
+    while (repeat-- > 0) this->currentMenu->next();
     this->update();
 }
 

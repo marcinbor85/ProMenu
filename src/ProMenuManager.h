@@ -17,8 +17,8 @@ public:
     void begin(Menu *menu);
     void end();
 
-    bool up();
-    bool down();
+    bool up(int repeat = 1);
+    bool down(int repeat = 1);
     bool back();
     bool select();
 

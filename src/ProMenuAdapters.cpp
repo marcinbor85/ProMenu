@@ -52,10 +52,10 @@ LcdShieldButtons::LcdShieldButtons(promenu::MenuManager &manager,
     isButtonDownPressed(false),
     isButtonBackPressed(false),
     isButtonSelectPressed(false),
-    buttonUp(this),
-    buttonDown(this),
-    buttonBack(this),
-    buttonSelect(this)
+    buttonUp(-1, smartbutton::SmartButton::InputType::NORMAL_HIGH, NULL, NULL, this, 20UL, 500UL, 1000UL, 2000UL, 200UL, 200UL),
+    buttonDown(-1, smartbutton::SmartButton::InputType::NORMAL_HIGH, NULL, NULL, this, 20UL, 500UL, 1000UL, 2000UL, 200UL, 200UL),
+    buttonBack(-1, smartbutton::SmartButton::InputType::NORMAL_HIGH, NULL, NULL, this, 20UL, 500UL, 1000UL, 2000UL, 200UL, 200UL),
+    buttonSelect(-1, smartbutton::SmartButton::InputType::NORMAL_HIGH, NULL, NULL, this, 20UL, 500UL, 1000UL, 2000UL, 200UL, 200UL)
 {
 
 }
@@ -107,12 +107,28 @@ bool LcdShieldButtons::isValueInRange(int value, int threshold)
 void LcdShieldButtons::event(smartbutton::SmartButton *button, smartbutton::SmartButton::Event event, int clickCounter)
 {
     if (button == &this->buttonUp) {
-        if (event == smartbutton::SmartButton::Event::PRESSED) {
-            this->manager.up();
+        if (event == smartbutton::SmartButton::Event::PRESSED ||
+            event == smartbutton::SmartButton::Event::HOLD ||
+            event == smartbutton::SmartButton::Event::HOLD_REPEAT ||
+            event == smartbutton::SmartButton::Event::LONG_HOLD ||
+            event == smartbutton::SmartButton::Event::LONG_HOLD_REPEAT) {
+            if (button->getState() == smartbutton::SmartButton::State::LONG_HOLD) {
+                this->manager.up(10);
+            } else {
+                this->manager.up();
+            }
         }
     } else if (button == &this->buttonDown) {
-        if (event == smartbutton::SmartButton::Event::PRESSED) {
-            this->manager.down();
+        if (event == smartbutton::SmartButton::Event::PRESSED ||
+            event == smartbutton::SmartButton::Event::HOLD ||
+            event == smartbutton::SmartButton::Event::HOLD_REPEAT ||
+            event == smartbutton::SmartButton::Event::LONG_HOLD ||
+            event == smartbutton::SmartButton::Event::LONG_HOLD_REPEAT) {
+            if (button->getState() == smartbutton::SmartButton::State::LONG_HOLD) {
+                this->manager.down(10);
+            } else {
+                this->manager.down();
+            }
         }
     } else if (button == &this->buttonBack) {
         if (event == smartbutton::SmartButton::Event::PRESSED) {
