@@ -28,7 +28,7 @@ bool MenuItemValue<T>::select()
 template <class T>
 void MenuItemValue<T>::getRenderName(char *text, int maxSize)
 {
-    snprintf(text, maxSize, "[%d]%s", this->interface.getValue(*this), this->MenuItem::name);
+    snprintf(text, maxSize, "[%d] %s", this->interface.getValue(*this), this->MenuItem::name);
 }
 
 template <class T>
