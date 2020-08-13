@@ -15,6 +15,16 @@ void LcdShieldDisplay::setText(int x, int y, const char *text)
     lcd.print(text);
 }
 
+void LcdShieldDisplay::setCursor(int x, int y)
+{
+    lcd.setCursor(x, y);
+}
+
+void LcdShieldDisplay::printText(const char *text)
+{
+    lcd.print(text);
+}
+
 void LcdShieldDisplay::selectChar(int x, int y)
 {
     lcd.setCursor(x, y);
