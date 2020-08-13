@@ -21,7 +21,7 @@ void LcdShieldDisplay::selectChar(int x, int y)
     lcd.blink();
 }
 
-void LcdShieldDisplay::unselectChar()
+void LcdShieldDisplay::deselectChar()
 {
     lcd.noBlink();
 }

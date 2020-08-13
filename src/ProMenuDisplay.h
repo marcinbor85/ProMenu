@@ -10,7 +10,7 @@ public:
 
     virtual void setText(int x, int y, const char *text) = 0;
     virtual void selectChar(int x, int y) = 0;
-    virtual void unselectChar() = 0;
+    virtual void deselectChar() = 0;
     virtual void showCursor(int x, int y) = 0;
     virtual void hideCursor() = 0;
     virtual void clear() = 0;
