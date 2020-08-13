@@ -24,6 +24,8 @@ public:
         int rs = LCD_RS, int en = LCD_EN, int d4 = LCD_D4, int d5 = LCD_D5, int d6 = LCD_D6, int d7 = LCD_D7
     );
 
+    virtual void setCursor(int x, int y);
+    virtual void printText(const char *text);
     virtual void setText(int x, int y, const char *text);
     virtual void selectChar(int x, int y);
     virtual void deselectChar();
