@@ -115,6 +115,7 @@ void Menu::render(DisplayInterface &display)
     int currentPos = this->currentPos;
 
     char text[display.getWidth()];
+    char ch[2];
 
     display.clear();
 
@@ -124,11 +125,17 @@ void Menu::render(DisplayInterface &display)
         if (pos == currentPos)
             display.setText(0, y, ">");
         
-        if ((y == 0) && (pos > 0))
-            display.setText(xMax, 0, "\x01");
+        if ((y == 0) && (pos > 0)) {
+            ch[0] = display.getArrowUp();
+            ch[1] = 0;
+            display.setText(xMax, 0, ch);
+        }
         
-        if ((y == yMax && (pos < posMax)))
-            display.setText(xMax, yMax, "\x02");
+        if ((y == yMax && (pos < posMax))) {
+            ch[0] = display.getArrowDown();
+            ch[1] = 0;
+            display.setText(xMax, yMax, ch);
+        }
 
         this->items[pos]->getRenderName(text, sizeof(text) - 2);
         display.setText(1, y, text);

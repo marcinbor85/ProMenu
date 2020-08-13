@@ -19,6 +19,9 @@ public:
     virtual void begin();
     virtual void end();
 
+    virtual char getArrowUp();
+    virtual char getArrowDown();
+
     int getWidth();
     int getHeight();
     

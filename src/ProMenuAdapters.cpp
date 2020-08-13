@@ -47,6 +47,16 @@ void LcdShieldDisplay::hideCursor()
     lcd.noCursor();
 }
 
+char LcdShieldDisplay::getArrowUp()
+{
+    return this->arrowUpChar;
+}
+
+char LcdShieldDisplay::getArrowDown()
+{
+    return this->arrowDownChar;
+}
+
 void LcdShieldDisplay::clear()
 {
     lcd.clear();
@@ -58,8 +68,8 @@ void LcdShieldDisplay::begin()
 {
     lcd.begin(promenu::DisplayInterface::getWidth(), promenu::DisplayInterface::getHeight());
     
-    lcd.createChar(0x01, arrowUp);
-    lcd.createChar(0x02, arrowDown);
+    lcd.createChar(this->arrowUpChar, arrowUp);
+    lcd.createChar(this->arrowDownChar, arrowDown);
 }
 
 void LcdShieldDisplay::end()

@@ -29,4 +29,14 @@ int DisplayInterface::getHeight()
     return this->height;
 }
 
+char DisplayInterface::getArrowUp()
+{
+    return '/';
+}
+
+char DisplayInterface::getArrowDown()
+{
+    return '\\';
+}
+
 };

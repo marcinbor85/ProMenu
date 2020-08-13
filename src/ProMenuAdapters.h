@@ -34,10 +34,16 @@ public:
     virtual void clear();
     virtual void begin();
     virtual void end();
+
+    virtual char getArrowUp();
+    virtual char getArrowDown();
     
     LiquidCrystal lcd;
 
 private:
+    static constexpr char arrowUpChar = 0x01;
+    static constexpr char arrowDownChar = 0x02;
+
     const uint8_t arrowUp[8] = {B00100, B01110, B10101, B00100, B00100, B00100, B00100, B00000};
     const uint8_t arrowDown[8] = {B00100, B00100, B00100, B00100, B10101, B01110, B00100, B00000};
 };
