@@ -8,9 +8,15 @@ port to different architecture.
 * asynchronous non-blocking API based on events callbacks
 * hardware independent high-level architecture
 * abstract display interface, for easy porting
+* object-oriented architecture for easy extending
+* data independent model with interface classes
 * easy to use with Arduino boards
 * unlimited number of menu/submenu items
+* fully static implementation
 * support numeric, text, and choices settings
+* build-in ready to use adapters classes
+
+## Code generator
 
 ## Example
 
