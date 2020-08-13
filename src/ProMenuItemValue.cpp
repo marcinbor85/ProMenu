@@ -4,7 +4,6 @@
 #include "ProMenu.h"
 
 #include <string.h>
-#include <stdio.h>
 
 namespace promenu {
 
