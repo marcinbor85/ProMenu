@@ -22,9 +22,12 @@ bool MenuItemCheckbox::select()
 void MenuItemCheckbox::getRenderName(char *text, int maxSize)
 {
     strncpy(text, "[", maxSize);
-    strncat(text, (this->interface.isSelected(*this) == false) ? " " : "x", maxSize - 1);
-    strncat(text, "] ", maxSize - 2);    
-    strncat(text, this->getName(), maxSize - 4);
+    maxSize -= 1;
+    strncat(text, (this->interface.isSelected(*this) == false) ? " " : "x", maxSize);
+    maxSize -= 1;
+    strncat(text, "] ", maxSize);    
+    maxSize -= 2;
+    strncat(text, this->getName(), maxSize);
 }
 
 };
