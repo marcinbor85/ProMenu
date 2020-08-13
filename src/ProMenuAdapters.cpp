@@ -15,9 +15,33 @@ void LcdShieldDisplay::setText(int x, int y, const char *text)
     lcd.print(text);
 }
 
+void LcdShieldDisplay::selectChar(int x, int y)
+{
+    lcd.setCursor(x, y);
+    lcd.blink();
+}
+
+void LcdShieldDisplay::unselectChar()
+{
+    lcd.noBlink();
+}
+
+void LcdShieldDisplay::showCursor(int x, int y)
+{
+    lcd.setCursor(x, y);
+    lcd.cursor();
+}
+
+void LcdShieldDisplay::hideCursor()
+{
+    lcd.noCursor();
+}
+
 void LcdShieldDisplay::clear()
 {
     lcd.clear();
+    lcd.noCursor();
+    lcd.noBlink();
 }
 
 void LcdShieldDisplay::begin()
@@ -31,6 +55,8 @@ void LcdShieldDisplay::begin()
 void LcdShieldDisplay::end()
 {
     lcd.clear();
+    lcd.noCursor();
+    lcd.noBlink();
 }
 
 LcdShieldButtons::LcdShieldButtons(promenu::MenuManager &manager,

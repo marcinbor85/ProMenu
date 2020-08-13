@@ -25,6 +25,10 @@ public:
     );
 
     virtual void setText(int x, int y, const char *text);
+    virtual void selectChar(int x, int y);
+    virtual void unselectChar();
+    virtual void showCursor(int x, int y);
+    virtual void hideCursor();
     virtual void clear();
     virtual void begin();
     virtual void end();
