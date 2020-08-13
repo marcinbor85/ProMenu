@@ -37,6 +37,10 @@ public:
 
 private:
     MenuItemTextInterface &interface;
+
+    int startPos;
+    int cursorPos;
+    bool editMode;
 };
 
 };

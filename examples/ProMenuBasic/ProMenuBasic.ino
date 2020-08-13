@@ -175,10 +175,10 @@ ValueTriStateManager valueTriStateManager;
 class ValueStringManager: public MenuItemTextInterface {
 
 public:
-    static constexpr int maxTextSize = 20;
+    static constexpr int maxTextSize = 30;
 
     ValueStringManager():
-        currentText({{"test"}}) {}
+        currentText{{"Test Embedded Devices"}} {}
 
     virtual void init(MenuItemText &item)
     {
