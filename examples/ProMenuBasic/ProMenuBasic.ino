@@ -7,6 +7,7 @@
 #include <ProMenuItemSubmenu.h>
 #include <ProMenuItemAction.h>
 #include <ProMenuItemValue.h>
+#include <ProMenuItemText.h>
 #include <ProMenuAdapters.h>
 
 using namespace promenu;
@@ -171,6 +172,49 @@ public:
 
 ValueTriStateManager valueTriStateManager;
 
+class ValueStringManager: public MenuItemTextInterface {
+
+public:
+    static constexpr int maxTextSize = 20;
+
+    ValueStringManager():
+        currentText({{"test"}}) {}
+
+    virtual void init(MenuItemText &item)
+    {
+        int i = item.MenuItem::getId();
+        memcpy(this->tempText[i], this->currentText[i], maxTextSize);
+    }
+    virtual void setChar(MenuItemText &item, int p, char ch)
+    {
+        int i = item.MenuItem::getId();
+        if (p < maxTextSize)
+            this->tempText[i][p] = ch;
+    }
+    virtual char getChar(MenuItemText &item, int p)
+    {
+        int i = item.MenuItem::getId();
+        if (p < maxTextSize)
+            return this->tempText[i][p];
+        return 0;
+    }
+    virtual bool save(MenuItemText &item)
+    {
+        int i = item.MenuItem::getId();
+        memcpy(this->currentText[i], this->tempText[i], maxTextSize);
+        return true;
+    }
+    virtual void cancel(MenuItemText &item)
+    {
+        this->init(item);
+    }
+
+    char currentText[1][maxTextSize];
+    char tempText[1][maxTextSize];
+};
+
+ValueStringManager valueStringManager;
+
 const MenuItemAction action31(10, "Enable", actionManager);
 const MenuItemAction action32(11, "Disable", actionManager);
 const MenuItemCheckbox checkbox1(0, "Feature1", checkboxManager);
@@ -183,8 +227,9 @@ Menu menuMisc2(1, "misc3", menuMisc2Items, sizeof(menuMisc2Items) / sizeof(menuM
 const MenuItemValue triState1(0, "State", valueTriStateManager);
 const MenuItemValue number1(0, "ValueS", valueLongManager);
 const MenuItemValue number2(1, "ValueU", valueLongManager);
+const MenuItemText string1(0, "String", valueStringManager);
 
-const MenuItem *menuMiscItems[] = {&triState1, &number1, &number2};
+const MenuItem *menuMiscItems[] = {&triState1, &number1, &number2, &string1};
 Menu menuMisc(1, "misc", menuMiscItems, sizeof(menuMiscItems) / sizeof(menuMiscItems[0]));
 
 
