@@ -7,6 +7,7 @@ namespace promenu {
 
 class MenuManager;
 class MenuItem;
+class DisplayInterface;
 
 class Menu {
 
@@ -22,14 +23,8 @@ public:
     virtual bool exit();
     virtual bool enter();
 
-    virtual void getCustomText(int y, char *text, int maxSize);
+    virtual void render(DisplayInterface &display);
 
-    int getItemsNum();
-    MenuItem& getItem(int i);
-    MenuItem& getCurrentItem();
-
-    int getCurrentPos();
-    int getStartPos();
     int getId();
     const char* getName();
 

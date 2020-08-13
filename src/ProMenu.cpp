@@ -82,38 +82,13 @@ bool Menu::exit()
 
 bool Menu::enter()
 {
-    return this->getCurrentItem().selectFromMenu(this);
+    return this->items[this->currentPos]->selectFromMenu(this);
 }
 
 void Menu::reset()
 {
     this->currentPos = 0;
     this->startPos = 0;
-}
-
-int Menu::getItemsNum()
-{
-    return this->itemsNum;
-}
-
-MenuItem& Menu::getItem(int i)
-{
-    return *this->items[i];
-}
-
-MenuItem& Menu::getCurrentItem()
-{
-    return *this->items[this->currentPos];
-}
-
-int Menu::getCurrentPos()
-{
-    return this->currentPos;
-}
-
-int Menu::getStartPos()
-{
-    return this->startPos;
 }
 
 int Menu::getId()
@@ -126,16 +101,41 @@ const char* Menu::getName()
     return this->name;
 }
 
-void Menu::getCustomText(int y, char *text, int maxSize)
-{
-    if (maxSize > 0)
-        text[0] = 0;
-}
-
 MenuManager& Menu::getMenuManager()
 {
     return *this->manager;
 }
 
+void Menu::render(DisplayInterface &display)
+{
+    int posMax = this->itemsNum - 1;
+    int yMax = display.getHeight() - 1;
+    int xMax = display.getWidth() - 1;
+    int startPos = this->startPos;
+    int currentPos = this->currentPos;
+
+    char text[display.getWidth()];
+
+    display.clear();
+
+    for (int y = 0; y <= yMax; y++) {
+        int pos = startPos + y;
+
+        if (pos == currentPos)
+            display.setText(0, y, ">");
+        
+        if ((y == 0) && (pos > 0))
+            display.setText(xMax, 0, "\x01");
+        
+        if ((y == yMax && (pos < posMax)))
+            display.setText(xMax, yMax, "\x02");
+
+        this->items[pos]->getRenderName(text, sizeof(text) - 2);
+        display.setText(1, y, text);
+
+        if (pos >= posMax)
+            break;
+    }
+}
 
 };

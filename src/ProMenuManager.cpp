@@ -45,41 +45,7 @@ void MenuManager::update()
 
 void MenuManager::redraw()
 {
-    int posMax = this->currentMenu->getItemsNum() - 1;
-    int yMax = this->display.getHeight() - 1;
-    int xMax = this->display.getWidth() - 1;
-    int startPos = this->currentMenu->getStartPos();
-    int currentPos = this->currentMenu->getCurrentPos();
-
-    char text[this->display.getWidth()];
-
-    this->display.clear();
-
-    if (posMax >= 0) {
-        for (int y = 0; y <= yMax; y++) {
-            int pos = startPos + y;
-
-            if (pos == currentPos)
-                this->display.setText(0, y, ">");
-            
-            if ((y == 0) && (pos > 0))
-                this->display.setText(xMax, 0, "\x01");
-            
-            if ((y == yMax && (pos < posMax)))
-                this->display.setText(xMax, yMax, "\x02");
-
-            this->currentMenu->getItem(pos).getRenderName(text, sizeof(text) - 2);
-            this->display.setText(1, y, text);
-
-            if (pos >= posMax)
-                break;
-        }
-    } else {
-        for (int y = 0; y <= yMax; y++) {
-            this->currentMenu->getCustomText(y, text, sizeof(text));
-            this->display.setText(0, y, text);
-        }
-    }
+    this->currentMenu->render(this->display);
 }
 
 void MenuManager::process()

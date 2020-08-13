@@ -1,9 +1,11 @@
 #include "ProMenuItemText.h"
 
 #include "ProMenuManager.h"
+#include "ProMenuDisplay.h"
 #include "ProMenu.h"
 
 #include <string.h>
+#include <stdio.h>
 
 namespace promenu {
 
@@ -24,33 +26,7 @@ bool MenuItemText::select()
 
 void MenuItemText::getRenderName(char *text, int maxSize)
 {
-    strncpy(text, this->MenuItem::name, maxSize);
-    maxSize -= strlen(text);
-    strncat(text, "...", maxSize);
-}
-
-void MenuItemText::getCustomText(int y, char *text, int maxSize)
-{
-    char value[maxSize];
-
-    switch (y) {
-    case 0:
-        strncpy(text, this->MenuItem::name, maxSize);
-        break;
-    case 1:
-        // this->interface.getValueText(*this, value, sizeof(value));
-
-        // strncpy(text, ">", maxSize);
-        // maxSize -= 1;
-        // strncat(text, value, maxSize);
-        // maxSize -= strlen(value);
-        // strncat(text, "<", maxSize);
-        break;
-    default:
-        if (maxSize > 0)
-            text[0] = 0;
-        break;
-    }
+    snprintf(text, maxSize, "%s...", this->MenuItem::name);
 }
 
 bool MenuItemText::prev()
@@ -75,6 +51,22 @@ bool MenuItemText::enter()
     this->interface.save(*this);
     this->end();
     return true;
+}
+
+void MenuItemText::render(DisplayInterface &display)
+{
+    char value[display.getWidth()];
+    char line[display.getWidth()];
+
+    display.clear();
+
+    strncpy(line, this->MenuItem::name, sizeof(line));
+    display.setText(0, 0, line);
+
+    //this->interface.getValueText(*this, value, sizeof(value));
+    strcpy(value, "test");
+    snprintf(line, sizeof(line), ">%s<", value);
+    display.setText(0, 1, line);
 }
 
 };

@@ -4,6 +4,7 @@
 #include "ProMenu.h"
 
 #include <string.h>
+#include <stdio.h>
 
 namespace promenu {
 
@@ -22,8 +23,7 @@ bool MenuItemSubmenu::select()
 
 void MenuItemSubmenu::getRenderName(char *text, int maxSize)
 {
-    strncpy(text, ":", maxSize);
-    strncat(text, this->name, maxSize - 1);
+    snprintf(text, maxSize, ":%s", this->name);
 }
 
 };

@@ -3,6 +3,7 @@
 #include "ProMenuManager.h"
 
 #include <string.h>
+#include <stdio.h>
 
 namespace promenu {
 
@@ -21,13 +22,7 @@ bool MenuItemCheckbox::select()
 
 void MenuItemCheckbox::getRenderName(char *text, int maxSize)
 {
-    strncpy(text, "[", maxSize);
-    maxSize -= 1;
-    strncat(text, (this->interface.isSelected(*this) == false) ? " " : "x", maxSize);
-    maxSize -= 1;
-    strncat(text, "] ", maxSize);    
-    maxSize -= 2;
-    strncat(text, this->getName(), maxSize);
+    snprintf(text, maxSize, "[%c] %s", (this->interface.isSelected(*this) == false) ? ' ' : 'x', this->name);
 }
 
 };

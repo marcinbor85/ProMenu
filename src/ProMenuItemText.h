@@ -27,12 +27,13 @@ public:
     
     virtual bool select();
     virtual void getRenderName(char *text, int maxSize);
-    virtual void getCustomText(int y, char *text, int maxSize);
 
     virtual bool prev();
     virtual bool next();
     virtual bool exit();
     virtual bool enter();
+
+    virtual void render(DisplayInterface &display);
 
 private:
     MenuItemTextInterface &interface;
