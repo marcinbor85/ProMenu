@@ -31,12 +31,17 @@ int DisplayInterface::getHeight()
 
 char DisplayInterface::getArrowUp()
 {
-    return '/';
+    return '^';
 }
 
 char DisplayInterface::getArrowDown()
 {
-    return '\\';
+    return '_';
+}
+
+char DisplayInterface::getArrowUpDown()
+{
+    return '|';
 }
 
 };

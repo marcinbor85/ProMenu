@@ -57,6 +57,11 @@ char LcdShieldDisplay::getArrowDown()
     return this->arrowDownChar;
 }
 
+char LcdShieldDisplay::getArrowUpDown()
+{
+    return this->arrowUpDownChar;
+}
+
 void LcdShieldDisplay::clear()
 {
     lcd.clear();
@@ -70,6 +75,7 @@ void LcdShieldDisplay::begin()
     
     lcd.createChar(this->arrowUpChar, arrowUp);
     lcd.createChar(this->arrowDownChar, arrowDown);
+    lcd.createChar(this->arrowUpDownChar, arrowUpDown);
 }
 
 void LcdShieldDisplay::end()

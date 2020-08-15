@@ -21,6 +21,7 @@ public:
 
     virtual char getArrowUp();
     virtual char getArrowDown();
+    virtual char getArrowUpDown();
 
     int getWidth();
     int getHeight();

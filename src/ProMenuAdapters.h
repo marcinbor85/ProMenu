@@ -37,15 +37,18 @@ public:
 
     virtual char getArrowUp();
     virtual char getArrowDown();
+    virtual char getArrowUpDown();
     
     LiquidCrystal lcd;
 
 private:
     static constexpr char arrowUpChar = 0x01;
     static constexpr char arrowDownChar = 0x02;
+    static constexpr char arrowUpDownChar = 0x03;
 
-    const uint8_t arrowUp[8] = {B00100, B01110, B10101, B00100, B00100, B00100, B00100, B00000};
-    const uint8_t arrowDown[8] = {B00100, B00100, B00100, B00100, B10101, B01110, B00100, B00000};
+    const uint8_t arrowUp[8] = {B00100, B01010, B10001, B00000, B00000, B00000, B00000, B00000};
+    const uint8_t arrowDown[8] = {B00000, B00000, B00000, B00000, B10001, B01010, B00100, B00000};
+    const uint8_t arrowUpDown[8] = {B00100, B01010, B10001, B00000, B10001, B01010, B00100, B00000};
 };
 
 constexpr int BUTTON_ADC_PIN = A0;
