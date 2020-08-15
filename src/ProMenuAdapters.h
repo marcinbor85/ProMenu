@@ -20,7 +20,9 @@ class LcdShieldDisplay: public promenu::DisplayInterface {
 
 public:
     LcdShieldDisplay(
-        int width = LCD_WIDTH, int height = LCD_HEIGHT,
+        int lcdWidth = LCD_WIDTH, int lcdHeight = LCD_HEIGHT,
+        int menuWidth = LCD_WIDTH, int menuHeight = LCD_HEIGHT,
+        int menuXOffset = 0, int menuYOffset = 0,
         int rs = LCD_RS, int en = LCD_EN, int d4 = LCD_D4, int d5 = LCD_D5, int d6 = LCD_D6, int d7 = LCD_D7
     );
 
@@ -49,6 +51,13 @@ private:
     const uint8_t arrowUp[8] = {B00100, B01010, B10001, B00000, B00000, B00000, B00000, B00000};
     const uint8_t arrowDown[8] = {B00000, B00000, B00000, B00000, B10001, B01010, B00100, B00000};
     const uint8_t arrowUpDown[8] = {B00100, B01010, B10001, B00000, B10001, B01010, B00100, B00000};
+
+    const int lcdWidth;
+    const int lcdHeight;
+    const int menuWidth;
+    const int menuHeight;
+    const int menuXOffset;
+    const int menuYOffset;
 };
 
 constexpr int BUTTON_ADC_PIN = A0;

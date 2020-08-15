@@ -2,8 +2,13 @@
 
 namespace promenu::adapters {
 
-LcdShieldDisplay::LcdShieldDisplay(int width, int height, int rs, int en, int d4, int d5, int d6, int d7):
-    DisplayInterface(width, height),
+LcdShieldDisplay::LcdShieldDisplay(
+    int lcdWidth, int lcdHeight,
+    int menuWidth, int menuHeight, int menuXOffset, int menuYOffset,
+    int rs, int en, int d4, int d5, int d6, int d7):
+    DisplayInterface(menuWidth, menuHeight),
+    lcdWidth(lcdWidth), lcdHeight(lcdHeight),
+    menuWidth(menuWidth), menuHeight(menuHeight), menuXOffset(menuXOffset), menuYOffset(menuYOffset),
     lcd(rs, en, d4, d5, d6, d7)
 {
 
@@ -11,13 +16,13 @@ LcdShieldDisplay::LcdShieldDisplay(int width, int height, int rs, int en, int d4
 
 void LcdShieldDisplay::setText(int x, int y, const char *text)
 {
-    lcd.setCursor(x, y);
+    this->setCursor(x, y);
     lcd.print(text);
 }
 
 void LcdShieldDisplay::setCursor(int x, int y)
 {
-    lcd.setCursor(x, y);
+    lcd.setCursor(x + this->menuXOffset, y + this->menuYOffset);
 }
 
 void LcdShieldDisplay::printText(const char *text)
@@ -27,7 +32,7 @@ void LcdShieldDisplay::printText(const char *text)
 
 void LcdShieldDisplay::selectChar(int x, int y)
 {
-    lcd.setCursor(x, y);
+    this->setCursor(x, y);
     lcd.blink();
 }
 
@@ -38,7 +43,7 @@ void LcdShieldDisplay::deselectChar()
 
 void LcdShieldDisplay::showCursor(int x, int y)
 {
-    lcd.setCursor(x, y);
+    this->setCursor(x, y);
     lcd.cursor();
 }
 
@@ -71,7 +76,7 @@ void LcdShieldDisplay::clear()
 
 void LcdShieldDisplay::begin()
 {
-    lcd.begin(promenu::DisplayInterface::getWidth(), promenu::DisplayInterface::getHeight());
+    lcd.begin(this->lcdWidth, this->lcdHeight);
     
     lcd.createChar(this->arrowUpChar, arrowUp);
     lcd.createChar(this->arrowDownChar, arrowDown);
