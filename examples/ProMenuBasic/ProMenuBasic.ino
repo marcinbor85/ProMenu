@@ -16,7 +16,8 @@ using namespace promenu::adapters;
 constexpr int LED_PIN = 13;
 constexpr int BACKLIGHT_PIN = 10;
 
-LcdShieldDisplay display{};
+LcdShieldDisplay display{16, 2, 14, 1, 1, 1};
+// LcdShieldDisplay display{};
 
 MenuManager menuManager(display);
 
