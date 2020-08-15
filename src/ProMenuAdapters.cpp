@@ -69,7 +69,16 @@ char LcdShieldDisplay::getArrowUpDown()
 
 void LcdShieldDisplay::clear()
 {
-    lcd.clear();
+    char emptyLine[this->menuWidth];
+    
+    memset(emptyLine, ' ', sizeof(emptyLine));
+    emptyLine[this->menuWidth - 1] = 0;
+
+    for (int y = 0; y < this->menuHeight; y++) {
+        this->setCursor(0, y);
+        lcd.print(emptyLine);
+    }
+
     lcd.noCursor();
     lcd.noBlink();
 }
@@ -85,9 +94,7 @@ void LcdShieldDisplay::begin()
 
 void LcdShieldDisplay::end()
 {
-    lcd.clear();
-    lcd.noCursor();
-    lcd.noBlink();
+    this->clear();
 }
 
 LcdShieldButtons::LcdShieldButtons(promenu::MenuManager &manager,
