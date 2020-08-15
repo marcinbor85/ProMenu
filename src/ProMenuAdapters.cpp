@@ -69,10 +69,10 @@ char LcdShieldDisplay::getArrowUpDown()
 
 void LcdShieldDisplay::clear()
 {
-    char emptyLine[this->menuWidth];
+    char emptyLine[this->menuWidth + 1];
     
     memset(emptyLine, ' ', sizeof(emptyLine));
-    emptyLine[this->menuWidth - 1] = 0;
+    emptyLine[this->menuWidth] = 0;
 
     for (int y = 0; y < this->menuHeight; y++) {
         this->setCursor(0, y);
