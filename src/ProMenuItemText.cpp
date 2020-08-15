@@ -133,13 +133,17 @@ void MenuItemText::render(DisplayInterface &display)
     char ch;
     int pos;
     int i;
+    int y = 0;
 
     display.clear();
 
-    strncpy(line, this->MenuItem::name, sizeof(line));
-    display.setText(0, 0, line);
+    if (display.getHeight() > 1) {
+        strncpy(line, this->MenuItem::name, sizeof(line));
+        display.setText(0, 0, line);
+        y++;
+    }
 
-    display.setCursor(0, 1);
+    display.setCursor(0, y);
     display.printText(">");
     for (i = 0; i < sizeof(line) - 2; i++) {
         pos = this->startPos + i;
@@ -152,15 +156,10 @@ void MenuItemText::render(DisplayInterface &display)
 
     pos = this->cursorPos + 1 - this->startPos;
     if (this->editMode != false) {
-        display.selectChar(pos, 1);
+        display.selectChar(pos, y);
     } else {
-        display.showCursor(pos, 1);
+        display.showCursor(pos, y);
     }
-
-    // //this->interface.getValueText(*this, value, sizeof(value));
-    // strcpy(value, "test");
-    // snprintf(line, sizeof(line), ">%s<", value);
-    // display.setText(0, 1, line);
 }
 
 };

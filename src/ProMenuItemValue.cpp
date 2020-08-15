@@ -60,15 +60,19 @@ void MenuItemValue::render(DisplayInterface &display)
 {
     char value[display.getWidth()];
     char line[display.getWidth()];
+    int y = 0;
 
     display.clear();
 
-    strncpy(line, this->MenuItem::name, sizeof(line));
-    display.setText(0, 0, line);
+    if (display.getHeight() > 1) {
+        strncpy(line, this->MenuItem::name, sizeof(line));
+        display.setText(0, 0, line);
+        y++;
+    }
 
     this->interface.getValueText(*this, value, sizeof(value));
     snprintf(line, sizeof(line), ">%s<", value);
-    display.setText(0, 1, line);
+    display.setText(0, y, line);
 }
 
 };
