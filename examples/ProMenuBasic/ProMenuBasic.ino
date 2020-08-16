@@ -147,16 +147,20 @@ public:
     virtual bool prevValue(MenuItemValue &item)
     {
         int i = item.MenuItem::getId();
-        if (--this->tempValue[i] < 0)
-            this->tempValue[i] = valueNamesNum - 1;
-        return true;
+        if (this->tempValue[i] > 0) {
+            this->tempValue[i]--;
+            return true;
+        }
+        return false;
     }
     virtual bool nextValue(MenuItemValue &item)
     {
         int i = item.MenuItem::getId();
-        if (++this->tempValue[i] >= valueNamesNum)
-            this->tempValue[i] = 0;
-        return true;
+        if (this->tempValue[i] < valueNamesNum - 1) {
+            this->tempValue[i]++;
+            return true;
+        }
+        return false;
     }
     virtual void getValueText(MenuItemValue &item, char *text, int maxSize)
     {
@@ -175,11 +179,13 @@ public:
     }
     virtual bool isPrevValueAvailable(MenuItemValue &item)
     {
-        return true;
+        int i = item.MenuItem::getId();
+        return (this->tempValue[i] > 0);
     }
     virtual bool isNextValueAvailable(MenuItemValue &item)
     {
-        return true;
+        int i = item.MenuItem::getId();
+        return (this->tempValue[i] < valueNamesNum - 1);
     }
 
     int tempValue[1];
