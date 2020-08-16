@@ -16,8 +16,7 @@ MenuItemCheckbox::MenuItemCheckbox(int id, char *name, MenuItemCheckboxInterface
 
 bool MenuItemCheckbox::select()
 {
-    this->interface.setSelected(*this, !this->interface.isSelected(*this));
-    return true;
+    return this->interface.setSelected(*this, !this->interface.isSelected(*this));
 }
 
 int MenuItemCheckbox::getRenderName(char *text, int maxSize)

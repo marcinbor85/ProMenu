@@ -11,7 +11,7 @@ class MenuItemCheckbox;
 class MenuItemCheckboxInterface {
 
 public:
-    virtual void setSelected(MenuItemCheckbox &item, bool value) = 0;
+    virtual bool setSelected(MenuItemCheckbox &item, bool value) = 0;
     virtual bool isSelected(MenuItemCheckbox &item) = 0;
 };
 

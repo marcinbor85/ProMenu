@@ -28,10 +28,11 @@ public:
         int i = item.getId();
         return this->value[i];
     }
-    virtual void setSelected(MenuItemCheckbox &item, bool val)
+    virtual bool setSelected(MenuItemCheckbox &item, bool val)
     {
         int i = item.getId();
         this->value[i] = val;
+        return true;
     }
     bool value[2];
 };
