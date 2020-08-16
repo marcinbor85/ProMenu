@@ -16,8 +16,8 @@ using namespace promenu::adapters;
 constexpr int LED_PIN = 13;
 constexpr int BACKLIGHT_PIN = 10;
 
-LcdShieldDisplay display{16, 2, 14, 1, 1, 1};
-// LcdShieldDisplay display{};
+// LcdShieldDisplay display{16, 2, 14, 1, 1, 1};
+LcdShieldDisplay display{};
 
 MenuManager menuManager(display);
 
@@ -258,8 +258,8 @@ const MenuItem *menuMiscItems[] = {&triState1, &number1, &number2, &string1};
 Menu menuMisc(1, "misc", menuMiscItems, sizeof(menuMiscItems) / sizeof(menuMiscItems[0]));
 
 
-const MenuItemAction action11(20, "Led OFF", actionManager);
-const MenuItemAction action12(21, "Led ON", actionManager);
+const MenuItemAction action11(20, "--- Led OFF +++ test test", actionManager);
+const MenuItemAction action12(21, "Led ON aabbccdd eeff gg hhh", actionManager);
 const MenuItemAction action13(22, "Light OFF", actionManager);
 const MenuItemAction action14(23, "Light ON", actionManager);
 

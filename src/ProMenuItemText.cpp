@@ -129,7 +129,7 @@ bool MenuItemText::enter()
 
 void MenuItemText::render(DisplayInterface &display)
 {
-    char line[display.getWidth()];
+    char line[display.getWidth() + 1];
     char ch;
     int pos;
     int i;
@@ -138,14 +138,14 @@ void MenuItemText::render(DisplayInterface &display)
     display.clear();
 
     if (display.getHeight() > 1) {
-        strncpy(line, this->MenuItem::name, sizeof(line));
+        strlcpy(line, this->MenuItem::name, sizeof(line));
         display.setText(0, 0, line);
         y++;
     }
 
     display.setCursor(0, y);
     display.printText(">");
-    for (i = 0; i < sizeof(line) - 2; i++) {
+    for (i = 0; i < display.getWidth() - 2; i++) {
         pos = this->startPos + i;
         ch = this->interface.getChar(*this, pos);
         if (ch == 0)

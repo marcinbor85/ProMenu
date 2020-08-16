@@ -58,8 +58,8 @@ bool MenuItemValue::enter()
 
 void MenuItemValue::render(DisplayInterface &display)
 {
-    char value[display.getWidth()];
-    char line[display.getWidth()];
+    char value[display.getWidth() + 1];
+    char line[display.getWidth() + 1];
     int y = 0;
     bool isPrev;
     bool isNext;
@@ -68,7 +68,7 @@ void MenuItemValue::render(DisplayInterface &display)
     display.clear();
 
     if (display.getHeight() > 1) {
-        strncpy(line, this->MenuItem::name, sizeof(line));
+        strlcpy(line, this->MenuItem::name, sizeof(line));
         display.setText(0, 0, line);
         y++;
     }

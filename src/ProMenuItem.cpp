@@ -20,7 +20,7 @@ bool MenuItem::selectFromMenu(Menu *menu)
 
 void MenuItem::getRenderName(char *text, int maxSize)
 {
-    strncpy(text, this->name, maxSize);
+    strlcpy(text, this->name, maxSize);
 }
  
 int MenuItem::getId()
