@@ -6,8 +6,8 @@
 
 namespace promenu {
 
-MenuItemAction::MenuItemAction(int id, char *name, MenuItemActionInterface &interface):
-    MenuItem(id, name),
+MenuItemAction::MenuItemAction(int id, char *name, MenuItemActionInterface &interface, char *prefix):
+    MenuItem(id, name, prefix),
     interface(interface)
 {
 

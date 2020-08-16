@@ -11,13 +11,14 @@ class Menu;
 class MenuItemSubmenu: public MenuItem {
 
 public:
-    MenuItemSubmenu(int id, char *name, Menu &submenu);
+    MenuItemSubmenu(int id, char *name, Menu &submenu, char *prefix = MenuItemSubmenu::PREFIX);
     
     virtual bool select();
-    virtual int getRenderName(char *text, int maxSize);
 
 private:
     Menu &submenu;
+    
+    static constexpr char *PREFIX = ":";
 };
 
 };

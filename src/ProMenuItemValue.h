@@ -27,7 +27,7 @@ public:
 class MenuItemValue: public MenuItem, public Menu {
 
 public:
-    MenuItemValue(int id, char *name, MenuItemValueInterface &interface);
+    MenuItemValue(int id, char *name, MenuItemValueInterface &interface, char *prefix = MenuItemValue::PREFIX);
     
     virtual bool select();
     virtual int getRenderName(char *text, int maxSize);
@@ -42,6 +42,8 @@ public:
 
 private:
     MenuItemValueInterface &interface;
+
+    static constexpr char *PREFIX = "+";
 };
 
 };

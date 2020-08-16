@@ -9,8 +9,8 @@
 
 namespace promenu {
 
-MenuItemText::MenuItemText(int id, char *name, MenuItemTextInterface &interface):
-    MenuItem(id, name),
+MenuItemText::MenuItemText(int id, char *name, MenuItemTextInterface &interface, char *prefix):
+    MenuItem(id, name, prefix),
     Menu(id, name, NULL, 0),
     interface(interface)
 {
@@ -25,15 +25,6 @@ bool MenuItemText::select()
     this->startPos = 0;
     this->editMode = false;
     return true;
-}
-
-int MenuItemText::getRenderName(char *text, int maxSize)
-{
-    char line[strlen(this->MenuItem::name) + 4];
-    snprintf(line, sizeof(line), "%s...", this->MenuItem::name);
-    if (text)
-        strlcpy(text, line, maxSize);
-    return strlen(line);
 }
 
 bool MenuItemText::prev()

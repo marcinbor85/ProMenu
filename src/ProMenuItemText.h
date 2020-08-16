@@ -23,10 +23,9 @@ public:
 class MenuItemText: public MenuItem, public Menu {
 
 public:
-    MenuItemText(int id, char *name, MenuItemTextInterface &interface);
+    MenuItemText(int id, char *name, MenuItemTextInterface &interface, char *prefix = MenuItemText::PREFIX);
     
     virtual bool select();
-    virtual int getRenderName(char *text, int maxSize);
 
     virtual bool prev();
     virtual bool next();
@@ -42,6 +41,8 @@ private:
     int startPos;
     int cursorPos;
     bool editMode;
+
+    static constexpr char *PREFIX = "$";
 };
 
 };

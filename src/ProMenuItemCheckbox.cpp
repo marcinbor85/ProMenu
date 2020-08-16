@@ -7,8 +7,8 @@
 
 namespace promenu {
 
-MenuItemCheckbox::MenuItemCheckbox(int id, char *name, MenuItemCheckboxInterface &interface):
-    MenuItem(id, name),
+MenuItemCheckbox::MenuItemCheckbox(int id, char *name, MenuItemCheckboxInterface &interface, char *prefix):
+    MenuItem(id, name, prefix),
     interface(interface)
 {
 
@@ -21,8 +21,8 @@ bool MenuItemCheckbox::select()
 
 int MenuItemCheckbox::getRenderName(char *text, int maxSize)
 {
-    char line[strlen(this->name) + 5];
-    snprintf(line, sizeof(line), "[%c] %s", (this->interface.isSelected(*this) == false) ? ' ' : 'x', this->name);
+    char line[strlen(this->name) + strlen(this->prefix) + 5];
+    snprintf(line, sizeof(line), "%s[%c] %s", this->prefix, (this->interface.isSelected(*this) == false) ? ' ' : 'x', this->name);
     if (text)
         strlcpy(text, line, maxSize);
     return strlen(line);

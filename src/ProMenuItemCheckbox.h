@@ -18,13 +18,15 @@ public:
 class MenuItemCheckbox: public MenuItem {
 
 public:
-    MenuItemCheckbox(int id, char *name, MenuItemCheckboxInterface &interface);
+    MenuItemCheckbox(int id, char *name, MenuItemCheckboxInterface &interface, char *prefix = MenuItemCheckbox::PREFIX);
     
     virtual bool select();
     virtual int getRenderName(char *text, int maxSize);
 
 private:
     MenuItemCheckboxInterface &interface;
+
+    static constexpr char *PREFIX = "";
 };
 
 };

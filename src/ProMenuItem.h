@@ -10,7 +10,7 @@ class Menu;
 class MenuItem {
 
 public:
-    MenuItem(int id, char *name);
+    MenuItem(int id, char *name, char *prefix);
 
     virtual bool select() = 0;
     virtual int getRenderName(char *text, int maxSize);
@@ -23,6 +23,7 @@ public:
 protected:
     const int id;
     const char *name;
+    const char *prefix;
     Menu *parentMenu;
 };
 

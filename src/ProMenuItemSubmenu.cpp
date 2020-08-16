@@ -8,8 +8,8 @@
 
 namespace promenu {
 
-MenuItemSubmenu::MenuItemSubmenu(int id, char *name, Menu &submenu):
-    MenuItem(id, name),
+MenuItemSubmenu::MenuItemSubmenu(int id, char *name, Menu &submenu, char *prefix):
+    MenuItem(id, name, prefix),
     submenu(submenu)
 {
 
@@ -19,15 +19,6 @@ bool MenuItemSubmenu::select()
 {
     this->parentMenu->getMenuManager().enterToMenu(this->submenu);
     return true;
-}
-
-int MenuItemSubmenu::getRenderName(char *text, int maxSize)
-{
-    char line[strlen(this->name) + 2];
-    snprintf(line, sizeof(line), ":%s", this->name);
-    if (text)
-        strlcpy(text, line, maxSize);
-    return strlen(line);
 }
 
 };

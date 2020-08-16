@@ -9,8 +9,8 @@
 
 namespace promenu {
 
-MenuItemValue::MenuItemValue(int id, char *name, MenuItemValueInterface &interface):
-    MenuItem(id, name),
+MenuItemValue::MenuItemValue(int id, char *name, MenuItemValueInterface &interface, char *prefix):
+    MenuItem(id, name, prefix),
     Menu(id, name, NULL, 0),
     interface(interface)
 {
@@ -27,11 +27,11 @@ bool MenuItemValue::select()
 int MenuItemValue::getRenderName(char *text, int maxSize)
 {
     char value[maxSize];
-    char line[strlen(this->MenuItem::name) + 4 + sizeof(value)];
+    char line[strlen(this->MenuItem::name) + 4 + sizeof(value) + strlen(this->prefix)];
 
     this->interface.getValueText(*this, value, sizeof(value));
 
-    snprintf(line, sizeof(line), "[%s] %s", value, this->MenuItem::name);
+    snprintf(line, sizeof(line), "%s[%s] %s", this->prefix, value, this->MenuItem::name);
     if (text)
         strlcpy(text, line, maxSize);
     return strlen(line);

@@ -18,13 +18,14 @@ public:
 class MenuItemAction: public MenuItem {
 
 public:
-    MenuItemAction(int id, char *name, MenuItemActionInterface &interface);
+    MenuItemAction(int id, char *name, MenuItemActionInterface &interface, char *prefix = MenuItemAction::PREFIX);
 
     virtual bool select();
     
 private:
     MenuItemActionInterface &interface;
 
+    static constexpr char *PREFIX = "!";
 };
 
 };
