@@ -2,6 +2,5 @@
 - włączanie/wyłączanie menu manager'a
 - uporządkować przykłady
 - generator kodu
-- menu item shortcuts
-- full ascii keyboard support
 - komunikaty
+- zoptymalizować data managery z jednym tempem

@@ -18,6 +18,11 @@ port to different architecture.
 * easy to use with Arduino boards (with separated drivers depencency)
 * correct handling of single and multi-line displays
 * customizable display clipping, leaves remaining area for application
+* auto-scrolling for long menu item names
+
+## Todo
+- [ ] menu item shortcuts
+- [ ] ascii keyboard support
 
 ## Code generator
 
