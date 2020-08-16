@@ -2,25 +2,18 @@
 #define PRO_MENU_ITEM_TEXT_H
 
 #include "ProMenuItem.h"
-#include "ProMenu.h"
+#include "ProMenuItemEdit.h"
 
 namespace promenu {
 
-class MenuManager;
-class Menu;
-class MenuItemText;
-
-class MenuItemTextInterface {
+class MenuItemTextInterface: public MenuItemEditInterface {
 
 public:
-    virtual void init(MenuItemText &item) = 0;
-    virtual void setChar(MenuItemText &item, int p, char ch) = 0;
-    virtual char getChar(MenuItemText &item, int p) = 0;
-    virtual void save(MenuItemText &item) = 0;
-    virtual void cancel(MenuItemText &item) = 0;
+    virtual void setChar(MenuItemEdit &item, int p, char ch) = 0;
+    virtual char getChar(MenuItemEdit &item, int p) = 0;
 };
 
-class MenuItemText: public MenuItem, public Menu {
+class MenuItemText: public MenuItemEdit {
 
 public:
     MenuItemText(int id, char *name, MenuItemTextInterface &interface, char *prefix = MenuItemText::PREFIX);
@@ -29,11 +22,12 @@ public:
 
     virtual bool prev();
     virtual bool next();
-    virtual bool exit();
     virtual bool enter();
 
     virtual void render(DisplayInterface &display);
-    virtual void process();
+
+protected:
+    virtual MenuItemEditInterface& getInterface();
 
 private:
     MenuItemTextInterface &interface;
@@ -42,7 +36,7 @@ private:
     int cursorPos;
     bool editMode;
 
-    static constexpr char *PREFIX = "$";
+    static constexpr char *PREFIX = "";
 };
 
 };

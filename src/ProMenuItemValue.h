@@ -2,48 +2,40 @@
 #define PRO_MENU_ITEM_VALUE_H
 
 #include "ProMenuItem.h"
-#include "ProMenu.h"
+#include "ProMenuItemEdit.h"
 
 namespace promenu {
 
-class MenuManager;
-class Menu;
-class MenuItemValue;
-
-class MenuItemValueInterface {
+class MenuItemValueInterface: public MenuItemEditInterface {
 
 public:
-    virtual void init(MenuItemValue &item) = 0;
-    virtual bool prevValue(MenuItemValue &item) = 0;
-    virtual bool nextValue(MenuItemValue &item) = 0;
-    virtual void getValueText(MenuItemValue &item, char *text, int maxSize) = 0;
-    virtual void save(MenuItemValue &item) = 0;
-    virtual void cancel(MenuItemValue &item) = 0;
+    virtual bool prevValue(MenuItemEdit &item) = 0;
+    virtual bool nextValue(MenuItemEdit &item) = 0;
+    virtual void getValueText(MenuItemEdit &item, char *text, int maxSize) = 0;
 
-    virtual bool isPrevValueAvailable(MenuItemValue &item) = 0;
-    virtual bool isNextValueAvailable(MenuItemValue &item) = 0;
+    virtual bool isPrevValueAvailable(MenuItemEdit &item) = 0;
+    virtual bool isNextValueAvailable(MenuItemEdit &item) = 0;
 };
 
-class MenuItemValue: public MenuItem, public Menu {
+class MenuItemValue: public MenuItemEdit {
 
 public:
     MenuItemValue(int id, char *name, MenuItemValueInterface &interface, char *prefix = MenuItemValue::PREFIX);
     
-    virtual bool select();
     virtual int getRenderName(char *text, int maxSize);
 
     virtual bool prev();
     virtual bool next();
-    virtual bool exit();
-    virtual bool enter();
 
     virtual void render(DisplayInterface &display);
-    virtual void process();
+
+protected:
+    virtual MenuItemEditInterface& getInterface();
 
 private:
     MenuItemValueInterface &interface;
 
-    static constexpr char *PREFIX = "+";
+    static constexpr char *PREFIX = "";
 };
 
 };

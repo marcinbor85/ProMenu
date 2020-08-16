@@ -10,18 +10,10 @@
 namespace promenu {
 
 MenuItemValue::MenuItemValue(int id, char *name, MenuItemValueInterface &interface, char *prefix):
-    MenuItem(id, name, prefix),
-    Menu(id, name, NULL, 0),
+    MenuItemEdit(id, name, prefix),
     interface(interface)
 {
 
-}
-
-bool MenuItemValue::select()
-{
-    this->interface.init(*this);
-    this->parentMenu->getMenuManager().enterToMenu(*this);
-    return true;
 }
 
 int MenuItemValue::getRenderName(char *text, int maxSize)
@@ -47,18 +39,6 @@ bool MenuItemValue::next()
     return this->interface.nextValue(*this);
 }
 
-bool MenuItemValue::exit()
-{
-    this->interface.cancel(*this);
-    return this->Menu::exit();
-}
-
-bool MenuItemValue::enter()
-{
-    this->interface.save(*this);
-    return this->Menu::exit();
-}
-
 void MenuItemValue::render(DisplayInterface &display)
 {
     char value[display.getWidth() + 1];
@@ -68,13 +48,10 @@ void MenuItemValue::render(DisplayInterface &display)
     bool isNext;
     char ch[2] = {0};
 
-    display.clear();
+    this->MenuItemEdit::render(display);
 
-    if (display.getHeight() > 1) {
-        strlcpy(line, &this->MenuItem::name[this->scrollPos], sizeof(line));
-        display.setText(0, 0, line);
-        y++;
-    }
+    if (display.getHeight() > 1)
+        y = 1;
 
     this->interface.getValueText(*this, value, sizeof(value));
     snprintf(line, sizeof(line), ">%s<", value);
@@ -95,18 +72,9 @@ void MenuItemValue::render(DisplayInterface &display)
     }
 }
 
-void MenuItemValue::process()
+MenuItemEditInterface& MenuItemValue::getInterface()
 {
-    int xMax;
-    int lineLength;
-
-    if (this->getMenuManager().getDisplay().getHeight() < 2)
-        return;
-
-    xMax = this->getMenuManager().getDisplay().getWidth();
-    lineLength = strlen(this->MenuItem::name);
-
-    this->scroll(lineLength, xMax);
+    return this->interface;
 }
 
 };

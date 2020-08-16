@@ -25,7 +25,7 @@ public:
 private:
     MenuItemActionInterface &interface;
 
-    static constexpr char *PREFIX = "!";
+    static constexpr char *PREFIX = "";
 };
 
 };

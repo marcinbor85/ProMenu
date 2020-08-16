@@ -3,6 +3,7 @@
 #include <ProMenu.h>
 #include <ProMenuManager.h>
 #include <ProMenuItem.h>
+#include <ProMenuItemEdit.h>
 #include <ProMenuItemCheckbox.h>
 #include <ProMenuItemSubmenu.h>
 #include <ProMenuItemAction.h>
@@ -79,12 +80,12 @@ public:
     ValueLongManager():
         minMaxValue({{-100,100}, {0, 100}}) {};
 
-    virtual void init(MenuItemValue &item)
+    virtual void init(MenuItemEdit &item)
     {
         int i = item.MenuItem::getId();
         this->tempValue[i] = this->currentValue[i];
     }
-    virtual bool prevValue(MenuItemValue &item)
+    virtual bool prevValue(MenuItemEdit &item)
     {
         int i = item.MenuItem::getId();
         if (this->tempValue[i] > this->minMaxValue[i][0]) {
@@ -93,7 +94,7 @@ public:
         }
         return false;
     }
-    virtual bool nextValue(MenuItemValue &item)
+    virtual bool nextValue(MenuItemEdit &item)
     {
         int i = item.MenuItem::getId();
         if (this->tempValue[i] < this->minMaxValue[i][1]) {
@@ -102,26 +103,26 @@ public:
         }
         return false;
     }
-    virtual void getValueText(MenuItemValue &item, char *text, int maxSize)
+    virtual void getValueText(MenuItemEdit &item, char *text, int maxSize)
     {
         int i = item.MenuItem::getId();
         snprintf(text, maxSize, "%ld", this->tempValue[i]);
     }
-    virtual void save(MenuItemValue &item)
+    virtual void save(MenuItemEdit &item)
     {
         int i = item.MenuItem::getId();
         this->currentValue[i] = this->tempValue[i];
     }
-    virtual void cancel(MenuItemValue &item)
+    virtual void cancel(MenuItemEdit &item)
     {
         this->init(item);
     }
-    virtual bool isPrevValueAvailable(MenuItemValue &item)
+    virtual bool isPrevValueAvailable(MenuItemEdit &item)
     {
         int i = item.MenuItem::getId();
         return (this->tempValue[i] > this->minMaxValue[i][0]);
     }
-    virtual bool isNextValueAvailable(MenuItemValue &item)
+    virtual bool isNextValueAvailable(MenuItemEdit &item)
     {
         int i = item.MenuItem::getId();
         return (this->tempValue[i] < this->minMaxValue[i][1]);
@@ -142,12 +143,12 @@ public:
         valueNames({"LOW", "MID", "HIGH"}),
         valueNamesNum((sizeof(this->valueNames) / sizeof(this->valueNames[0]))) {};
 
-    virtual void init(MenuItemValue &item)
+    virtual void init(MenuItemEdit &item)
     {
         int i = item.MenuItem::getId();
         this->tempValue[i] = this->currentValue[i];
     }
-    virtual bool prevValue(MenuItemValue &item)
+    virtual bool prevValue(MenuItemEdit &item)
     {
         int i = item.MenuItem::getId();
         if (this->tempValue[i] > 0) {
@@ -156,7 +157,7 @@ public:
         }
         return false;
     }
-    virtual bool nextValue(MenuItemValue &item)
+    virtual bool nextValue(MenuItemEdit &item)
     {
         int i = item.MenuItem::getId();
         if (this->tempValue[i] < valueNamesNum - 1) {
@@ -165,26 +166,26 @@ public:
         }
         return false;
     }
-    virtual void getValueText(MenuItemValue &item, char *text, int maxSize)
+    virtual void getValueText(MenuItemEdit &item, char *text, int maxSize)
     {
         int i = item.MenuItem::getId();
         snprintf(text, maxSize, "%s", this->valueNames[this->tempValue[i]]);
     }
-    virtual void save(MenuItemValue &item)
+    virtual void save(MenuItemEdit &item)
     {
         int i = item.MenuItem::getId();
         this->currentValue[i] = this->tempValue[i];
     }
-    virtual void cancel(MenuItemValue &item)
+    virtual void cancel(MenuItemEdit &item)
     {
         this->init(item);
     }
-    virtual bool isPrevValueAvailable(MenuItemValue &item)
+    virtual bool isPrevValueAvailable(MenuItemEdit &item)
     {
         int i = item.MenuItem::getId();
         return (this->tempValue[i] > 0);
     }
-    virtual bool isNextValueAvailable(MenuItemValue &item)
+    virtual bool isNextValueAvailable(MenuItemEdit &item)
     {
         int i = item.MenuItem::getId();
         return (this->tempValue[i] < valueNamesNum - 1);
@@ -207,30 +208,30 @@ public:
     ValueStringManager():
         currentText{{"Test Embedded Devices"}} {}
 
-    virtual void init(MenuItemText &item)
+    virtual void init(MenuItemEdit &item)
     {
         int i = item.MenuItem::getId();
         memcpy(this->tempText[i], this->currentText[i], maxTextSize);
     }
-    virtual void setChar(MenuItemText &item, int p, char ch)
+    virtual void setChar(MenuItemEdit &item, int p, char ch)
     {
         int i = item.MenuItem::getId();
         if (p < maxTextSize)
             this->tempText[i][p] = ch;
     }
-    virtual char getChar(MenuItemText &item, int p)
+    virtual char getChar(MenuItemEdit &item, int p)
     {
         int i = item.MenuItem::getId();
         if (p < maxTextSize)
             return this->tempText[i][p];
         return 0;
     }
-    virtual void save(MenuItemText &item)
+    virtual void save(MenuItemEdit &item)
     {
         int i = item.MenuItem::getId();
         memcpy(this->currentText[i], this->tempText[i], maxTextSize);
     }
-    virtual void cancel(MenuItemText &item)
+    virtual void cancel(MenuItemEdit &item)
     {
         this->init(item);
     }

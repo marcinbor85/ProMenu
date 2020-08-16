@@ -18,7 +18,7 @@ public:
 private:
     Menu &submenu;
     
-    static constexpr char *PREFIX = ":";
+    static constexpr char *PREFIX = "";
 };
 
 };

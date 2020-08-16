@@ -10,8 +10,7 @@
 namespace promenu {
 
 MenuItemText::MenuItemText(int id, char *name, MenuItemTextInterface &interface, char *prefix):
-    MenuItem(id, name, prefix),
-    Menu(id, name, NULL, 0),
+    MenuItemEdit(id, name, prefix),
     interface(interface)
 {
 
@@ -19,8 +18,7 @@ MenuItemText::MenuItemText(int id, char *name, MenuItemTextInterface &interface,
 
 bool MenuItemText::select()
 {
-    this->interface.init(*this);
-    this->parentMenu->getMenuManager().enterToMenu(*this);
+    this->MenuItemEdit::select();
     this->cursorPos = 0;
     this->startPos = 0;
     this->editMode = false;
@@ -91,12 +89,6 @@ bool MenuItemText::next()
     return true;
 }
 
-bool MenuItemText::exit()
-{
-    this->interface.cancel(*this);
-    return this->Menu::exit();
-}
-
 bool MenuItemText::enter()
 {
     char ch;
@@ -130,19 +122,15 @@ bool MenuItemText::enter()
 
 void MenuItemText::render(DisplayInterface &display)
 {
-    char line[display.getWidth() + 1];
     char ch[2] = {0};
     int pos;
     int i;
     int y = 0;
 
-    display.clear();
+    this->MenuItemEdit::render(display);
 
-    if (display.getHeight() > 1) {
-        strlcpy(line, &this->MenuItem::name[this->scrollPos], sizeof(line));
-        display.setText(0, 0, line);
-        y++;
-    }
+    if (display.getHeight() > 1)
+        y = 1;
 
     display.setCursor(0, y);
     display.printText(">");
@@ -163,18 +151,9 @@ void MenuItemText::render(DisplayInterface &display)
     }
 }
 
-void MenuItemText::process()
+MenuItemEditInterface& MenuItemText::getInterface()
 {
-    int xMax;
-    int lineLength;
-
-    if (this->getMenuManager().getDisplay().getHeight() < 2)
-        return;
-
-    xMax = this->getMenuManager().getDisplay().getWidth();
-    lineLength = strlen(this->MenuItem::name);
-
-    this->scroll(lineLength, xMax);
+    return this->interface;
 }
 
 };
