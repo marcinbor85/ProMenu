@@ -86,6 +86,7 @@ public:
 
 private:
     bool isValueInRange(int value, int threshold);
+    bool isEvent(smartbutton::SmartButton::Event event);
 
     virtual void event(smartbutton::SmartButton *button, smartbutton::SmartButton::Event event, int clickCounter);
     virtual bool isPressed(smartbutton::SmartButton *button);

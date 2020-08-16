@@ -168,56 +168,35 @@ bool LcdShieldButtons::isValueInRange(int value, int threshold)
     }
 };
 
+bool LcdShieldButtons::isEvent(smartbutton::SmartButton::Event event)
+{
+    if (event == smartbutton::SmartButton::Event::PRESSED ||
+            event == smartbutton::SmartButton::Event::HOLD ||
+            event == smartbutton::SmartButton::Event::HOLD_REPEAT ||
+            event == smartbutton::SmartButton::Event::LONG_HOLD ||
+            event == smartbutton::SmartButton::Event::LONG_HOLD_REPEAT) {
+        return true;
+    }
+    return false;
+}
+
 void LcdShieldButtons::event(smartbutton::SmartButton *button, smartbutton::SmartButton::Event event, int clickCounter)
 {
+    int repeat;
+
+    if (this->isEvent(event) == false)
+        return;
+
+    repeat = (button->getState() == smartbutton::SmartButton::State::LONG_HOLD) ? 10 : 1;
+
     if (button == &this->buttonUp) {
-        if (event == smartbutton::SmartButton::Event::PRESSED ||
-            event == smartbutton::SmartButton::Event::HOLD ||
-            event == smartbutton::SmartButton::Event::HOLD_REPEAT ||
-            event == smartbutton::SmartButton::Event::LONG_HOLD ||
-            event == smartbutton::SmartButton::Event::LONG_HOLD_REPEAT) {
-            if (button->getState() == smartbutton::SmartButton::State::LONG_HOLD) {
-                this->manager.up(10);
-            } else {
-                this->manager.up();
-            }
-        }
+        this->manager.up(repeat);
     } else if (button == &this->buttonDown) {
-        if (event == smartbutton::SmartButton::Event::PRESSED ||
-            event == smartbutton::SmartButton::Event::HOLD ||
-            event == smartbutton::SmartButton::Event::HOLD_REPEAT ||
-            event == smartbutton::SmartButton::Event::LONG_HOLD ||
-            event == smartbutton::SmartButton::Event::LONG_HOLD_REPEAT) {
-            if (button->getState() == smartbutton::SmartButton::State::LONG_HOLD) {
-                this->manager.down(10);
-            } else {
-                this->manager.down();
-            }
-        }
+        this->manager.down(repeat);
     } else if (button == &this->buttonBack) {
-        if (event == smartbutton::SmartButton::Event::PRESSED ||
-            event == smartbutton::SmartButton::Event::HOLD ||
-            event == smartbutton::SmartButton::Event::HOLD_REPEAT ||
-            event == smartbutton::SmartButton::Event::LONG_HOLD ||
-            event == smartbutton::SmartButton::Event::LONG_HOLD_REPEAT) {
-            if (button->getState() == smartbutton::SmartButton::State::LONG_HOLD) {
-                this->manager.back(10);
-            } else {
-                this->manager.back();
-            }
-        }
+        this->manager.back(repeat);
     } else if (button == &this->buttonSelect) {
-        if (event == smartbutton::SmartButton::Event::PRESSED ||
-            event == smartbutton::SmartButton::Event::HOLD ||
-            event == smartbutton::SmartButton::Event::HOLD_REPEAT ||
-            event == smartbutton::SmartButton::Event::LONG_HOLD ||
-            event == smartbutton::SmartButton::Event::LONG_HOLD_REPEAT) {
-            if (button->getState() == smartbutton::SmartButton::State::LONG_HOLD) {
-                this->manager.select(10);
-            } else {
-                this->manager.select();
-            }
-        }
+        this->manager.select(repeat);
     }
 }
 
