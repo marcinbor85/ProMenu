@@ -64,26 +64,58 @@ void MenuManager::process()
 
 bool MenuManager::up(int repeat)
 {
-    while (repeat-- > 0) this->currentMenu->prev();
-    this->update();
+    bool ret = false;
+    bool r;
+    while (repeat-- > 0) {
+        r = this->currentMenu->prev();
+        if (r)
+            ret = true;
+    }
+    if (ret)
+        this->update();
+    return ret;
 }
 
 bool MenuManager::down(int repeat)
 {
-    while (repeat-- > 0) this->currentMenu->next();
-    this->update();
+    bool ret = false;
+    bool r;
+    while (repeat-- > 0) {
+        r = this->currentMenu->next();
+        if (r)
+            ret = true;
+    }
+    if (ret)
+        this->update();
+    return ret;
 }
 
-bool MenuManager::back()
+bool MenuManager::back(int repeat)
 {
-    this->currentMenu->exit();
-    this->update();
+    bool ret = false;
+    bool r;
+    while (repeat-- > 0) {
+        r = this->currentMenu->exit();
+        if (r)
+            ret = true;
+    }
+    if (ret)
+        this->update();
+    return ret;
 }
 
-bool MenuManager::select()
+bool MenuManager::select(int repeat)
 {
-    this->currentMenu->enter();
-    this->update();
+     bool ret = false;
+    bool r;
+    while (repeat-- > 0) {
+        r = this->currentMenu->enter();
+        if (r)
+            ret = true;
+    }
+    if (ret)
+        this->update();
+    return ret;
 }
 
 Menu* MenuManager::getCurrentMenu()

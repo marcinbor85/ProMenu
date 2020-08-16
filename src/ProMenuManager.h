@@ -19,8 +19,8 @@ public:
 
     bool up(int repeat = 1);
     bool down(int repeat = 1);
-    bool back();
-    bool select();
+    bool back(int repeat = 1);
+    bool select(int repeat = 1);
 
     void process();
     void update();

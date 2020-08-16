@@ -195,12 +195,28 @@ void LcdShieldButtons::event(smartbutton::SmartButton *button, smartbutton::Smar
             }
         }
     } else if (button == &this->buttonBack) {
-        if (event == smartbutton::SmartButton::Event::PRESSED) {
-            this->manager.back();
+        if (event == smartbutton::SmartButton::Event::PRESSED ||
+            event == smartbutton::SmartButton::Event::HOLD ||
+            event == smartbutton::SmartButton::Event::HOLD_REPEAT ||
+            event == smartbutton::SmartButton::Event::LONG_HOLD ||
+            event == smartbutton::SmartButton::Event::LONG_HOLD_REPEAT) {
+            if (button->getState() == smartbutton::SmartButton::State::LONG_HOLD) {
+                this->manager.back(10);
+            } else {
+                this->manager.back();
+            }
         }
     } else if (button == &this->buttonSelect) {
-        if (event == smartbutton::SmartButton::Event::PRESSED) {
-            this->manager.select();
+        if (event == smartbutton::SmartButton::Event::PRESSED ||
+            event == smartbutton::SmartButton::Event::HOLD ||
+            event == smartbutton::SmartButton::Event::HOLD_REPEAT ||
+            event == smartbutton::SmartButton::Event::LONG_HOLD ||
+            event == smartbutton::SmartButton::Event::LONG_HOLD_REPEAT) {
+            if (button->getState() == smartbutton::SmartButton::State::LONG_HOLD) {
+                this->manager.select(10);
+            } else {
+                this->manager.select();
+            }
         }
     }
 }

@@ -57,7 +57,7 @@ bool Menu::prev()
     if (this->currentPos < this->startPos)
         this->startPos--;
 
-    return false;
+    return ret;
 }
 
 bool Menu::next()
@@ -81,8 +81,10 @@ bool Menu::exit()
     if (this->prevMenu != NULL) {
         this->prevMenu->resetScroll();
         this->manager->backToMenu(*this->prevMenu);
+    } else {
+        this->reset();
     }
-    return true;
+    return true;   
 }
 
 bool Menu::enter()
