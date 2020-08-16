@@ -16,7 +16,7 @@ public:
     virtual void init(MenuItemText &item) = 0;
     virtual void setChar(MenuItemText &item, int p, char ch) = 0;
     virtual char getChar(MenuItemText &item, int p) = 0;
-    virtual bool save(MenuItemText &item) = 0;
+    virtual void save(MenuItemText &item) = 0;
     virtual void cancel(MenuItemText &item) = 0;
 };
 

@@ -107,11 +107,10 @@ public:
         int i = item.MenuItem::getId();
         snprintf(text, maxSize, "%ld", this->tempValue[i]);
     }
-    virtual bool save(MenuItemValue &item)
+    virtual void save(MenuItemValue &item)
     {
         int i = item.MenuItem::getId();
         this->currentValue[i] = this->tempValue[i];
-        return true;
     }
     virtual void cancel(MenuItemValue &item)
     {
@@ -171,11 +170,10 @@ public:
         int i = item.MenuItem::getId();
         snprintf(text, maxSize, "%s", this->valueNames[this->tempValue[i]]);
     }
-    virtual bool save(MenuItemValue &item)
+    virtual void save(MenuItemValue &item)
     {
         int i = item.MenuItem::getId();
         this->currentValue[i] = this->tempValue[i];
-        return true;
     }
     virtual void cancel(MenuItemValue &item)
     {
@@ -227,11 +225,10 @@ public:
             return this->tempText[i][p];
         return 0;
     }
-    virtual bool save(MenuItemText &item)
+    virtual void save(MenuItemText &item)
     {
         int i = item.MenuItem::getId();
         memcpy(this->currentText[i], this->tempText[i], maxTextSize);
-        return true;
     }
     virtual void cancel(MenuItemText &item)
     {

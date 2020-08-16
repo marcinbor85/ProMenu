@@ -53,8 +53,11 @@ bool MenuItemText::prev()
             if (this->cursorPos + 1 - this->startPos == 0)
                 this->startPos--;
         } else {
-            if (this->cursorPos == 0)
+            if (this->cursorPos == 0) {
                 this->cursorPos--;
+            } else {
+                return false;
+            }
         }
     }
     return true;
@@ -89,6 +92,8 @@ bool MenuItemText::next()
                 if (this->cursorPos - this->startPos >= this->getMenuManager().getDisplay().getWidth() - 2) {
                     this->startPos++;
                 }
+            } else {
+                return false;
             }
         }
     }
@@ -121,6 +126,8 @@ bool MenuItemText::enter()
                         if (this->cursorPos + 1 - this->startPos >= this->getMenuManager().getDisplay().getWidth() - 2)
                             this->startPos--;
                     }
+                } else {
+                    return false;
                 }
             } else {
                 this->editMode = true;

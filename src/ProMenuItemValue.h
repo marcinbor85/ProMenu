@@ -17,7 +17,7 @@ public:
     virtual bool prevValue(MenuItemValue &item) = 0;
     virtual bool nextValue(MenuItemValue &item) = 0;
     virtual void getValueText(MenuItemValue &item, char *text, int maxSize) = 0;
-    virtual bool save(MenuItemValue &item) = 0;
+    virtual void save(MenuItemValue &item) = 0;
     virtual void cancel(MenuItemValue &item) = 0;
 
     virtual bool isPrevValueAvailable(MenuItemValue &item) = 0;
