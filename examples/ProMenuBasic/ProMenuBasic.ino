@@ -40,17 +40,17 @@ CheckboxManager checkboxManager;
 
 class ActionManager: public MenuItemActionInterface {
 public:
-    virtual void action(MenuItemAction &item)
+    virtual bool action(MenuItemAction &item)
     {
         switch (item.getId()) {
         case 10:
-            break;
+            return false;
         case 11:
-            break;
+            return false;
         case 12:
-            break;
+            return false;
         case 13:
-            break;
+            return false;
         case 20:
             digitalWrite(LED_PIN, LOW);
             break;
@@ -63,7 +63,10 @@ public:
         case 23:
             digitalWrite(BACKLIGHT_PIN, HIGH);
             break;
+        default:
+            return false;
         }
+        return true;
     }
 };
 

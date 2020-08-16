@@ -15,8 +15,7 @@ MenuItemAction::MenuItemAction(int id, char *name, MenuItemActionInterface &inte
 
 bool MenuItemAction::select()
 {
-    this->interface.action(*this);
-    return true;
+    return this->interface.action(*this);
 }   
 
 };

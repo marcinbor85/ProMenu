@@ -12,7 +12,7 @@ class MenuItemAction;
 class MenuItemActionInterface {
 
 public:
-    virtual void action(MenuItemAction &item) = 0;
+    virtual bool action(MenuItemAction &item) = 0;
 };
 
 class MenuItemAction: public MenuItem {
