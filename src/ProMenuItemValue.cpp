@@ -24,12 +24,17 @@ bool MenuItemValue::select()
     return true;
 }
 
-void MenuItemValue::getRenderName(char *text, int maxSize)
+int MenuItemValue::getRenderName(char *text, int maxSize)
 {
     char value[maxSize];
+    char line[strlen(this->MenuItem::name) + 4 + sizeof(value)];
 
     this->interface.getValueText(*this, value, sizeof(value));
-    snprintf(text, maxSize, "[%s] %s", value, this->MenuItem::name);
+
+    snprintf(line, sizeof(line), "[%s] %s", value, this->MenuItem::name);
+    if (text)
+        strlcpy(text, line, maxSize);
+    return strlen(line);
 }
 
 bool MenuItemValue::prev()
@@ -45,15 +50,13 @@ bool MenuItemValue::next()
 bool MenuItemValue::exit()
 {
     this->interface.cancel(*this);
-    this->end();
-    return true;
+    return this->Menu::exit();
 }
 
 bool MenuItemValue::enter()
 {
     this->interface.save(*this);
-    this->end();
-    return true;
+    return this->Menu::exit();
 }
 
 void MenuItemValue::render(DisplayInterface &display)
@@ -68,7 +71,7 @@ void MenuItemValue::render(DisplayInterface &display)
     display.clear();
 
     if (display.getHeight() > 1) {
-        strlcpy(line, this->MenuItem::name, sizeof(line));
+        strlcpy(line, &this->MenuItem::name[this->scrollPos], sizeof(line));
         display.setText(0, 0, line);
         y++;
     }
@@ -90,6 +93,17 @@ void MenuItemValue::render(DisplayInterface &display)
         ch[0] = display.getArrowDown();
         display.setText(display.getWidth() - 1, y, ch);
     }
+}
+
+void MenuItemValue::process()
+{
+    int xMax;
+    int lineLength;
+
+    xMax = this->getMenuManager().getDisplay().getWidth();
+    lineLength = strlen(this->MenuItem::name);
+
+    this->scroll(lineLength, xMax);
 }
 
 };

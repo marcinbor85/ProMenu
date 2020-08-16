@@ -14,7 +14,7 @@ public:
     MenuItemSubmenu(int id, char *name, Menu &submenu);
     
     virtual bool select();
-    virtual void getRenderName(char *text, int maxSize);
+    virtual int getRenderName(char *text, int maxSize);
 
 private:
     Menu &submenu;

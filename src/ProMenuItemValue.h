@@ -30,7 +30,7 @@ public:
     MenuItemValue(int id, char *name, MenuItemValueInterface &interface);
     
     virtual bool select();
-    virtual void getRenderName(char *text, int maxSize);
+    virtual int getRenderName(char *text, int maxSize);
 
     virtual bool prev();
     virtual bool next();
@@ -38,6 +38,7 @@ public:
     virtual bool enter();
 
     virtual void render(DisplayInterface &display);
+    virtual void process();
 
 private:
     MenuItemValueInterface &interface;

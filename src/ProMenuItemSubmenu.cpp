@@ -21,9 +21,13 @@ bool MenuItemSubmenu::select()
     return true;
 }
 
-void MenuItemSubmenu::getRenderName(char *text, int maxSize)
+int MenuItemSubmenu::getRenderName(char *text, int maxSize)
 {
-    snprintf(text, maxSize, ":%s", this->name);
+    char line[strlen(this->name) + 2];
+    snprintf(line, sizeof(line), ":%s", this->name);
+    if (text)
+        strlcpy(text, line, maxSize);
+    return strlen(line);
 }
 
 };

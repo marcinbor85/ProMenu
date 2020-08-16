@@ -13,7 +13,7 @@ public:
     MenuItem(int id, char *name);
 
     virtual bool select() = 0;
-    virtual void getRenderName(char *text, int maxSize);
+    virtual int getRenderName(char *text, int maxSize);
 
     bool selectFromMenu(Menu *menu);
 

@@ -23,6 +23,7 @@ public:
     bool select();
 
     void process();
+    void update();
 
     Menu* getCurrentMenu();
     DisplayInterface& getDisplay();
@@ -38,7 +39,6 @@ private:
     DisplayInterface &display;
     Menu *currentMenu;
 
-    void update();
     void redraw();
 
     bool needRedraw;

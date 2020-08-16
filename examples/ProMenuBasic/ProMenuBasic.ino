@@ -249,8 +249,8 @@ const MenuItem *menuMisc2Items[] = {&action31, &action32, &checkbox1, &checkbox2
 Menu menuMisc2(1, "misc3", menuMisc2Items, sizeof(menuMisc2Items) / sizeof(menuMisc2Items[0]));
 
 
-const MenuItemValue triState1(0, "State", valueTriStateManager);
-const MenuItemValue number1(0, "ValueS", valueLongManager);
+const MenuItemValue triState1(0, "State Machine", valueTriStateManager);
+const MenuItemValue number1(0, "ValueS test1 test2 test3", valueLongManager);
 const MenuItemValue number2(1, "ValueU", valueLongManager);
 const MenuItemText string1(0, "String", valueStringManager);
 

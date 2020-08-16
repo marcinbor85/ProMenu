@@ -21,7 +21,7 @@ public:
     MenuItemCheckbox(int id, char *name, MenuItemCheckboxInterface &interface);
     
     virtual bool select();
-    virtual void getRenderName(char *text, int maxSize);
+    virtual int getRenderName(char *text, int maxSize);
 
 private:
     MenuItemCheckboxInterface &interface;

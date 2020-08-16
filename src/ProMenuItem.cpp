@@ -1,6 +1,7 @@
 #include "ProMenuItem.h"
 
 #include <string.h>
+#include <stdio.h>
 
 namespace promenu {
 
@@ -18,11 +19,15 @@ bool MenuItem::selectFromMenu(Menu *menu)
     return this->select();
 }
 
-void MenuItem::getRenderName(char *text, int maxSize)
+int MenuItem::getRenderName(char *text, int maxSize)
 {
-    strlcpy(text, this->name, maxSize);
+    char line[strlen(this->name) + 1];
+    snprintf(line, sizeof(line), "%s", this->name);
+    if (text)
+        strlcpy(text, line, maxSize);
+    return strlen(line);
 }
- 
+
 int MenuItem::getId()
 {
     return this->id;

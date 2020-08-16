@@ -24,11 +24,18 @@ public:
     virtual bool enter();
 
     virtual void render(DisplayInterface &display);
+    virtual void process();
 
     int getId();
     const char* getName();
 
     MenuManager& getMenuManager();
+
+protected:
+    void resetScroll();
+    void scroll(int lineLength, int xMax);
+
+    int scrollPos;
 
 private:
     const int id;
@@ -40,6 +47,12 @@ private:
     MenuManager *manager;
     int currentPos;
     int startPos;
+
+    unsigned long lastScrollTick;
+    unsigned long scrollTimeout;
+
+    static constexpr unsigned long SCROLL_START_TIMEOUT = 2000UL;
+    static constexpr unsigned long SCROLL_TIMEOUT = 500UL;
 };
 
 };

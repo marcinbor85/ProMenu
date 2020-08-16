@@ -3,8 +3,10 @@
 #include "ProMenuManager.h"
 #include "ProMenuItem.h"
 #include "ProMenuDisplay.h"
+#include "ProMenuDefs.h"
 
 #include <string.h>
+#include <stdio.h>
 
 namespace promenu {
 
@@ -33,15 +35,13 @@ void Menu::begin(MenuManager *manager, int pos)
     } else {
         this->startPos = 0;
     }
+
+    this->resetScroll();
 }
 
 void Menu::end()
 {
-    if (this->prevMenu != NULL) {
-        this->manager->backToMenu(*this->prevMenu);
-    } else {
-        this->reset();
-    }
+    this->reset();
 }
 
 bool Menu::prev()
@@ -50,6 +50,7 @@ bool Menu::prev()
     
     if (this->currentPos > 0) {
         this->currentPos --;
+        this->resetScroll();
         ret = true;
     }
 
@@ -65,6 +66,7 @@ bool Menu::next()
 
     if (this->currentPos < this->itemsNum - 1) {
         this->currentPos ++;
+        this->resetScroll();
         ret = true;
     }
 
@@ -76,7 +78,10 @@ bool Menu::next()
 
 bool Menu::exit()
 {
-    this->end();
+    if (this->prevMenu != NULL) {
+        this->prevMenu->resetScroll();
+        this->manager->backToMenu(*this->prevMenu);
+    }
     return true;
 }
 
@@ -89,6 +94,7 @@ void Menu::reset()
 {
     this->currentPos = 0;
     this->startPos = 0;
+    this->resetScroll();
 }
 
 int Menu::getId()
@@ -122,10 +128,16 @@ void Menu::render(DisplayInterface &display)
     for (int y = 0; y <= yMax; y++) {
         int pos = startPos + y;
 
-        if (pos == currentPos)
+        if (pos == currentPos) {
             display.setText(0, y, ">");
-        
-        this->items[pos]->getRenderName(text, sizeof(text));
+
+            char line[this->items[pos]->getRenderName(NULL, sizeof(text)) + 1];
+            this->items[pos]->getRenderName(line, sizeof(line));
+            strlcpy(text, &line[this->scrollPos], sizeof(text));
+        } else {
+            this->items[pos]->getRenderName(text, sizeof(text));
+        }
+
         display.setText(1, y, text);
 
         if (yMax > 0) {   
@@ -154,6 +166,53 @@ void Menu::render(DisplayInterface &display)
         if (pos >= posMax)
             break;
     }
+}
+
+void Menu::resetScroll()
+{
+    this->scrollPos = 0;
+    this->scrollTimeout = Menu::SCROLL_START_TIMEOUT;
+    this->lastScrollTick = getTickValue();
+}
+
+void Menu::scroll(int lineLength, int xMax)
+{
+    int lastScrollPos;
+    
+    if (getTickValue() - this->lastScrollTick < this->scrollTimeout)
+        return;
+    this->lastScrollTick = getTickValue();
+
+    lastScrollPos = this->scrollPos;
+    this->scrollPos++;
+    
+    if (lineLength - this->scrollPos < xMax) {
+        this->scrollPos = 0;
+    }
+
+    if ((this->scrollPos == 0) || (lineLength - this->scrollPos <= xMax)) {
+        this->scrollTimeout = Menu::SCROLL_START_TIMEOUT;
+    } else {
+        this->scrollTimeout = Menu::SCROLL_TIMEOUT;
+    }
+
+    if (lastScrollPos != this->scrollPos) {
+        this->manager->update();
+    }
+}
+
+void Menu::process()
+{
+    int xMax;
+    int lineLength;
+
+    if ((this->items == NULL) || (this->itemsNum == 0))
+        return;
+    
+    xMax = this->getMenuManager().getDisplay().getWidth() - 2;
+    lineLength = this->items[this->currentPos]->getRenderName(NULL, xMax);
+
+    this->scroll(lineLength, xMax);
 }
 
 };

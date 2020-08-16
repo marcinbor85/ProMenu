@@ -35,6 +35,7 @@ void MenuManager::enterToMenu(Menu &menu)
 
 void MenuManager::backToMenu(Menu &menu)
 {
+    this->currentMenu->end();
     this->currentMenu = &menu;
 }
 
@@ -52,6 +53,8 @@ void MenuManager::process()
 {
     if (this->currentMenu == NULL)
         return;
+    
+    this->currentMenu->process();
 
     if (this->needRedraw != false) {
         this->needRedraw = false;

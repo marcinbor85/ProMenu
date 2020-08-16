@@ -27,9 +27,13 @@ bool MenuItemText::select()
     return true;
 }
 
-void MenuItemText::getRenderName(char *text, int maxSize)
+int MenuItemText::getRenderName(char *text, int maxSize)
 {
-    snprintf(text, maxSize, "%s...", this->MenuItem::name);
+    char line[strlen(this->MenuItem::name) + 4];
+    snprintf(line, sizeof(line), "%s...", this->MenuItem::name);
+    if (text)
+        strlcpy(text, line, maxSize);
+    return strlen(line);
 }
 
 bool MenuItemText::prev()
@@ -94,8 +98,7 @@ bool MenuItemText::next()
 bool MenuItemText::exit()
 {
     this->interface.cancel(*this);
-    this->end();
-    return true;
+    return this->Menu::exit();
 }
 
 bool MenuItemText::enter()
@@ -106,7 +109,7 @@ bool MenuItemText::enter()
     } else {
         if (this->cursorPos < 0) {
             this->interface.save(*this);
-            this->end();
+            return this->Menu::exit();
         } else {
             ch = this->interface.getChar(*this, this->cursorPos);
             if (ch == 0) {
@@ -130,7 +133,7 @@ bool MenuItemText::enter()
 void MenuItemText::render(DisplayInterface &display)
 {
     char line[display.getWidth() + 1];
-    char ch;
+    char ch[2] = {0};
     int pos;
     int i;
     int y = 0;
@@ -138,7 +141,7 @@ void MenuItemText::render(DisplayInterface &display)
     display.clear();
 
     if (display.getHeight() > 1) {
-        strlcpy(line, this->MenuItem::name, sizeof(line));
+        strlcpy(line, &this->MenuItem::name[this->scrollPos], sizeof(line));
         display.setText(0, 0, line);
         y++;
     }
@@ -147,10 +150,10 @@ void MenuItemText::render(DisplayInterface &display)
     display.printText(">");
     for (i = 0; i < display.getWidth() - 2; i++) {
         pos = this->startPos + i;
-        ch = this->interface.getChar(*this, pos);
-        if (ch == 0)
+        ch[0] = this->interface.getChar(*this, pos);
+        if (ch[0] == 0)
             break;
-        display.printText(&ch);
+        display.printText(ch);
     }
     display.printText("<");
 
@@ -160,6 +163,17 @@ void MenuItemText::render(DisplayInterface &display)
     } else {
         display.showCursor(pos, y);
     }
+}
+
+void MenuItemText::process()
+{
+    int xMax;
+    int lineLength;
+
+    xMax = this->getMenuManager().getDisplay().getWidth();
+    lineLength = strlen(this->MenuItem::name);
+
+    this->scroll(lineLength, xMax);
 }
 
 };

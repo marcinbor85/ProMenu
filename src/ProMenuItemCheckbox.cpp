@@ -20,9 +20,13 @@ bool MenuItemCheckbox::select()
     return true;
 }
 
-void MenuItemCheckbox::getRenderName(char *text, int maxSize)
+int MenuItemCheckbox::getRenderName(char *text, int maxSize)
 {
-    snprintf(text, maxSize, "[%c] %s", (this->interface.isSelected(*this) == false) ? ' ' : 'x', this->name);
+    char line[strlen(this->name) + 5];
+    snprintf(line, sizeof(line), "[%c] %s", (this->interface.isSelected(*this) == false) ? ' ' : 'x', this->name);
+    if (text)
+        strlcpy(text, line, maxSize);
+    return strlen(line);
 }
 
 };
