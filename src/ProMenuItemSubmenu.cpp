@@ -17,7 +17,7 @@ MenuItemSubmenu::MenuItemSubmenu(int id, char *name, Menu &submenu):
 
 bool MenuItemSubmenu::select()
 {
-    this->menu->getMenuManager().enterToMenu(this->submenu);
+    this->parentMenu->getMenuManager().enterToMenu(this->submenu);
     return true;
 }
 

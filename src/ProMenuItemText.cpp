@@ -20,7 +20,7 @@ MenuItemText::MenuItemText(int id, char *name, MenuItemTextInterface &interface)
 bool MenuItemText::select()
 {
     this->interface.init(*this);
-    this->menu->getMenuManager().enterToMenu(*this);
+    this->parentMenu->getMenuManager().enterToMenu(*this);
     this->cursorPos = 0;
     this->startPos = 0;
     this->editMode = false;

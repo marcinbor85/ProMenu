@@ -20,12 +20,10 @@ public:
     int getId();
     const char* getName();
 
-    Menu* getMenu();
-
 protected:
     const int id;
     const char *name;
-    Menu *menu;
+    Menu *parentMenu;
 };
 
 };

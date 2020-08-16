@@ -20,7 +20,7 @@ MenuItemValue::MenuItemValue(int id, char *name, MenuItemValueInterface &interfa
 bool MenuItemValue::select()
 {
     this->interface.init(*this);
-    this->menu->getMenuManager().enterToMenu(*this);
+    this->parentMenu->getMenuManager().enterToMenu(*this);
     return true;
 }
 

@@ -8,14 +8,14 @@ namespace promenu {
 MenuItem::MenuItem(int id, char *name):
     id(id),
     name(name),
-    menu(NULL)
+    parentMenu(NULL)
 {
 
 }
 
 bool MenuItem::selectFromMenu(Menu *menu)
 {
-    this->menu = menu;
+    this->parentMenu = menu;
     return this->select();
 }
 
@@ -36,11 +36,6 @@ int MenuItem::getId()
 const char* MenuItem::getName()
 {
     return this->name;
-}
-
-Menu* MenuItem::getMenu()
-{
-    return this->menu;
 }
 
 };
