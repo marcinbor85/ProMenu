@@ -19,6 +19,9 @@ public:
     virtual void getValueText(MenuItemValue &item, char *text, int maxSize) = 0;
     virtual bool save(MenuItemValue &item) = 0;
     virtual void cancel(MenuItemValue &item) = 0;
+
+    virtual bool isPrevValueAvailable(MenuItemValue &item) = 0;
+    virtual bool isNextValueAvailable(MenuItemValue &item) = 0;
 };
 
 class MenuItemValue: public MenuItem, public Menu {

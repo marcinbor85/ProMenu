@@ -113,6 +113,16 @@ public:
     {
         this->init(item);
     }
+    virtual bool isPrevValueAvailable(MenuItemValue &item)
+    {
+        int i = item.MenuItem::getId();
+        return (this->tempValue[i] > this->minMaxValue[i][0]);
+    }
+    virtual bool isNextValueAvailable(MenuItemValue &item)
+    {
+        int i = item.MenuItem::getId();
+        return (this->tempValue[i] < this->minMaxValue[i][1]);
+    }
 
     long tempValue[2];
     long currentValue[2];
@@ -162,6 +172,14 @@ public:
     virtual void cancel(MenuItemValue &item)
     {
         this->init(item);
+    }
+    virtual bool isPrevValueAvailable(MenuItemValue &item)
+    {
+        return true;
+    }
+    virtual bool isNextValueAvailable(MenuItemValue &item)
+    {
+        return true;
     }
 
     int tempValue[1];

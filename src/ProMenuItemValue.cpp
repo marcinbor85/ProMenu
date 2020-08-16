@@ -61,6 +61,9 @@ void MenuItemValue::render(DisplayInterface &display)
     char value[display.getWidth()];
     char line[display.getWidth()];
     int y = 0;
+    bool isPrev;
+    bool isNext;
+    char ch[2] = {0};
 
     display.clear();
 
@@ -73,6 +76,20 @@ void MenuItemValue::render(DisplayInterface &display)
     this->interface.getValueText(*this, value, sizeof(value));
     snprintf(line, sizeof(line), ">%s<", value);
     display.setText(0, y, line);
+
+    isPrev = this->interface.isPrevValueAvailable(*this);
+    isNext = this->interface.isNextValueAvailable(*this);
+
+    if (isPrev && isNext) {
+        ch[0] = display.getArrowUpDown();
+        display.setText(display.getWidth() - 1, y, ch);
+    } else if (isPrev) {
+        ch[0] = display.getArrowUp();
+        display.setText(display.getWidth() - 1, y, ch);
+    } else if (isNext) {
+        ch[0] = display.getArrowDown();
+        display.setText(display.getWidth() - 1, y, ch);
+    }
 }
 
 };
