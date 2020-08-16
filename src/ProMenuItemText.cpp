@@ -168,6 +168,9 @@ void MenuItemText::process()
     int xMax;
     int lineLength;
 
+    if (this->getMenuManager().getDisplay().getHeight() < 2)
+        return;
+
     xMax = this->getMenuManager().getDisplay().getWidth();
     lineLength = strlen(this->MenuItem::name);
 
