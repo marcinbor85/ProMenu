@@ -11,6 +11,7 @@ public:
     virtual void setCursor(int x, int y) = 0;
     virtual void printText(const char *text) = 0;
     virtual void setText(int x, int y, const char *text) = 0;
+    virtual void setChar(int x, int y, char ch) = 0;
     virtual void selectChar(int x, int y) = 0;
     virtual void deselectChar() = 0;
     virtual void showCursor(int x, int y) = 0;

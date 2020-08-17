@@ -20,6 +20,12 @@ void LcdShieldDisplay::setText(int x, int y, const char *text)
     lcd.print(text);
 }
 
+void LcdShieldDisplay::setChar(int x, int y, const char ch)
+{
+    this->setCursor(x, y);
+    lcd.print(ch);
+}
+
 void LcdShieldDisplay::setCursor(int x, int y)
 {
     lcd.setCursor(x + this->menuXOffset, y + this->menuYOffset);
