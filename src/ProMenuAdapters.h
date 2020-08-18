@@ -12,13 +12,13 @@
 
 namespace promenu::adapters {
 
-constexpr int LCD_RS = 8, LCD_EN = 9, LCD_D4 = 4, LCD_D5 = 5, LCD_D6 = 6, LCD_D7 = 7;
-constexpr int LCD_WIDTH = 16;
-constexpr int LCD_HEIGHT = 2;
-
 class LcdShieldDisplay: public promenu::DisplayInterface {
 
 public:
+    static constexpr int LCD_RS = 8, LCD_EN = 9, LCD_D4 = 4, LCD_D5 = 5, LCD_D6 = 6, LCD_D7 = 7;
+    static constexpr int LCD_WIDTH = 16;
+    static constexpr int LCD_HEIGHT = 2;
+
     LcdShieldDisplay(
         int lcdWidth = LCD_WIDTH, int lcdHeight = LCD_HEIGHT,
         int menuWidth = LCD_WIDTH, int menuHeight = LCD_HEIGHT,
@@ -63,18 +63,17 @@ private:
     const int menuYOffset;
 };
 
-constexpr int BUTTON_ADC_PIN = A0;
-
-constexpr int BUTTON_ADC_ACCEPT_RANGE = 50;
-
-constexpr int BUTTON_UP_ADC_VALUE = 99;
-constexpr int BUTTON_DOWN_ADC_VALUE = 255;
-constexpr int BUTTON_LEFT_ACS_VALUE = 409;
-constexpr int BUTTON_SELECT_ACS_VALUE = 0;
-
 class LcdShieldButtons: smartbutton::SmartButtonInterface {
 
 public:
+    static constexpr int BUTTON_ADC_PIN = A0;
+    static constexpr int BUTTON_ADC_ACCEPT_RANGE = 50;
+
+    static constexpr int BUTTON_UP_ADC_VALUE = 99;
+    static constexpr int BUTTON_DOWN_ADC_VALUE = 255;
+    static constexpr int BUTTON_LEFT_ACS_VALUE = 409;
+    static constexpr int BUTTON_SELECT_ACS_VALUE = 0;
+
     LcdShieldButtons(promenu::MenuManager &manager,
         int buttonAdcPin = BUTTON_ADC_PIN,
         int buttonAdcAcceptRange = BUTTON_ADC_ACCEPT_RANGE,
