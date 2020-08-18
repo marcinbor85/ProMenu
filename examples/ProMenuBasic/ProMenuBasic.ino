@@ -5,6 +5,8 @@
 #include <ProMenuItem.h>
 #include <ProMenuItemEdit.h>
 #include <ProMenuItemCheckbox.h>
+#include <ProMenuCheckboxManager.h>
+#include <ProMenuActionManager.h>
 #include <ProMenuItemSubmenu.h>
 #include <ProMenuItemAction.h>
 #include <ProMenuItemValue.h>
@@ -13,6 +15,7 @@
 
 using namespace promenu;
 using namespace promenu::adapters;
+using namespace promenu::managers;
 
 constexpr int LED_PIN = 13;
 constexpr int BACKLIGHT_PIN = 10;
@@ -22,29 +25,11 @@ LcdShieldDisplay display{};
 
 MenuManager menuManager(display);
 
-class CheckboxManager: public MenuItemCheckboxInterface {
-public:
-    virtual bool isSelected(MenuItemCheckbox &item)
-    {
-        int i = item.getId();
-        return this->value[i];
-    }
-    virtual bool setSelected(MenuItemCheckbox &item, bool val)
-    {
-        int i = item.getId();
-        this->value[i] = val;
-        return true;
-    }
-    bool value[2];
-};
+static bool checkboxValues[2];
+CheckboxManager checkboxManager(checkboxValues, sizeof(checkboxValues) / sizeof(checkboxValues[0]));
 
-CheckboxManager checkboxManager;
-
-class ActionManager: public MenuItemActionInterface {
-public:
-    virtual bool action(MenuItemAction &item)
-    {
-        switch (item.getId()) {
+ActionManager actionManager([](int id) -> bool {
+    switch (id) {
         case 10:
             return false;
         case 11:
@@ -68,11 +53,8 @@ public:
         default:
             return false;
         }
-        return true;
-    }
-};
-
-ActionManager actionManager;
+    return true;
+});
 
 class ValueLongManager: public MenuItemValueInterface {
 
