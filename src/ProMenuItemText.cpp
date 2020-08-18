@@ -16,11 +16,17 @@ MenuItemText::MenuItemText(int id, char *name, MenuItemTextInterface &interface,
 
 }
 
+void MenuItemText::redraw()
+{
+    this->MenuItemEdit::redraw();
+    this->redrawCursor = true;
+}
+
 bool MenuItemText::select()
 {
     this->MenuItemEdit::select();
     this->cursorPos = 0;
-    this->startPos = 0;
+    this->startPos = -1;
     this->editMode = false;
     return true;
 }
@@ -36,17 +42,17 @@ bool MenuItemText::prev()
             ch--;
         }
         this->interface.setChar(*this, this->cursorPos, ch);
+        this->redrawCursor = true;
     } else {
-        if (this->cursorPos > 0) {
+        if (this->cursorPos > -1) {
             this->cursorPos--;
-            if (this->cursorPos + 1 - this->startPos == 0)
+            this->redrawCursor = true;
+            if ((this->cursorPos - this->startPos < 0) && (this->startPos > -1)) {
                 this->startPos--;
-        } else {
-            if (this->cursorPos == 0) {
-                this->cursorPos--;
-            } else {
-                return false;
+                this->redrawValue = true;
             }
+        } else {
+            return false;
         }
     }
     return true;
@@ -63,22 +69,23 @@ bool MenuItemText::next()
             ch++;
         }
         this->interface.setChar(*this, this->cursorPos, ch);
+        this->redrawCursor = true;
     } else {
         if (ch != 0) {
             this->cursorPos++;
-
-            ch = this->interface.getChar(*this, this->cursorPos);
-            if (ch != 0) {
-                if (this->cursorPos - this->startPos >= this->getMenuManager().getDisplay().getWidth() - 2) {
-                    this->startPos++;
-                }
+            this->redrawCursor = true;
+            if (this->cursorPos - this->startPos >= this->getMenuManager().getDisplay().getWidth()) {
+                this->startPos++;
+                this->redrawValue = true;
             }
         } else {
             this->interface.setChar(*this, this->cursorPos, ' ');
             ch = this->interface.getChar(*this, this->cursorPos);
             if (ch != 0) {
                 this->cursorPos++;
-                if (this->cursorPos - this->startPos >= this->getMenuManager().getDisplay().getWidth() - 2) {
+                this->redrawCursor = true;
+                this->redrawValue = true;
+                if (this->cursorPos - this->startPos >= this->getMenuManager().getDisplay().getWidth()) {
                     this->startPos++;
                 }
             } else {
@@ -94,6 +101,7 @@ bool MenuItemText::enter()
     char ch;
     if (this->editMode != false) {
         this->editMode = false;
+        this->redrawCursor = true;
     } else {
         if (this->cursorPos < 0) {
             this->interface.save(*this);
@@ -103,51 +111,94 @@ bool MenuItemText::enter()
             if (ch == 0) {
                 if (this->cursorPos > 0) {
                     this->cursorPos--;
+                    this->redrawCursor = true;
+                    this->redrawValue = true;
                     this->interface.setChar(*this, this->cursorPos, 0);
 
-                    if (this->startPos > 0) {
-                        if (this->cursorPos + 1 - this->startPos >= this->getMenuManager().getDisplay().getWidth() - 2)
-                            this->startPos--;
-                    }
+                    if (this->startPos > -1)
+                        this->startPos--;
                 } else {
                     return false;
                 }
             } else {
                 this->editMode = true;
+                this->redrawCursor = true;
             }
         }
     }
     return true;
 }
 
-void MenuItemText::render(DisplayInterface &display)
+void MenuItemText::renderScroll(DisplayInterface &display)
 {
-    char ch[2] = {0};
-    int pos;
-    int i;
-    int y = 0;
+    this->MenuItemEdit::renderScroll(display);
+    this->redrawCursor = true;
+}
 
-    this->MenuItemEdit::render(display);
+void MenuItemText::renderValue(DisplayInterface &display)
+{
+    char ch;
+    int pos = this->startPos;
+    int x = 0;
+    int y = 0;
+    bool pad = false;
 
     if (display.getHeight() > 1)
         y = 1;
 
     display.setCursor(0, y);
-    display.printText(">");
-    for (i = 0; i < display.getWidth() - 2; i++) {
-        pos = this->startPos + i;
-        ch[0] = this->interface.getChar(*this, pos);
-        if (ch[0] == 0)
-            break;
-        display.printText(ch);
+    for (x = 0; x < display.getWidth(); x++) {
+        if ((x == 0) && (this->startPos == -1)) {
+            display.printChar('>');
+            pos++;
+        } else {
+            if (pad == false) {
+                ch = this->interface.getChar(*this, pos++);
+                if (ch != 0) {
+                    display.printChar(ch);
+                } else {
+                    display.printChar('<');
+                    pad = true;
+                }             
+            } else {
+                display.printChar(' ');
+            }
+        }
     }
-    display.printText("<");
+}
 
-    pos = this->cursorPos + 1 - this->startPos;
+void MenuItemText::renderCursor(DisplayInterface &display)
+{
+    int pos;
+    int y = 0;
+    char ch;
+
+    if (display.getHeight() > 1)
+        y = 1;
+    
+    pos = this->cursorPos - this->startPos;
+    
+    if (this->cursorPos >= 0) {
+        ch = this->interface.getChar(*this, this->cursorPos);
+        if (ch != 0)
+            display.setChar(pos, y, ch);
+    }
+
     if (this->editMode != false) {
         display.selectChar(pos, y);
     } else {
-        display.showCursor(pos, y);
+        display.deselectChar();
+    }
+    display.showCursor(pos, y);
+}
+
+void MenuItemText::render(DisplayInterface &display)
+{
+    this->MenuItemEdit::render(display);
+
+    if (this->redrawCursor) {
+        this->redrawCursor = false;
+        this->renderCursor(display);
     }
 }
 

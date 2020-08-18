@@ -34,8 +34,10 @@ public:
 protected:
     void resetScroll();
     void scroll(int lineLength, int xMax);
+    virtual void redraw();
 
     int scrollPos;
+    bool redrawScroll;
 
 private:
     const int id;
@@ -50,6 +52,14 @@ private:
 
     unsigned long lastScrollTick;
     unsigned long scrollTimeout;
+
+    bool redrawCursor;
+    bool redrawList;
+    
+
+    void renderCursor(DisplayInterface &display);
+    void renderList(DisplayInterface &display);
+    void renderScroll(DisplayInterface &display);
 
     static constexpr unsigned long SCROLL_START_TIMEOUT = 2000UL;
     static constexpr unsigned long SCROLL_TIMEOUT = 500UL;

@@ -18,7 +18,7 @@ void MenuManager::begin(Menu *menu)
 {
     this->display.begin();
     this->enterToMenu(*menu);
-    this->update();
+    this->process();
 }
 
 void MenuManager::end()
@@ -39,82 +39,52 @@ void MenuManager::backToMenu(Menu &menu)
     this->currentMenu = &menu;
 }
 
-void MenuManager::update()
-{
-    this->needRedraw = true;
-}
-
-void MenuManager::redraw()
-{
-    this->currentMenu->render(this->display);
-}
-
 void MenuManager::process()
 {
     if (this->currentMenu == NULL)
         return;
     
     this->currentMenu->process();
-
-    if (this->needRedraw != false) {
-        this->needRedraw = false;
-        this->redraw();
-    }
+    this->currentMenu->render(this->display);
 }
 
 bool MenuManager::up(int repeat)
 {
     bool ret = false;
-    bool r;
     while (repeat-- > 0) {
-        r = this->currentMenu->prev();
-        if (r)
+        if (this->currentMenu->prev())
             ret = true;
     }
-    if (ret)
-        this->update();
     return ret;
 }
 
 bool MenuManager::down(int repeat)
 {
     bool ret = false;
-    bool r;
     while (repeat-- > 0) {
-        r = this->currentMenu->next();
-        if (r)
+        if (this->currentMenu->next())
             ret = true;
     }
-    if (ret)
-        this->update();
     return ret;
 }
 
 bool MenuManager::back(int repeat)
 {
     bool ret = false;
-    bool r;
     while (repeat-- > 0) {
-        r = this->currentMenu->exit();
-        if (r)
+        if (this->currentMenu->exit())
             ret = true;
     }
-    if (ret)
-        this->update();
     return ret;
 }
 
 bool MenuManager::select(int repeat)
 {
-     bool ret = false;
-    bool r;
+    bool ret = false;
     while (repeat-- > 0) {
-        r = this->currentMenu->enter();
-        if (r)
+        if (this->currentMenu->enter())
             ret = true;
     }
-    if (ret)
-        this->update();
     return ret;
 }
 

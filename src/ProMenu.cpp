@@ -4,6 +4,7 @@
 #include "ProMenuItem.h"
 #include "ProMenuDisplay.h"
 #include "ProMenuDefs.h"
+#include "ProMenuUtils.h"
 
 #include <string.h>
 #include <stdio.h>
@@ -36,6 +37,7 @@ void Menu::begin(MenuManager *manager, int pos)
         this->startPos = 0;
     }
 
+    this->redraw();
     this->resetScroll();
 }
 
@@ -52,10 +54,13 @@ bool Menu::prev()
         this->currentPos --;
         this->resetScroll();
         ret = true;
+        this->redrawCursor = true;
     }
 
-    if (this->currentPos < this->startPos)
+    if (this->currentPos < this->startPos) {
         this->startPos--;
+        this->redrawList = true;
+    }
 
     return ret;
 }
@@ -68,18 +73,29 @@ bool Menu::next()
         this->currentPos ++;
         this->resetScroll();
         ret = true;
+        this->redrawCursor = true;
     }
 
-    if (this->currentPos >= (this->startPos + this->manager->getDisplay().getHeight()))
+    if (this->currentPos >= (this->startPos + this->manager->getDisplay().getHeight())) {
         this->startPos++;
+        this->redrawList = true;
+    }
 
     return ret;
+}
+
+void Menu::redraw()
+{
+    this->redrawCursor = true;
+    this->redrawList = true;
+    this->redrawScroll = true;
 }
 
 bool Menu::exit()
 {
     if (this->prevMenu != NULL) {
         this->prevMenu->resetScroll();
+        this->prevMenu->redraw();
         this->manager->backToMenu(*this->prevMenu);
     } else {
         this->reset();
@@ -89,6 +105,7 @@ bool Menu::exit()
 
 bool Menu::enter()
 {
+    this->resetScroll();
     return this->items[this->currentPos]->selectFromMenu(this);
 }
 
@@ -97,6 +114,7 @@ void Menu::reset()
     this->currentPos = 0;
     this->startPos = 0;
     this->resetScroll();
+    this->redraw();
 }
 
 int Menu::getId()
@@ -114,65 +132,116 @@ MenuManager& Menu::getMenuManager()
     return *this->manager;
 }
 
-void Menu::render(DisplayInterface &display)
+void Menu::renderCursor(DisplayInterface &display)
+{
+    int yMax = display.getHeight() - 1;
+
+    display.hideCursor();
+    display.deselectChar();
+
+    for (int y = 0; y <= yMax; y++) {
+        int pos = this->startPos + y;
+        char ch = (pos == this->currentPos) ? '>' : ' ';
+        display.setChar(0, y, ch);
+    }
+}
+
+void Menu::renderList(DisplayInterface &display)
 {
     int posMax = this->itemsNum - 1;
     int yMax = display.getHeight() - 1;
-    int xMax = display.getWidth() - 1;
-    int startPos = this->startPos;
-    int currentPos = this->currentPos;
-
     char text[display.getWidth() - 1];
-    char ch[2] = {0};
+    char ch;
 
-    display.clear();
+    display.hideCursor();
+    display.deselectChar();
 
     for (int y = 0; y <= yMax; y++) {
-        int pos = startPos + y;
+        int pos = this->startPos + y;
 
-        if (pos == currentPos) {
-            display.setText(0, y, ">");
+        if (pos <= posMax) {
+            if (pos == this->currentPos) {
+                int textFullLength = this->items[pos]->getRenderName(NULL, sizeof(text));
+                char line[textFullLength + 1];
 
-            char line[this->items[pos]->getRenderName(NULL, sizeof(text)) + 1];
-            this->items[pos]->getRenderName(line, sizeof(line));
-            strlcpy(text, &line[this->scrollPos], sizeof(text));
+                this->items[pos]->getRenderName(line, sizeof(line));
+                strlcpy(text, &line[this->scrollPos], sizeof(text));
+            } else {
+                this->items[pos]->getRenderName(text, sizeof(text));
+            }
+
+            utils::rightPaddingText(text, sizeof(text), ' ');
+            display.setText(1, y, text);
+
+            if (yMax > 0) {   
+                if ((y == 0) && (pos > 0)) {
+                    ch = display.getArrowUp();
+                } else if ((y == yMax && (pos < posMax))) {
+                    ch = display.getArrowDown();
+                } else {
+                    ch = ' ';
+                }
+            } else {
+                if ((pos > 0) && (pos < posMax)) {
+                    ch = display.getArrowUpDown();
+                } else if (pos > 0) {
+                    ch = display.getArrowUp();
+                } else if (pos < posMax) {
+                    ch = display.getArrowDown();
+                } else {
+                    ch = ' ';
+                }
+            }
+            display.setChar(display.getWidth() - 1, y, ch);
         } else {
-            this->items[pos]->getRenderName(text, sizeof(text));
+            memset(text, ' ', sizeof(text));
+            text[sizeof(text) - 1] = 0;
+            display.setText(1, y, text);
         }
+    }
+}
 
-        display.setText(1, y, text);
+void Menu::renderScroll(DisplayInterface &display)
+{
+    char text[display.getWidth() - 1];
+    int y = this->currentPos - this->startPos;
 
-        if (yMax > 0) {   
-            if ((y == 0) && (pos > 0)) {
-                ch[0] = display.getArrowUp();
-                display.setText(xMax, 0, ch);
-            }
-            
-            if ((y == yMax && (pos < posMax))) {
-                ch[0] = display.getArrowDown();
-                display.setText(xMax, yMax, ch);
-            }
-        } else {
-            if ((pos > 0) && (pos < posMax)) {
-                ch[0] = display.getArrowUpDown();
-                display.setText(xMax, 0, ch);
-            } else if (pos > 0) {
-                ch[0] = display.getArrowUp();
-                display.setText(xMax, 0, ch);
-            } else if (pos < posMax) {
-                ch[0] = display.getArrowDown();
-                display.setText(xMax, 0, ch);
-            }
-        }
+    int textFullLength = this->items[this->currentPos]->getRenderName(NULL, sizeof(text));
+    char line[textFullLength + 1];
 
-        if (pos >= posMax)
-            break;
+    this->items[this->currentPos]->getRenderName(line, sizeof(line));
+    strlcpy(text, &line[this->scrollPos], sizeof(text));
+
+    display.hideCursor();
+    display.deselectChar();
+
+    display.setText(1, y, text);
+}
+
+void Menu::render(DisplayInterface &display)
+{
+    if (this->redrawCursor) {
+        this->redrawCursor = false;
+        this->renderCursor(display);
+    }
+    if (this->redrawList) {
+        this->redrawList = false;
+        this->redrawScroll = false;
+        this->renderList(display);
+    }
+    if (this->redrawScroll) {
+        this->redrawScroll = false;
+        this->renderScroll(display);
     }
 }
 
 void Menu::resetScroll()
 {
+    int prevPos = this->scrollPos;
     this->scrollPos = 0;
+    if (prevPos != this->scrollPos)
+        this->redrawList = true;
+    this->redrawScroll = true;
     this->scrollTimeout = Menu::SCROLL_START_TIMEOUT;
     this->lastScrollTick = getTickValue();
 }
@@ -199,7 +268,7 @@ void Menu::scroll(int lineLength, int xMax)
     }
 
     if (lastScrollPos != this->scrollPos) {
-        this->manager->update();
+        this->redrawScroll = true;
     }
 }
 

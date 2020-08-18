@@ -2,6 +2,7 @@
 
 #include "ProMenuManager.h"
 #include "ProMenuDisplay.h"
+#include "ProMenuUtils.h"
 #include "ProMenu.h"
 
 #include <string.h>
@@ -14,6 +15,12 @@ MenuItemEdit::MenuItemEdit(int id, char *name, char *prefix):
     Menu(id, name, NULL, 0)
 {
 
+}
+
+void MenuItemEdit::redraw()
+{
+    this->redrawValue = true;
+    this->redrawScroll = true;
 }
 
 bool MenuItemEdit::select()
@@ -35,15 +42,26 @@ bool MenuItemEdit::enter()
     return this->Menu::exit();
 }
 
-void MenuItemEdit::render(DisplayInterface &display)
+void MenuItemEdit::renderScroll(DisplayInterface &display)
 {
     char line[display.getWidth() + 1];
 
-    display.clear();
-
     if (display.getHeight() > 1) {
         strlcpy(line, &this->MenuItem::name[this->scrollPos], sizeof(line));
+        utils::rightPaddingText(line, sizeof(line), ' ');
         display.setText(0, 0, line);
+    }
+}
+
+void MenuItemEdit::render(DisplayInterface &display)
+{
+    if (this->redrawScroll) {
+        this->redrawScroll = false;
+        this->renderScroll(display);
+    }
+    if (this->redrawValue) {
+        this->redrawValue = false;
+        this->renderValue(display);
     }
 }
 

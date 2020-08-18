@@ -206,7 +206,7 @@ public:
     static constexpr int maxTextSize = 30;
 
     ValueStringManager():
-        currentText{{"Test Embedded Devices"}} {}
+        currentText{{"Test Embedded Devices"}, {"Krotki"}} {}
 
     virtual void init(MenuItemEdit &item)
     {
@@ -236,15 +236,15 @@ public:
         this->init(item);
     }
 
-    char currentText[1][maxTextSize];
-    char tempText[1][maxTextSize];
+    char currentText[2][maxTextSize];
+    char tempText[2][maxTextSize];
 };
 
 ValueStringManager valueStringManager;
 
 const MenuItemAction action31(10, "Enable", actionManager);
 const MenuItemAction action32(11, "Disable", actionManager);
-const MenuItemCheckbox checkbox1(0, "Feature1", checkboxManager);
+const MenuItemCheckbox checkbox1(0, "Feature1 long", checkboxManager);
 const MenuItemCheckbox checkbox2(1, "Feature2", checkboxManager);
 
 const MenuItem *menuMisc2Items[] = {&action31, &action32, &checkbox1, &checkbox2};
@@ -255,8 +255,9 @@ const MenuItemValue triState1(0, "State Machine", valueTriStateManager);
 const MenuItemValue number1(0, "ValueS test1 test2 test3", valueLongManager);
 const MenuItemValue number2(1, "ValueU", valueLongManager);
 const MenuItemText string1(0, "String", valueStringManager);
+const MenuItemText string2(1, "String very very long", valueStringManager);
 
-const MenuItem *menuMiscItems[] = {&triState1, &number1, &number2, &string1};
+const MenuItem *menuMiscItems[] = {&triState1, &number1, &number2, &string1, &string2};
 Menu menuMisc(1, "misc", menuMiscItems, sizeof(menuMiscItems) / sizeof(menuMiscItems[0]));
 
 

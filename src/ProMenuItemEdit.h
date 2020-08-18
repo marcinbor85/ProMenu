@@ -32,6 +32,12 @@ public:
 
 protected:
     virtual MenuItemEditInterface& getInterface() = 0;
+    virtual void redraw();
+
+    bool redrawValue;
+
+    virtual void renderValue(DisplayInterface &display) = 0;
+    virtual void renderScroll(DisplayInterface &display);
     
 };
 

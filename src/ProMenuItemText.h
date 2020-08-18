@@ -28,6 +28,10 @@ public:
 
 protected:
     virtual MenuItemEditInterface& getInterface();
+    virtual void redraw();
+
+    virtual void renderValue(DisplayInterface &display);
+    virtual void renderScroll(DisplayInterface &display);
 
 private:
     MenuItemTextInterface &interface;
@@ -37,6 +41,10 @@ private:
     bool editMode;
 
     static constexpr char *PREFIX = "";
+
+    bool redrawCursor;
+
+    void renderCursor(DisplayInterface &display);
 };
 
 };

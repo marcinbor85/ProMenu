@@ -2,6 +2,7 @@
 
 #include "ProMenuManager.h"
 #include "ProMenuDisplay.h"
+#include "ProMenuUtils.h"
 #include "ProMenu.h"
 
 #include <string.h>
@@ -31,45 +32,62 @@ int MenuItemValue::getRenderName(char *text, int maxSize)
 
 bool MenuItemValue::prev()
 {
-    return this->interface.prevValue(*this);
+    bool s = this->interface.prevValue(*this);
+    if (s)
+        this->redrawValue = true;
+    return s;
 }
 
 bool MenuItemValue::next()
 {
-    return this->interface.nextValue(*this);
+    bool s = this->interface.nextValue(*this);
+    if (s)
+        this->redrawValue = true;
+    return s;
 }
 
-void MenuItemValue::render(DisplayInterface &display)
+void MenuItemValue::renderScroll(DisplayInterface &display)
 {
-    char value[display.getWidth() + 1];
-    char line[display.getWidth() + 1];
+    display.hideCursor();
+    display.deselectChar();
+    
+    this->MenuItemEdit::renderScroll(display);
+}
+
+void MenuItemValue::renderValue(DisplayInterface &display)
+{
+    char value[display.getWidth()];
+    char line[display.getWidth()];
     int y = 0;
     bool isPrev;
     bool isNext;
-    char ch[2] = {0};
+    char ch;
 
-    this->MenuItemEdit::render(display);
+    display.hideCursor();
+    display.deselectChar();
 
     if (display.getHeight() > 1)
         y = 1;
 
     this->interface.getValueText(*this, value, sizeof(value));
     snprintf(line, sizeof(line), ">%s<", value);
+    utils::rightPaddingText(line, sizeof(line), ' ');
     display.setText(0, y, line);
 
     isPrev = this->interface.isPrevValueAvailable(*this);
     isNext = this->interface.isNextValueAvailable(*this);
 
     if (isPrev && isNext) {
-        ch[0] = display.getArrowUpDown();
-        display.setText(display.getWidth() - 1, y, ch);
+        ch = display.getArrowUpDown();
     } else if (isPrev) {
-        ch[0] = display.getArrowUp();
-        display.setText(display.getWidth() - 1, y, ch);
+        ch = display.getArrowUp();
     } else if (isNext) {
-        ch[0] = display.getArrowDown();
-        display.setText(display.getWidth() - 1, y, ch);
+        ch = display.getArrowDown();
+    } else {
+        ch = ' ';
     }
+
+    display.setChar(display.getWidth() - 1, y, ch);
 }
 
 MenuItemEditInterface& MenuItemValue::getInterface()

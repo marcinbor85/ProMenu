@@ -36,6 +36,11 @@ void LcdShieldDisplay::printText(const char *text)
     lcd.print(text);
 }
 
+void LcdShieldDisplay::printChar(char ch)
+{
+    lcd.print(ch);
+}
+
 void LcdShieldDisplay::selectChar(int x, int y)
 {
     this->setCursor(x, y);
@@ -87,6 +92,17 @@ void LcdShieldDisplay::clear()
 
     lcd.noCursor();
     lcd.noBlink();
+}
+
+void LcdShieldDisplay::clearLine(int y)
+{
+    char emptyLine[this->menuWidth + 1];
+    
+    memset(emptyLine, ' ', sizeof(emptyLine));
+    emptyLine[this->menuWidth] = 0;
+
+    this->setCursor(0, y);
+    lcd.print(emptyLine);
 }
 
 void LcdShieldDisplay::begin()

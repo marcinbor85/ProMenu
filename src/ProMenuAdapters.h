@@ -28,6 +28,7 @@ public:
 
     virtual void setCursor(int x, int y);
     virtual void printText(const char *text);
+    virtual void printChar(char ch);
     virtual void setText(int x, int y, const char *text);
     virtual void setChar(int x, int y, char ch);
     virtual void selectChar(int x, int y);
@@ -35,6 +36,7 @@ public:
     virtual void showCursor(int x, int y);
     virtual void hideCursor();
     virtual void clear();
+    virtual void clearLine(int y);
     virtual void begin();
     virtual void end();
 

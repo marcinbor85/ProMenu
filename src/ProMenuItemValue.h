@@ -26,11 +26,12 @@ public:
 
     virtual bool prev();
     virtual bool next();
-
-    virtual void render(DisplayInterface &display);
-
+    
 protected:
     virtual MenuItemEditInterface& getInterface();
+
+    virtual void renderValue(DisplayInterface &display);
+    virtual void renderScroll(DisplayInterface &display);
 
 private:
     MenuItemValueInterface &interface;
