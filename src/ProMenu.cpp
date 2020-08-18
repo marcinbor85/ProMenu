@@ -12,38 +12,30 @@
 namespace promenu {
 
 Menu::Menu(int id, char *name, MenuItem **items, int itemsNum):
-    id(id),
-    name(name),
+    MenuScreen(id, name),
     items(items),
     itemsNum(itemsNum),
     currentPos(0),
-    startPos(0),
-    prevMenu(NULL)
+    startPos(0)
 {
 
 }
 
 void Menu::begin(MenuManager *manager, int pos)
 {
-    this->prevMenu = manager->getCurrentMenu();
-    this->manager = manager;
-    this->currentPos = pos;
+    this->MenuScreen::begin(manager, pos);
 
-    int h = this->manager->getDisplay().getHeight();
+    if (manager != NULL) {
+        this->currentPos = pos;
 
-    if (this->currentPos >= h) {
-        this->startPos = this->currentPos - h;
-    } else {
-        this->startPos = 0;
+        int h = this->manager->getDisplay().getHeight();
+
+        if (this->currentPos >= h) {
+            this->startPos = this->currentPos - h;
+        } else {
+            this->startPos = 0;
+        }
     }
-
-    this->redraw();
-    this->resetScroll();
-}
-
-void Menu::end()
-{
-    this->reset();
 }
 
 bool Menu::prev()
@@ -86,50 +78,22 @@ bool Menu::next()
 
 void Menu::redraw()
 {
+    this->MenuScreen::redraw();
     this->redrawCursor = true;
     this->redrawList = true;
-    this->redrawScroll = true;
-}
-
-bool Menu::exit()
-{
-    if (this->prevMenu != NULL) {
-        this->prevMenu->resetScroll();
-        this->prevMenu->redraw();
-        this->manager->backToMenu(*this->prevMenu);
-    } else {
-        this->reset();
-    }
-    return true;   
 }
 
 bool Menu::enter()
 {
-    this->resetScroll();
+    this->MenuScreen::enter();
     return this->items[this->currentPos]->selectFromMenu(this);
 }
 
 void Menu::reset()
 {
+    this->MenuScreen::reset();
     this->currentPos = 0;
     this->startPos = 0;
-    this->resetScroll();
-    this->redraw();
-}
-
-int Menu::getId()
-{
-    return this->id;
-}
-
-const char* Menu::getName()
-{
-    return this->name;
-}
-
-MenuManager& Menu::getMenuManager()
-{
-    return *this->manager;
 }
 
 void Menu::renderCursor(DisplayInterface &display)
@@ -197,6 +161,7 @@ void Menu::renderList(DisplayInterface &display)
             memset(text, ' ', sizeof(text));
             text[sizeof(text) - 1] = 0;
             display.setText(1, y, text);
+            display.printChar(' ');
         }
     }
 }
@@ -229,60 +194,22 @@ void Menu::render(DisplayInterface &display)
         this->redrawScroll = false;
         this->renderList(display);
     }
-    if (this->redrawScroll) {
-        this->redrawScroll = false;
-        this->renderScroll(display);
-    }
+    this->MenuScreen::render(display);
 }
 
 void Menu::resetScroll()
 {
     int prevPos = this->scrollPos;
-    this->scrollPos = 0;
+    this->MenuScreen::resetScroll();
     if (prevPos != this->scrollPos)
         this->redrawList = true;
-    this->redrawScroll = true;
-    this->scrollTimeout = Menu::SCROLL_START_TIMEOUT;
-    this->lastScrollTick = getTickValue();
-}
-
-void Menu::scroll(int lineLength, int xMax)
-{
-    int lastScrollPos;
-    
-    if (getTickValue() - this->lastScrollTick < this->scrollTimeout)
-        return;
-    this->lastScrollTick = getTickValue();
-
-    lastScrollPos = this->scrollPos;
-    this->scrollPos++;
-    
-    if (lineLength - this->scrollPos < xMax) {
-        this->scrollPos = 0;
-    }
-
-    if ((this->scrollPos == 0) || (lineLength - this->scrollPos <= xMax)) {
-        this->scrollTimeout = Menu::SCROLL_START_TIMEOUT;
-    } else {
-        this->scrollTimeout = Menu::SCROLL_TIMEOUT;
-    }
-
-    if (lastScrollPos != this->scrollPos) {
-        this->redrawScroll = true;
-    }
 }
 
 void Menu::process()
 {
-    int xMax;
-    int lineLength;
-
-    if ((this->items == NULL) || (this->itemsNum == 0))
-        return;
+    int xMax = this->getMenuManager().getDisplay().getWidth() - 2;
+    int lineLength = this->items[this->currentPos]->getRenderName(NULL, xMax);
     
-    xMax = this->getMenuManager().getDisplay().getWidth() - 2;
-    lineLength = this->items[this->currentPos]->getRenderName(NULL, xMax);
-
     this->scroll(lineLength, xMax);
 }
 

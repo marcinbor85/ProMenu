@@ -105,7 +105,7 @@ bool MenuItemText::enter()
     } else {
         if (this->cursorPos < 0) {
             this->interface.save(*this);
-            return this->Menu::exit();
+            return this->MenuItemEdit::exit();
         } else {
             ch = this->interface.getChar(*this, this->cursorPos);
             if (ch == 0) {

@@ -14,7 +14,7 @@ MenuItem::MenuItem(int id, char *name, char *prefix):
 
 }
 
-bool MenuItem::selectFromMenu(Menu *menu)
+bool MenuItem::selectFromMenu(MenuBase *menu)
 {
     this->parentMenu = menu;
     return this->select();

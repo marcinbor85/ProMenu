@@ -288,7 +288,7 @@ void setup()
     pinMode(BACKLIGHT_PIN, OUTPUT);
     digitalWrite(BACKLIGHT_PIN, HIGH);
 
-    menuManager.begin(&menuRoot); 
+    menuManager.begin(menuRoot); 
     buttons.begin();
 }
 

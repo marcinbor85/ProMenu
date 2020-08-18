@@ -6,17 +6,17 @@
 namespace promenu {
 
 class MenuManager;
-class Menu;
+class MenuBase;
 
 class MenuItemSubmenu: public MenuItem {
 
 public:
-    MenuItemSubmenu(int id, char *name, Menu &submenu, char *prefix = MenuItemSubmenu::PREFIX);
+    MenuItemSubmenu(int id, char *name, MenuBase &submenu, char *prefix = MenuItemSubmenu::PREFIX);
     
     virtual bool select();
 
 private:
-    Menu &submenu;
+    MenuBase &submenu;
     
     static constexpr char *PREFIX = "";
 };

@@ -5,7 +5,7 @@ namespace promenu {
 
 class MenuManager;
 class MenuItem;
-class Menu;
+class MenuBase;
 
 class MenuItem {
 
@@ -15,7 +15,7 @@ public:
     virtual bool select() = 0;
     virtual int getRenderName(char *text, int maxSize);
 
-    bool selectFromMenu(Menu *menu);
+    bool selectFromMenu(MenuBase *menu);
 
     int getId();
     const char* getName();
@@ -24,7 +24,7 @@ protected:
     const int id;
     const char *name;
     const char *prefix;
-    Menu *parentMenu;
+    MenuBase *parentMenu;
 };
 
 };

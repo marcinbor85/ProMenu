@@ -7,7 +7,7 @@
 namespace promenu {
 
 class MenuManager;
-class Menu;
+class MenuScreen;
 class MenuItemEdit;
 
 class MenuItemEditInterface {
@@ -18,7 +18,7 @@ public:
     virtual void cancel(MenuItemEdit &item) = 0;
 };
 
-class MenuItemEdit: public MenuItem, public Menu {
+class MenuItemEdit: public MenuItem, public MenuScreen {
 
 public:
     MenuItemEdit(int id, char *name, char *prefix);

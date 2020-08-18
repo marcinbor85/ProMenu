@@ -3,7 +3,7 @@
 #include "ProMenuDisplay.h"
 #include "ProMenuManager.h"
 #include "ProMenuItem.h"
-#include "ProMenu.h"
+#include "ProMenuBase.h"
 
 namespace promenu {
 
@@ -14,10 +14,10 @@ MenuManager::MenuManager(DisplayInterface &display):
 
 }
 
-void MenuManager::begin(Menu *menu)
+void MenuManager::begin(MenuBase &menu)
 {
     this->display.begin();
-    this->enterToMenu(*menu);
+    this->enterToMenu(menu);
     this->process();
 }
 
@@ -27,13 +27,13 @@ void MenuManager::end()
     this->display.end();
 }
 
-void MenuManager::enterToMenu(Menu &menu)
+void MenuManager::enterToMenu(MenuBase &menu)
 {
     menu.begin(this);
     this->currentMenu = &menu;
 }
 
-void MenuManager::backToMenu(Menu &menu)
+void MenuManager::backToMenu(MenuBase &menu)
 {
     this->currentMenu->end();
     this->currentMenu = &menu;
@@ -88,9 +88,9 @@ bool MenuManager::select(int repeat)
     return ret;
 }
 
-Menu* MenuManager::getCurrentMenu()
+MenuBase& MenuManager::getCurrentMenu()
 {
-    return this->currentMenu;
+    return *this->currentMenu;
 }
 
 DisplayInterface& MenuManager::getDisplay()

@@ -12,15 +12,15 @@ namespace promenu {
 
 MenuItemEdit::MenuItemEdit(int id, char *name, char *prefix):
     MenuItem(id, name, prefix),
-    Menu(id, name, NULL, 0)
+    MenuScreen(id, name)
 {
 
 }
 
 void MenuItemEdit::redraw()
 {
+    this->MenuScreen::redraw();
     this->redrawValue = true;
-    this->redrawScroll = true;
 }
 
 bool MenuItemEdit::select()
@@ -33,13 +33,13 @@ bool MenuItemEdit::select()
 bool MenuItemEdit::exit()
 {
     this->getInterface().cancel(*this);
-    return this->Menu::exit();
+    return this->MenuScreen::exit();
 }
 
 bool MenuItemEdit::enter()
 {
     this->getInterface().save(*this);
-    return this->Menu::exit();
+    return this->MenuScreen::exit();
 }
 
 void MenuItemEdit::renderScroll(DisplayInterface &display)
@@ -55,10 +55,7 @@ void MenuItemEdit::renderScroll(DisplayInterface &display)
 
 void MenuItemEdit::render(DisplayInterface &display)
 {
-    if (this->redrawScroll) {
-        this->redrawScroll = false;
-        this->renderScroll(display);
-    }
+    this->MenuScreen::render(display);
     if (this->redrawValue) {
         this->redrawValue = false;
         this->renderValue(display);

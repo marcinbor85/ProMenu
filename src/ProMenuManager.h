@@ -7,14 +7,14 @@ namespace promenu {
 
 class DisplayInterface;
 class MenuManager;
-class Menu;
+class MenuBase;
 
 class MenuManager {
 
 public:
     MenuManager(DisplayInterface &display);
 
-    void begin(Menu *menu);
+    void begin(MenuBase &menu);
     void end();
 
     bool up(int repeat = 1);
@@ -24,11 +24,11 @@ public:
 
     void process();
 
-    Menu* getCurrentMenu();
+    MenuBase& getCurrentMenu();
     DisplayInterface& getDisplay();
 
-    void enterToMenu(Menu &menu);
-    void backToMenu(Menu &menu);
+    void enterToMenu(MenuBase &menu);
+    void backToMenu(MenuBase &menu);
 
 private:
     MenuManager() = delete;
@@ -36,7 +36,7 @@ private:
     MenuManager& operator=(const MenuManager&) = delete;
 
     DisplayInterface &display;
-    Menu *currentMenu;
+    MenuBase *currentMenu;
 };
 
 };
