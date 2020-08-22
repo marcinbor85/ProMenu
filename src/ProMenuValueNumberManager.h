@@ -16,7 +16,8 @@ public:
     struct NumberDescriptor {
         long min;
         long max;
-        long precision;
+        int decimalPlaces;
+        long step;
         long *value;
     };
 

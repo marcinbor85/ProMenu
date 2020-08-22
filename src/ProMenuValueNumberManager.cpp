@@ -29,7 +29,7 @@ bool ValueNumberManager::prevValue(MenuItem &item)
     if (i < this->valuesNum) {
         if (this->isPrevValueAvailable(item)) {
             val = *this->descriptors[i].value;
-            *this->descriptors[i].value = val - 1;
+            *this->descriptors[i].value = val - this->descriptors[i].step;
             return true;
         }
     }
@@ -43,7 +43,7 @@ bool ValueNumberManager::nextValue(MenuItem &item)
     if (i < this->valuesNum) {
         if (this->isNextValueAvailable(item)) {
             val = *this->descriptors[i].value;
-            *this->descriptors[i].value = val + 1;
+            *this->descriptors[i].value = val + this->descriptors[i].step;
             return true;
         }
     }
@@ -53,8 +53,34 @@ bool ValueNumberManager::nextValue(MenuItem &item)
 void ValueNumberManager::getValueText(MenuItem &item, char *text, int maxSize)
 {
     int i = item.getId();
+    long valInt;
+    unsigned long valDec;
+    long val;
+    long div;
+    char sign[2];
+    char formatString[16];
     if (i < this->valuesNum) {
-        snprintf(text, maxSize, "%ld", *this->descriptors[i].value);
+        val = *this->descriptors[i].value;
+        if (this->descriptors[i].decimalPlaces == 0) {
+            snprintf(text, maxSize, "%ld", val);
+        } else {
+            div = 1;
+            for (int n = 0; n < this->descriptors[i].decimalPlaces; n++)
+                div *= 10;
+                
+            if (val < 0) {
+                val = -val;
+                sign[0] = '-';
+                sign[1] = 0;
+            } else {
+                sign[0] = 0;
+            }
+
+            valInt = val / div;
+            valDec = val % div;
+            snprintf(formatString, sizeof(formatString), "%s%%ld.%%0%dlu", sign, this->descriptors[i].decimalPlaces);
+            snprintf(text, maxSize, formatString, valInt, valDec);
+        }        
     } else {
         if (maxSize > 0)
             text[0] = 0;

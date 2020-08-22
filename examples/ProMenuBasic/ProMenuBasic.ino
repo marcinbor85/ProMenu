@@ -66,20 +66,29 @@ ActionManager actionManager([](int id) -> bool {
     return true;
 });
 
-static long longTempValues[2];
-static long longExternalValues[2];
-struct ValueNumberManager::NumberDescriptor valuesDesc[2] = {
+static long longTempValues[3];
+static long longExternalValues[3] = {-50, 1, -500};
+struct ValueNumberManager::NumberDescriptor valuesDesc[3] = {
     {
         .min = -100,
         .max = 100,
-        .precision = 1,
+        .decimalPlaces = 1,
+        .step = 1,
         .value = &longTempValues[0]
     },
     {
-        .min = 0,
+        .min = -1,
         .max = 100,
-        .precision = 1,
+        .decimalPlaces = 0,
+        .step = 1,
         .value = &longTempValues[1]
+    },
+    {
+        .min = -1000,
+        .max = 1000,
+        .decimalPlaces = 3,
+        .step = 1,
+        .value = &longTempValues[2]
     }
 };
 
@@ -171,10 +180,11 @@ const MenuItemValue enum1(0, "State Machine", valueEnumManager);
 const MenuItemValue enum2(1, "Functional", valueEnumManager);
 const MenuItemValue number1(0, "ValueS test1 test2 test3", valueLongManager);
 const MenuItemValue number2(1, "ValueU", valueLongManager);
+const MenuItemValue number3(2, "ValueF", valueLongManager);
 const MenuItemText string1(0, "String", valueTextManager);
 const MenuItemText string2(1, "String very very long", valueTextManager);
 
-const MenuItem *menuMiscItems[] = {&enum1, &enum2, &number1, &number2, &string1, &string2};
+const MenuItem *menuMiscItems[] = {&enum1, &enum2, &number1, &number2, &number3, &string1, &string2};
 Menu menuMisc(1, "misc", menuMiscItems, sizeof(menuMiscItems) / sizeof(menuMiscItems[0]));
 
 
