@@ -35,6 +35,9 @@ void Menu::begin(MenuManager *manager, int pos)
         } else {
             this->startPos = 0;
         }
+
+        for (int i = 0; i < this->itemsNum; i++)
+            this->items[i]->preload();
     }
 }
 

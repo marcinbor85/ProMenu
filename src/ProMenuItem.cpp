@@ -14,6 +14,11 @@ MenuItem::MenuItem(int id, char *name, char *prefix):
 
 }
 
+void MenuItem::preload()
+{
+    
+}
+
 bool MenuItem::selectFromMenu(MenuBase *menu)
 {
     this->parentMenu = menu;

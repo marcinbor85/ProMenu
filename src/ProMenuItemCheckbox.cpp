@@ -7,6 +7,11 @@
 
 namespace promenu {
 
+void MenuItemCheckboxInterface::cancel(MenuItem &item)
+{
+
+}
+
 MenuItemCheckbox::MenuItemCheckbox(int id, char *name, MenuItemCheckboxInterface &interface, char *prefix):
     MenuItem(id, name, prefix),
     interface(interface)
@@ -16,7 +21,9 @@ MenuItemCheckbox::MenuItemCheckbox(int id, char *name, MenuItemCheckboxInterface
 
 bool MenuItemCheckbox::select()
 {
-    return this->interface.setSelected(*this, !this->interface.isSelected(*this));
+    bool s = this->interface.setSelected(*this, !this->interface.isSelected(*this));
+    this->interface.save(*this);
+    return s;
 }
 
 int MenuItemCheckbox::getRenderName(char *text, int maxSize)

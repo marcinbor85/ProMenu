@@ -12,6 +12,7 @@ class MenuItem {
 public:
     MenuItem(int id, char *name, char *prefix);
 
+    virtual void preload();
     virtual bool select() = 0;
     virtual int getRenderName(char *text, int maxSize);
 

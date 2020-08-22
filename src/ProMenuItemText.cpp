@@ -61,6 +61,7 @@ bool MenuItemText::prev()
 bool MenuItemText::next()
 {
     char ch;
+    char chNext;
     ch = this->interface.getChar(*this, this->cursorPos);
     if (this->editMode != false) {
         if (ch == 127) {
@@ -71,7 +72,7 @@ bool MenuItemText::next()
         this->interface.setChar(*this, this->cursorPos, ch);
         this->redrawCursor = true;
     } else {
-        if (ch != 0) {
+        if ((ch != 0) || (this->cursorPos == -1)) {
             this->cursorPos++;
             this->redrawCursor = true;
             if (this->cursorPos - this->startPos >= this->getMenuManager().getDisplay().getWidth()) {
@@ -79,10 +80,10 @@ bool MenuItemText::next()
                 this->redrawValue = true;
             }
         } else {
-            this->interface.setChar(*this, this->cursorPos, ' ');
-            ch = this->interface.getChar(*this, this->cursorPos);
-            if (ch != 0) {
+            if (this->cursorPos < this->interface.getMaxLength(*this) - 1) {
+                this->interface.setChar(*this, this->cursorPos, ' ');
                 this->cursorPos++;
+                this->interface.setChar(*this, this->cursorPos, 0);
                 this->redrawCursor = true;
                 this->redrawValue = true;
                 if (this->cursorPos - this->startPos >= this->getMenuManager().getDisplay().getWidth()) {
@@ -153,13 +154,18 @@ void MenuItemText::renderValue(DisplayInterface &display)
             pos++;
         } else {
             if (pad == false) {
-                ch = this->interface.getChar(*this, pos++);
-                if (ch != 0) {
-                    display.printChar(ch);
+                if (pos < this->interface.getMaxLength(*this)) {
+                    ch = this->interface.getChar(*this, pos++);
+                    if (ch != 0) {
+                        display.printChar(ch);
+                    } else {
+                        display.printChar('<');
+                        pad = true;
+                    }             
                 } else {
                     display.printChar('<');
                     pad = true;
-                }             
+                }
             } else {
                 display.printChar(' ');
             }

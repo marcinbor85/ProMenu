@@ -9,12 +9,12 @@ namespace promenu {
 class MenuItemValueInterface: public MenuItemEditInterface {
 
 public:
-    virtual bool prevValue(MenuItemEdit &item) = 0;
-    virtual bool nextValue(MenuItemEdit &item) = 0;
-    virtual void getValueText(MenuItemEdit &item, char *text, int maxSize) = 0;
+    virtual bool prevValue(MenuItem &item) = 0;
+    virtual bool nextValue(MenuItem &item) = 0;
+    virtual void getValueText(MenuItem &item, char *text, int maxSize) = 0;
 
-    virtual bool isPrevValueAvailable(MenuItemEdit &item) = 0;
-    virtual bool isNextValueAvailable(MenuItemEdit &item) = 0;
+    virtual bool isPrevValueAvailable(MenuItem &item) = 0;
+    virtual bool isNextValueAvailable(MenuItem &item) = 0;
 };
 
 class MenuItemValue: public MenuItemEdit {

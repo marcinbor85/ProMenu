@@ -9,8 +9,9 @@ namespace promenu {
 class MenuItemTextInterface: public MenuItemEditInterface {
 
 public:
-    virtual void setChar(MenuItemEdit &item, int p, char ch) = 0;
-    virtual char getChar(MenuItemEdit &item, int p) = 0;
+    virtual int getMaxLength(MenuItem &item) = 0;
+    virtual void setChar(MenuItem &item, int p, char ch) = 0;
+    virtual char getChar(MenuItem &item, int p) = 0;
 };
 
 class MenuItemText: public MenuItemEdit {

@@ -13,9 +13,9 @@ class MenuItemEdit;
 class MenuItemEditInterface {
 
 public:
-    virtual void init(MenuItemEdit &item) = 0;
-    virtual void save(MenuItemEdit &item) = 0;
-    virtual void cancel(MenuItemEdit &item) = 0;
+    virtual void load(MenuItem &item) = 0;
+    virtual void save(MenuItem &item) = 0;
+    virtual void cancel(MenuItem &item) = 0;
 };
 
 class MenuItemEdit: public MenuItem, public MenuScreen {
@@ -23,6 +23,8 @@ class MenuItemEdit: public MenuItem, public MenuScreen {
 public:
     MenuItemEdit(int id, char *name, char *prefix);
     
+    virtual void preload();
+
     virtual bool select();
     virtual bool exit();
     virtual bool enter();

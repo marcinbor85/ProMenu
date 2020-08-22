@@ -17,6 +17,12 @@ MenuItemEdit::MenuItemEdit(int id, char *name, char *prefix):
 
 }
 
+void MenuItemEdit::preload()
+{
+    this->MenuItem::preload();
+    this->getInterface().load(*this);    
+}
+
 void MenuItemEdit::redraw()
 {
     this->MenuScreen::redraw();
@@ -25,7 +31,6 @@ void MenuItemEdit::redraw()
 
 bool MenuItemEdit::select()
 {
-    this->getInterface().init(*this);
     this->parentMenu->getMenuManager().enterToMenu(*this);
     return true;
 }

@@ -2,17 +2,17 @@
 #define PRO_MENU_ITEM_CHECKBOX_H
 
 #include "ProMenuItem.h"
+#include "ProMenuItemEdit.h"
 
 namespace promenu {
 
-class MenuManager;
-class MenuItemCheckbox;
-
-class MenuItemCheckboxInterface {
+class MenuItemCheckboxInterface: public MenuItemEditInterface {
 
 public:
-    virtual bool setSelected(MenuItemCheckbox &item, bool value) = 0;
-    virtual bool isSelected(MenuItemCheckbox &item) = 0;
+    virtual bool setSelected(MenuItem &item, bool value) = 0;
+    virtual bool isSelected(MenuItem &item) = 0;
+
+    virtual void cancel(MenuItem &item);
 };
 
 class MenuItemCheckbox: public MenuItem {
