@@ -74,7 +74,7 @@ public:
     static constexpr int BUTTON_LEFT_ACS_VALUE = 409;
     static constexpr int BUTTON_SELECT_ACS_VALUE = 0;
 
-    LcdShieldButtons(promenu::MenuManager &manager,
+    LcdShieldButtons(promenu::MenuManagerInterface &interface,
         int buttonAdcPin = BUTTON_ADC_PIN,
         int buttonAdcAcceptRange = BUTTON_ADC_ACCEPT_RANGE,
         int buttonUpThreshhold = BUTTON_UP_ADC_VALUE,
@@ -93,7 +93,7 @@ private:
     virtual void event(smartbutton::SmartButton *button, smartbutton::SmartButton::Event event, int clickCounter);
     virtual bool isPressed(smartbutton::SmartButton *button);
 
-    MenuManager &manager;
+    MenuManagerInterface &interface;
 
     smartbutton::SmartButton buttonUp;
     smartbutton::SmartButton buttonDown;

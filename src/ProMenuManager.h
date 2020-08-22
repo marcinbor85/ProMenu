@@ -9,7 +9,15 @@ class DisplayInterface;
 class MenuManager;
 class MenuBase;
 
-class MenuManager {
+class MenuManagerInterface {
+public:
+    virtual bool up(int repeat) = 0;
+    virtual bool down(int repeat) = 0;
+    virtual bool back(int repeat) = 0;
+    virtual bool select(int repeat) = 0;
+};
+
+class MenuManager: public MenuManagerInterface {
 
 public:
     MenuManager(DisplayInterface &display);
@@ -17,10 +25,10 @@ public:
     void begin(MenuBase &menu);
     void end();
 
-    bool up(int repeat = 1);
-    bool down(int repeat = 1);
-    bool back(int repeat = 1);
-    bool select(int repeat = 1);
+    virtual bool up(int repeat = 1);
+    virtual bool down(int repeat = 1);
+    virtual bool back(int repeat = 1);
+    virtual bool select(int repeat = 1);
 
     void process();
 

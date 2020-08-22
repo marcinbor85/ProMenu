@@ -119,7 +119,7 @@ void LcdShieldDisplay::end()
     this->clear();
 }
 
-LcdShieldButtons::LcdShieldButtons(promenu::MenuManager &manager,
+LcdShieldButtons::LcdShieldButtons(promenu::MenuManagerInterface &interface,
     int buttonAdcPin,
     int buttonAdcAcceptRange,
     int buttonUpThreshhold,
@@ -127,7 +127,7 @@ LcdShieldButtons::LcdShieldButtons(promenu::MenuManager &manager,
     int buttonBackThreshold,
     int buttonSelectThreshold
 ):
-    manager(manager),
+    interface(interface),
     buttonAdcPin(buttonAdcPin),
     buttonAdcAcceptRange(buttonAdcAcceptRange),
     buttonUpThreshold(buttonUpThreshhold),
@@ -212,13 +212,13 @@ void LcdShieldButtons::event(smartbutton::SmartButton *button, smartbutton::Smar
     repeat = (button->getState() == smartbutton::SmartButton::State::LONG_HOLD) ? 10 : 1;
 
     if (button == &this->buttonUp) {
-        this->manager.up(repeat);
+        this->interface.up(repeat);
     } else if (button == &this->buttonDown) {
-        this->manager.down(repeat);
+        this->interface.down(repeat);
     } else if (button == &this->buttonBack) {
-        this->manager.back(repeat);
+        this->interface.back(repeat);
     } else if (button == &this->buttonSelect) {
-        this->manager.select(repeat);
+        this->interface.select(repeat);
     }
 }
 
