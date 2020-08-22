@@ -19,6 +19,12 @@ MenuItemCheckbox::MenuItemCheckbox(int id, char *name, MenuItemCheckboxInterface
 
 }
 
+void MenuItemCheckbox::preload()
+{
+    this->MenuItem::preload();
+    this->interface.load(*this);    
+}
+
 bool MenuItemCheckbox::select()
 {
     bool s = this->interface.setSelected(*this, !this->interface.isSelected(*this));

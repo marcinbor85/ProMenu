@@ -20,6 +20,8 @@ class MenuItemCheckbox: public MenuItem {
 public:
     MenuItemCheckbox(int id, char *name, MenuItemCheckboxInterface &interface, char *prefix = MenuItemCheckbox::PREFIX);
     
+    virtual void preload();
+    
     virtual bool select();
     virtual int getRenderName(char *text, int maxSize);
 
