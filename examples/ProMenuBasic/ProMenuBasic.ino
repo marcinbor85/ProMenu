@@ -29,7 +29,7 @@ LcdShieldDisplay display{};
 MenuManager menuManager(display);
 
 static bool checkboxTempValues[2];
-static bool checkboxExternalValues[2] = {false, false};
+static bool checkboxExternalValues[2] = {true, false};
 CheckboxManager checkboxManager(checkboxTempValues, sizeof(checkboxTempValues) / sizeof(checkboxTempValues[0]),
     [](int id, bool *val) {
         *val = checkboxExternalValues[id];
@@ -108,12 +108,12 @@ static int enumExternalValues[2];
 struct ValueEnumManager::EnumDescriptor enumsDesc[2] = {
     {
         .enumText = triStateEnum,
-        .enumSize = 3,
+        .enumSize = sizeof(triStateEnum)/sizeof(triStateEnum[0]),
         .value = &enumTempValues[0],
     },
     {
         .enumText = offOnEnum,
-        .enumSize = 2,
+        .enumSize = sizeof(offOnEnum)/sizeof(offOnEnum[0]),
         .value = &enumTempValues[1],
     }
 };
