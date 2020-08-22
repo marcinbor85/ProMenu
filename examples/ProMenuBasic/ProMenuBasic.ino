@@ -70,13 +70,13 @@ static long longTempValues[2];
 static long longExternalValues[2];
 struct ValueNumberManager::NumberDescriptor valuesDesc[2] = {
     {
-        .min = 0,
+        .min = -100,
         .max = 100,
         .precision = 1,
         .value = &longTempValues[0]
     },
     {
-        .min = -100,
+        .min = 0,
         .max = 100,
         .precision = 1,
         .value = &longTempValues[1]
