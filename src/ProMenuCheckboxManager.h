@@ -10,15 +10,19 @@ namespace promenu::managers {
 class CheckboxManager: public MenuItemCheckboxInterface {
 
 public:
-    explicit CheckboxManager(bool *values, int valuesNum);
+    using LoadHandler = void (*)(int id, bool *val);
+    using SaveHandler = void (*)(int id, bool val);
 
-    virtual bool isSelected(MenuItemCheckbox &item);
-    virtual bool setSelected(MenuItemCheckbox &item, bool val);
+    CheckboxManager(bool *values, int valuesNum, LoadHandler loadHandler, SaveHandler saveHandler);
+
+    virtual bool isSelected(MenuItem &item);
+    virtual bool setSelected(MenuItem &item, bool val);
+    virtual void save(MenuItem &item);
+    virtual void load(MenuItem &item);
 
 private:
-    CheckboxManager() = delete;
-    CheckboxManager(const CheckboxManager&) = delete;
-    CheckboxManager& operator=(const CheckboxManager&) = delete;
+    LoadHandler loadHandler;
+    SaveHandler saveHandler;
 
     bool *values;
     const int valuesNum;
