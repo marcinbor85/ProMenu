@@ -28,7 +28,7 @@ port to different architecture.
 
 ## Example
 
-Checkbox menu definition example:
+### Checkbox
 ![alt text](assets/checkbox.gif "Checkbox Animation")
 
 ```cpp
