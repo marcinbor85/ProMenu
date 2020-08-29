@@ -29,8 +29,7 @@ port to different architecture.
 ## Example
 
 Checkbox menu definition example:
-
-![](https://github.com/marcibor85/ProMenu/assets/checkbox.gif)
+![alt text](assets/checkbox.gif "Checkbox Animation")
 
 ```cpp
 LcdShieldDisplay display{};
