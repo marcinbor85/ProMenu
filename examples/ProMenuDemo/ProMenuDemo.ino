@@ -23,13 +23,13 @@ using namespace promenu::managers;
 constexpr int LED_PIN = 13;
 constexpr int BACKLIGHT_PIN = 10;
 
-//LcdShieldDisplay display{16, 2, 14, 1, 1, 1};
-LcdShieldDisplay display{};
+LcdShieldDisplay display{16, 2, 14, 1, 1, 1};
+//LcdShieldDisplay display{};
 
 MenuManager menuManager(display);
 
 static bool checkboxTempValues[2];
-static bool checkboxExternalValues[2] = {true, false};
+static bool checkboxExternalValues[2] = {false, true};
 CheckboxManager checkboxManager(checkboxTempValues, sizeof(checkboxTempValues) / sizeof(checkboxTempValues[0]),
     [](int id, bool *val) {
         *val = checkboxExternalValues[id];
@@ -45,20 +45,9 @@ ActionManager actionManager([](int id) -> bool {
         case 1:
             return false;
         case 2:
-            return false;
-        case 3:
-            return false;
-        case 4:
-            digitalWrite(LED_PIN, LOW);
-            break;
-        case 5:
-            digitalWrite(LED_PIN, HIGH);
-            break;
-        case 6:
-            digitalWrite(BACKLIGHT_PIN, LOW);
-            break;
-        case 7:
-            digitalWrite(BACKLIGHT_PIN, HIGH);
+            void (*resetFunc) (void) = 0;
+            delay(500);
+            resetFunc();
             break;
         default:
             return false;
@@ -100,20 +89,20 @@ ValueNumberManager valueLongManager(valuesDesc, sizeof(valuesDesc)/sizeof(values
     }
 );
 
-static const char *triStateEnum[3] = {"LOW", "MID", "HIGH"};
-static const char *offOnEnum[2] = {"OFF", "ON"};
+static const char *speedEnum[3] = {"LOW", "MID", "HIGH"};
+static const char *stateEnum[2] = {"OFF", "ON"};
 
 static int enumTempValues[2];
-static int enumExternalValues[2];
+static int enumExternalValues[2] = {0, 0};
 struct ValueEnumManager::EnumDescriptor enumsDesc[2] = {
     {
-        .enumText = triStateEnum,
-        .enumSize = sizeof(triStateEnum)/sizeof(triStateEnum[0]),
+        .enumText = speedEnum,
+        .enumSize = sizeof(speedEnum)/sizeof(speedEnum[0]),
         .value = &enumTempValues[0],
     },
     {
-        .enumText = offOnEnum,
-        .enumSize = sizeof(offOnEnum)/sizeof(offOnEnum[0]),
+        .enumText = stateEnum,
+        .enumSize = sizeof(stateEnum)/sizeof(stateEnum[0]),
         .value = &enumTempValues[1],
     }
 };
@@ -167,42 +156,58 @@ ValueTextManager valueTextManager(textDesc, sizeof(textDesc)/sizeof(textDesc[0])
     }
 );
 
-const MenuItemAction action31(0, "Enable", actionManager);
-const MenuItemAction action32(1, "Disable", actionManager);
-const MenuItemCheckbox checkbox1(0, "Feature1 long", checkboxManager);
-const MenuItemCheckbox checkbox2(1, "Feature2", checkboxManager);
 
-const MenuItem *menuMisc2Items[] = {&action31, &action32, &checkbox1, &checkbox2};
-Menu menuMisc2("miscelanous others items", menuMisc2Items, sizeof(menuMisc2Items) / sizeof(menuMisc2Items[0]));
+const MenuItemText string1(0, "Title", valueTextManager);
+const MenuItemText string2(1, "Password", valueTextManager);
 
-
-const MenuItemValue enum1(0, "State Machine", valueEnumManager);
-const MenuItemValue enum2(1, "Functional", valueEnumManager);
-const MenuItemValue number1(0, "ValueS test", valueLongManager);
-const MenuItemValue number2(1, "ValueU", valueLongManager);
-const MenuItemValue number3(2, "ValueF", valueLongManager);
-const MenuItemText string1(0, "String", valueTextManager);
-const MenuItemText string2(1, "String very very long", valueTextManager);
-
-const MenuItem *menuMiscItems[] = {&enum1, &enum2, &number1, &number2, &number3, &string1, &string2};
-Menu menuMisc("misc", menuMiscItems, sizeof(menuMiscItems) / sizeof(menuMiscItems[0]));
+const MenuItem *menuTextItems[] = {&string1, &string2};
+Menu menuText("Text", menuTextItems, sizeof(menuTextItems) / sizeof(menuTextItems[0]));
 
 
-const MenuItemAction action11(4, "--- Led OFF +++ test test", actionManager);
-const MenuItemAction action12(5, "Led ON aabbccdd eeff gg hhh", actionManager);
-const MenuItemAction action13(6, "Light OFF", actionManager);
-const MenuItemAction action14(7, "Light ON", actionManager);
+const MenuItemValue enum1(0, "Speed", valueEnumManager);
+const MenuItemValue enum2(1, "Blinking", valueEnumManager);
 
-const MenuItem *menuActionItems[] = {&action11, &action12, &action13, &action14};
-Menu menuAction("actions", menuActionItems, sizeof(menuActionItems) / sizeof(menuActionItems[0]));
+const MenuItem *menuEnumerationItems[] = {&enum1, &enum2};
+Menu menuEnumeration("Enumeration", menuEnumerationItems, sizeof(menuEnumerationItems) / sizeof(menuEnumerationItems[0]));
 
 
-const MenuItemSubmenu menuActionItemSubmenu(1, "Actions", menuAction);
-const MenuItemSubmenu menuMiscItemSubmenu(2, "Misc", menuMisc);
-const MenuItemSubmenu menuMisc2ItemSubmenu(3, "Misc2", menuMisc2);
+const MenuItemValue number1(0, "Signed", valueLongManager);
+const MenuItemValue number2(1, "Unsigned", valueLongManager);
+const MenuItemValue number3(2, "Float", valueLongManager);
 
-const MenuItem *rootItems[] = {&menuActionItemSubmenu, &menuMiscItemSubmenu, &menuMisc2ItemSubmenu};
-Menu menuRoot("root", rootItems, sizeof(rootItems) / sizeof(rootItems[0]));
+const MenuItem *menuNumberItems[] = {&number1, &number2, &number3};
+Menu menuNumber("Number", menuNumberItems, sizeof(menuNumberItems) / sizeof(menuNumberItems[0]));
+
+
+const MenuItemCheckbox checkbox1(0, "Led", checkboxManager);
+const MenuItemCheckbox checkbox2(1, "Backlight", checkboxManager);
+
+const MenuItem *menuBooleanItems[] = {&checkbox1, &checkbox2};
+Menu menuBoolean("Boolean", menuBooleanItems, sizeof(menuBooleanItems) / sizeof(menuBooleanItems[0]));
+
+
+const MenuItemSubmenu valuesBoolean(0, "Boolean", menuBoolean);
+const MenuItemSubmenu valuesNumber(1, "Number", menuNumber);
+const MenuItemSubmenu valuesEnumeration(2, "Enumeration", menuEnumeration);
+const MenuItemSubmenu valuesText(3, "Text", menuText);
+
+const MenuItem *menuValuesItems[] = {&valuesBoolean, &valuesNumber, &valuesEnumeration, &valuesText};
+Menu menuValues("Values", menuValuesItems, sizeof(menuValuesItems) / sizeof(menuValuesItems[0]));
+
+
+const MenuItemAction action1(0, "Fire", actionManager);
+const MenuItemAction action2(1, "Release", actionManager);
+const MenuItemAction action3(2, "Reset (reboot system)", actionManager);
+
+const MenuItem *menuActionsItems[] = {&action1, &action2, &action3};
+Menu menuActions("Actions", menuActionsItems, sizeof(menuActionsItems) / sizeof(menuActionsItems[0]));
+
+
+const MenuItemSubmenu menuActionsItemSubmenu(0, "Actions", menuActions);
+const MenuItemSubmenu menuValuesItemSubmenu(1, "Values", menuValues);
+
+const MenuItem *rootItems[] = {&menuActionsItemSubmenu, &menuValuesItemSubmenu};
+Menu menuRoot("Root", rootItems, sizeof(rootItems) / sizeof(rootItems[0]));
 
 
 LcdShieldButtons buttons(menuManager);
@@ -210,10 +215,7 @@ LcdShieldButtons buttons(menuManager);
 void setup()
 {
     pinMode(LED_PIN, OUTPUT);
-    digitalWrite(LED_PIN, LOW);
-
     pinMode(BACKLIGHT_PIN, OUTPUT);
-    digitalWrite(BACKLIGHT_PIN, HIGH);
 
     menuManager.begin(menuRoot); 
     buttons.begin();
@@ -221,6 +223,31 @@ void setup()
 
 void loop()
 {
+    static unsigned long blinkLastTick = 0;
+    unsigned long period;
+
+    if (enumExternalValues[1] != 0) {
+        switch (enumExternalValues[0]) {
+        case 0:
+            period = 1000UL;
+            break;
+        case 1:
+            period = 500UL;
+            break;
+        case 2:
+            period = 100UL;
+            break;
+        }
+        if (millis() - blinkLastTick > period) {
+            blinkLastTick = millis();
+            digitalWrite(LED_PIN, !digitalRead(LED_PIN));
+        }
+    } else {
+        digitalWrite(LED_PIN, checkboxExternalValues[0]);
+    }
+
+    digitalWrite(BACKLIGHT_PIN, checkboxExternalValues[1]);
+
     menuManager.process();
     buttons.process();
 }
