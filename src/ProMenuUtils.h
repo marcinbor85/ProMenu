@@ -4,6 +4,7 @@
 namespace promenu::utils {
 
 void rightPaddingText(char *text, int length, char ch);
+void insertStringAtBegin(char *desc, const char *src, int descSize);
 
 };
 

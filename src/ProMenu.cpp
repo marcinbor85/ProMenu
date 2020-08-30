@@ -109,6 +109,25 @@ void Menu::reset()
     this->startPos = 0;
 }
 
+int Menu::getRenderHeader(char *text, int maxSize)
+{
+    int len = this->getMenuTreeNameLength();
+    char buf[len + 1];
+    MenuBase *menu = this;
+
+    if (text) {
+        while (menu) {
+            utils::insertStringAtBegin(buf, menu->getName(), sizeof(buf));
+            menu = menu->getPrevMenu();
+            if (menu)
+               utils::insertStringAtBegin(buf, ":", sizeof(buf));
+        }
+        strncpy(text, buf, maxSize);
+    }
+    
+    return len;
+}
+
 void Menu::renderCursor(DisplayInterface &display)
 {
     int yMax = display.getHeight() - 1;

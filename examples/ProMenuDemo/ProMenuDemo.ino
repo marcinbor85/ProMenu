@@ -202,7 +202,7 @@ const MenuItemSubmenu menuMiscItemSubmenu(2, "Misc", menuMisc);
 const MenuItemSubmenu menuMisc2ItemSubmenu(3, "Misc2", menuMisc2);
 
 const MenuItem *rootItems[] = {&menuActionItemSubmenu, &menuMiscItemSubmenu, &menuMisc2ItemSubmenu};
-Menu menuRoot("root main menu with submenus", rootItems, sizeof(rootItems) / sizeof(rootItems[0]));
+Menu menuRoot("root", rootItems, sizeof(rootItems) / sizeof(rootItems[0]));
 
 
 LcdShieldButtons buttons(menuManager);

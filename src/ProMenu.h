@@ -26,6 +26,8 @@ public:
     virtual void render(DisplayInterface &display);
     virtual void process();
 
+    virtual int getRenderHeader(char *text, int maxSize);
+
 protected:
     virtual void redraw();
     virtual void renderSelectedLine(DisplayInterface &display);

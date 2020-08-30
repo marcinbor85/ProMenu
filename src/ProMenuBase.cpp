@@ -1,6 +1,7 @@
 #include "ProMenuBase.h"
 
 #include "ProMenuManager.h"
+#include "ProMenuUtils.h"
 
 #include <string.h>
 #include <stdio.h>
@@ -48,9 +49,29 @@ const char* MenuBase::getName()
     return this->name;
 }
 
+MenuBase* MenuBase::getPrevMenu()
+{
+    return this->prevMenu;
+}
+
 MenuManager& MenuBase::getMenuManager()
 {
     return *this->manager;
+}
+
+int MenuBase::getMenuTreeNameLength()
+{
+    MenuBase *menu = this;
+    int len = 0;
+
+    while (menu) {
+        len += strlen(menu->name);
+        menu = menu->prevMenu;
+        if (menu)
+            len ++;
+    }
+
+    return len;
 }
 
 };

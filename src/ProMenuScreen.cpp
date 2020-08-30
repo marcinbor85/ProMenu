@@ -77,7 +77,7 @@ void MenuScreen::process()
         return;
 
     xMax = this->getMenuManager().getDisplay().getWidth();
-    lineLength = strlen(this->name);
+    lineLength = this->getRenderHeader(NULL, 0);
 
     this->scrollHeaderLine.scroll(lineLength, xMax);
 }

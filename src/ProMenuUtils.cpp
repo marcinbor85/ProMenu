@@ -1,5 +1,7 @@
 #include "ProMenuUtils.h"
 
+#include <string.h>
+
 namespace promenu::utils {
 
 void rightPaddingText(char *text, int length, char ch)
@@ -15,6 +17,15 @@ void rightPaddingText(char *text, int length, char ch)
             text[i] = (i == length - 1) ? 0 : ch;
         }
     }
+}
+
+void insertStringAtBegin(char *desc, const char *src, int descSize)
+{
+    char buf[descSize];
+
+    strlcpy(buf, desc, sizeof(buf));
+    strlcpy(desc, src, descSize);
+    strlcat(desc, buf, descSize);
 }
 
 };

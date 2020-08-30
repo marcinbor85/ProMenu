@@ -28,6 +28,7 @@ public:
     MenuManager& getMenuManager();
 
     const char* getName();
+    MenuBase* getPrevMenu();
 
 protected:
     MenuBase *prevMenu;
@@ -35,6 +36,7 @@ protected:
 
     const char *name;
 
+    int getMenuTreeNameLength();
 };
 
 };
