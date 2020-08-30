@@ -12,7 +12,7 @@ namespace promenu {
 
 MenuItemEdit::MenuItemEdit(int id, char *name, char *prefix):
     MenuItem(id, name, prefix),
-    MenuScreen(id, name)
+    MenuScreen()
 {
 
 }

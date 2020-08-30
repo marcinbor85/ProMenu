@@ -173,7 +173,7 @@ const MenuItemCheckbox checkbox1(0, "Feature1 long", checkboxManager);
 const MenuItemCheckbox checkbox2(1, "Feature2", checkboxManager);
 
 const MenuItem *menuMisc2Items[] = {&action31, &action32, &checkbox1, &checkbox2};
-Menu menuMisc2(1, "misc3", menuMisc2Items, sizeof(menuMisc2Items) / sizeof(menuMisc2Items[0]));
+Menu menuMisc2("misc3", menuMisc2Items, sizeof(menuMisc2Items) / sizeof(menuMisc2Items[0]));
 
 
 const MenuItemValue enum1(0, "State Machine", valueEnumManager);
@@ -185,7 +185,7 @@ const MenuItemText string1(0, "String", valueTextManager);
 const MenuItemText string2(1, "String very very long", valueTextManager);
 
 const MenuItem *menuMiscItems[] = {&enum1, &enum2, &number1, &number2, &number3, &string1, &string2};
-Menu menuMisc(1, "misc", menuMiscItems, sizeof(menuMiscItems) / sizeof(menuMiscItems[0]));
+Menu menuMisc("misc", menuMiscItems, sizeof(menuMiscItems) / sizeof(menuMiscItems[0]));
 
 
 const MenuItemAction action11(4, "--- Led OFF +++ test test", actionManager);
@@ -194,7 +194,7 @@ const MenuItemAction action13(6, "Light OFF", actionManager);
 const MenuItemAction action14(7, "Light ON", actionManager);
 
 const MenuItem *menuActionItems[] = {&action11, &action12, &action13, &action14};
-Menu menuAction(1, "actions", menuActionItems, sizeof(menuActionItems) / sizeof(menuActionItems[0]));
+Menu menuAction("actions", menuActionItems, sizeof(menuActionItems) / sizeof(menuActionItems[0]));
 
 
 const MenuItemSubmenu menuActionItemSubmenu(1, "Actions", menuAction);
@@ -202,7 +202,7 @@ const MenuItemSubmenu menuMiscItemSubmenu(2, "Misc", menuMisc);
 const MenuItemSubmenu menuMisc2ItemSubmenu(3, "Misc2", menuMisc2);
 
 const MenuItem *rootItems[] = {&menuActionItemSubmenu, &menuMiscItemSubmenu, &menuMisc2ItemSubmenu};
-Menu menuRoot(1, "root", rootItems, sizeof(rootItems) / sizeof(rootItems[0]));
+Menu menuRoot("root", rootItems, sizeof(rootItems) / sizeof(rootItems[0]));
 
 
 LcdShieldButtons buttons(menuManager);

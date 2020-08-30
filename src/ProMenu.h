@@ -14,7 +14,7 @@ class DisplayInterface;
 class Menu: public MenuScreen {
 
 public:
-    Menu(int id, char *name, MenuItem **items, int itemsNum);
+    Menu(char *name, MenuItem **items, int itemsNum);
     
     virtual void begin(MenuManager *manager, int pos = 0);
     virtual void reset();
@@ -31,6 +31,8 @@ protected:
     
     virtual void redraw();
     virtual void renderScroll(DisplayInterface &display);
+
+    const char *name;
 
 private:
     MenuItem* const *items;

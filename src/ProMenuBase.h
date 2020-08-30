@@ -11,7 +11,7 @@ class DisplayInterface;
 class MenuBase {
 
 public:
-    MenuBase(int id, char *name);
+    MenuBase();
     
     virtual void begin(MenuManager *manager, int pos = 0);
     virtual void end();
@@ -25,15 +25,9 @@ public:
     virtual void render(DisplayInterface &display) = 0;
     virtual void process() = 0;
 
-    int getId();
-    const char* getName();
-
     MenuManager& getMenuManager();
 
 protected:
-    const int id;
-    const char *name;
-    
     MenuBase *prevMenu;
     MenuManager *manager;
 };

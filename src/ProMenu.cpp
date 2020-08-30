@@ -11,8 +11,9 @@
 
 namespace promenu {
 
-Menu::Menu(int id, char *name, MenuItem **items, int itemsNum):
-    MenuScreen(id, name),
+Menu::Menu(char *name, MenuItem **items, int itemsNum):
+    MenuScreen(),
+    name(name),
     items(items),
     itemsNum(itemsNum),
     currentPos(0),

@@ -7,9 +7,7 @@
 
 namespace promenu {
 
-MenuBase::MenuBase(int id, char *name):
-    id(id),
-    name(name),
+MenuBase::MenuBase():
     prevMenu(NULL)
 {
 
@@ -42,16 +40,6 @@ bool MenuBase::exit()
 void MenuBase::reset()
 {
 
-}
-
-int MenuBase::getId()
-{
-    return this->id;
-}
-
-const char* MenuBase::getName()
-{
-    return this->name;
 }
 
 MenuManager& MenuBase::getMenuManager()

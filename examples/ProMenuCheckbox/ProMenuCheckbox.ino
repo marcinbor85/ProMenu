@@ -14,10 +14,6 @@ using namespace promenu::managers;
 constexpr int LED_PIN = 13;
 constexpr int BACKLIGHT_PIN = 10;
 
-LcdShieldDisplay display{};
-
-MenuManager menuManager(display);
-
 static bool ledState = false;
 static bool blinkState = false;
 static bool backlightState = true;
@@ -37,12 +33,16 @@ CheckboxManager checkboxManager(checkboxTempValues, sizeof(checkboxTempValues) /
     }
 );
 
+LcdShieldDisplay display{};
+
+MenuManager menuManager(display);
+
 const MenuItemCheckbox checkboxLed(0, "Led", checkboxManager);
 const MenuItemCheckbox checkboxBlink(1, "Blink", checkboxManager);
 const MenuItemCheckbox checkboxBacklight(2, "Backlight", checkboxManager);
 
 const MenuItem *menuItems[] = {&checkboxLed, &checkboxBlink, &checkboxBacklight};
-Menu menu(0, "menu", menuItems, sizeof(menuItems) / sizeof(menuItems[0]));
+Menu menu("menu", menuItems, sizeof(menuItems) / sizeof(menuItems[0]));
 
 LcdShieldButtons buttons(menuManager);
 
