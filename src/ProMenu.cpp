@@ -120,7 +120,7 @@ int Menu::getRenderHeader(char *text, int maxSize)
             utils::insertStringAtBegin(buf, menu->getName(), sizeof(buf));
             menu = menu->getPrevMenu();
             if (menu)
-               utils::insertStringAtBegin(buf, ":", sizeof(buf));
+               utils::insertStringAtBegin(buf, "/", sizeof(buf));
         }
         strncpy(text, buf, maxSize);
     }
