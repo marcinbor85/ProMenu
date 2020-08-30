@@ -20,14 +20,25 @@ MenuItemValue::MenuItemValue(int id, char *name, MenuItemValueInterface &interfa
 int MenuItemValue::getRenderName(char *text, int maxSize)
 {
     char value[maxSize];
-    char line[strlen(this->MenuItem::name) + 4 + sizeof(value) + strlen(this->prefix)];
+    char line[1];
+    char *ptr;
+
+    int size;
+    int len;
 
     this->interface.getValueText(*this, value, sizeof(value));
 
-    snprintf(line, sizeof(line), "%s[%s] %s", this->prefix, value, this->MenuItem::name);
-    if (text)
-        strlcpy(text, line, maxSize);
-    return strlen(line);
+    if (text) {
+        ptr = text;
+        size = maxSize;
+    } else {
+        ptr = line;
+        size = sizeof(line);
+    }
+ 
+    len = snprintf(ptr, size, "%s[%s] %s", this->prefix, value, this->MenuItem::name);
+
+    return len;
 }
 
 bool MenuItemValue::prev()

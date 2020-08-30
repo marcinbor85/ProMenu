@@ -22,8 +22,10 @@ public:
 
     virtual bool enter();
     virtual void reset();
-    
+
     virtual void process();
+
+    int getRenderHeader(char *text, int maxSize);
 
 protected:
     virtual void renderHeaderLine(DisplayInterface &display);

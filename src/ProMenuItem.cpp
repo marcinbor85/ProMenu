@@ -27,11 +27,21 @@ bool MenuItem::selectFromMenu(MenuBase *menu)
 
 int MenuItem::getRenderName(char *text, int maxSize)
 {
-    char line[strlen(this->name) + strlen(this->prefix) + 1];
-    snprintf(line, sizeof(line), "%s%s", this->prefix, this->name);
-    if (text)
-        strlcpy(text, line, maxSize);
-    return strlen(line);
+    char line[1];
+    char *ptr;
+    int size;
+    int len;
+
+    if (text) {
+        ptr = text;
+        size = maxSize;
+    } else {
+        ptr = line;
+        size = sizeof(line);
+    }
+
+    len = snprintf(ptr, size, "%s%s", this->prefix, this->name);
+    return len;
 }
 
 int MenuItem::getId()

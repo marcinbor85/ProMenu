@@ -77,7 +77,7 @@ struct ValueNumberManager::NumberDescriptor valuesDesc[3] = {
         .value = &longTempValues[0]
     },
     {
-        .min = -1,
+        .min = 0,
         .max = 100,
         .decimalPlaces = 0,
         .step = 1,
@@ -202,7 +202,7 @@ const MenuItemSubmenu menuMiscItemSubmenu(2, "Misc", menuMisc);
 const MenuItemSubmenu menuMisc2ItemSubmenu(3, "Misc2", menuMisc2);
 
 const MenuItem *rootItems[] = {&menuActionItemSubmenu, &menuMiscItemSubmenu, &menuMisc2ItemSubmenu};
-Menu menuRoot("root", rootItems, sizeof(rootItems) / sizeof(rootItems[0]));
+Menu menuRoot("root main menu with submenus", rootItems, sizeof(rootItems) / sizeof(rootItems[0]));
 
 
 LcdShieldButtons buttons(menuManager);

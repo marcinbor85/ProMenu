@@ -37,15 +37,27 @@ void MenuScreen::reset()
     this->redraw();
 }
 
+int MenuScreen::getRenderHeader(char *text, int maxSize)
+{
+    if (text)
+        strlcpy(text, this->name, maxSize);
+    return strlen(this->name);
+}
+
 void MenuScreen::renderHeaderLine(DisplayInterface &display)
 {
-    char line[display.getWidth() + 1];
+    if (display.getHeight() < 2)
+        return;
 
-    if (display.getHeight() > 1) {
-        strlcpy(line, &this->name[this->scrollHeaderLine.getPosition()], sizeof(line));
-        utils::rightPaddingText(line, sizeof(line), ' ');
-        display.setText(0, 0, line);
-    }
+    char text[display.getWidth() + 1];
+   
+    int textFullLength = this->getRenderHeader(NULL, sizeof(text));
+    char line[textFullLength + 1];
+
+    this->getRenderHeader(line, sizeof(line));
+    strlcpy(text, &line[this->scrollHeaderLine.getPosition()], sizeof(text));
+    utils::rightPaddingText(text, sizeof(text), ' ');
+    display.setText(0, 0, text);
 }
 
 void MenuScreen::render(DisplayInterface &display)

@@ -34,11 +34,21 @@ bool MenuItemCheckbox::select()
 
 int MenuItemCheckbox::getRenderName(char *text, int maxSize)
 {
-    char line[strlen(this->name) + strlen(this->prefix) + 5];
-    snprintf(line, sizeof(line), "%s[%c] %s", this->prefix, (this->interface.isSelected(*this) == false) ? ' ' : 'x', this->name);
-    if (text)
-        strlcpy(text, line, maxSize);
-    return strlen(line);
+    char line[1];
+    char *ptr;
+    int size;
+    int len;
+
+    if (text) {
+        ptr = text;
+        size = maxSize;
+    } else {
+        ptr = line;
+        size = sizeof(line);
+    }
+
+    len = snprintf(ptr, size, "%s[%c] %s", this->prefix, (this->interface.isSelected(*this) == false) ? ' ' : 'x', this->name);
+    return len;
 }
 
 };
