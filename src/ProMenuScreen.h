@@ -4,6 +4,7 @@
 #include <stddef.h>
 
 #include "ProMenuBase.h"
+#include "ProMenuScrollLine.h"
 
 namespace promenu {
 
@@ -23,21 +24,11 @@ public:
     virtual void reset();
 
 protected:
-    void scroll(int lineLength, int xMax);
-
-    virtual void resetScroll();
-    virtual void renderScroll(DisplayInterface &display) = 0;
+    virtual void renderSelectedLine(DisplayInterface &display) = 0;
     virtual void redraw();
 
-    int scrollPos;
-    bool redrawScroll;
+    ScrollLine scrollSelectedLine;
 
-private:
-    unsigned long lastScrollTick;
-    unsigned long scrollTimeout;
-
-    static constexpr unsigned long SCROLL_START_TIMEOUT = 2000UL;
-    static constexpr unsigned long SCROLL_TIMEOUT = 500UL;
 };
 
 };

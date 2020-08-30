@@ -4,6 +4,7 @@
 #include "ProMenuScreen.h"
 #include "ProMenuDisplay.h"
 #include "ProMenuUtils.h"
+#include "ProMenuScrollLine.h"
 #include "ProMenu.h"
 
 #include <string.h>
@@ -48,12 +49,12 @@ bool MenuItemEdit::enter()
     return this->MenuScreen::exit();
 }
 
-void MenuItemEdit::renderScroll(DisplayInterface &display)
+void MenuItemEdit::renderSelectedLine(DisplayInterface &display)
 {
     char line[display.getWidth() + 1];
 
     if (display.getHeight() > 1) {
-        strlcpy(line, &this->MenuItem::name[this->scrollPos], sizeof(line));
+        strlcpy(line, &this->MenuItem::name[this->scrollSelectedLine.getPosition()], sizeof(line));
         utils::rightPaddingText(line, sizeof(line), ' ');
         display.setText(0, 0, line);
     }
@@ -79,7 +80,7 @@ void MenuItemEdit::process()
     xMax = this->getMenuManager().getDisplay().getWidth();
     lineLength = strlen(this->MenuItem::name);
 
-    this->scroll(lineLength, xMax);
+    this->scrollSelectedLine.scroll(lineLength, xMax);
 }
 
 };

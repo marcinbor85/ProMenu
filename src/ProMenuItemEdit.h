@@ -39,7 +39,7 @@ protected:
     bool redrawValue;
 
     virtual void renderValue(DisplayInterface &display) = 0;
-    virtual void renderScroll(DisplayInterface &display);
+    virtual void renderSelectedLine(DisplayInterface &display);
     
 };
 

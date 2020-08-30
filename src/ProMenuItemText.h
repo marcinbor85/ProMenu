@@ -32,7 +32,7 @@ protected:
     virtual void redraw();
 
     virtual void renderValue(DisplayInterface &display);
-    virtual void renderScroll(DisplayInterface &display);
+    virtual void renderSelectedLine(DisplayInterface &display);
 
 private:
     MenuItemTextInterface &interface;

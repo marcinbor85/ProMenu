@@ -130,9 +130,9 @@ bool MenuItemText::enter()
     return true;
 }
 
-void MenuItemText::renderScroll(DisplayInterface &display)
+void MenuItemText::renderSelectedLine(DisplayInterface &display)
 {
-    this->MenuItemEdit::renderScroll(display);
+    this->MenuItemEdit::renderSelectedLine(display);
     this->redrawCursor = true;
 }
 

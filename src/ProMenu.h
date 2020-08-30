@@ -27,10 +27,8 @@ public:
     virtual void process();
 
 protected:
-    virtual void resetScroll();
-    
     virtual void redraw();
-    virtual void renderScroll(DisplayInterface &display);
+    virtual void renderSelectedLine(DisplayInterface &display);
 
 private:
     MenuItem* const *items;
@@ -44,6 +42,8 @@ private:
     
     void renderCursor(DisplayInterface &display);
     void renderList(DisplayInterface &display);
+
+    void resetScrollSelectedLine();
 };
 
 };

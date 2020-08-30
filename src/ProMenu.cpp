@@ -5,6 +5,7 @@
 #include "ProMenuDisplay.h"
 #include "ProMenuDefs.h"
 #include "ProMenuUtils.h"
+#include "ProMenuScrollLine.h"
 
 #include <string.h>
 #include <stdio.h>
@@ -47,7 +48,7 @@ bool Menu::prev()
     
     if (this->currentPos > 0) {
         this->currentPos --;
-        this->resetScroll();
+        this->resetScrollSelectedLine();
         ret = true;
         this->redrawCursor = true;
     }
@@ -66,7 +67,7 @@ bool Menu::next()
 
     if (this->currentPos < this->itemsNum - 1) {
         this->currentPos ++;
-        this->resetScroll();
+        this->resetScrollSelectedLine();
         ret = true;
         this->redrawCursor = true;
     }
@@ -132,7 +133,7 @@ void Menu::renderList(DisplayInterface &display)
                 char line[textFullLength + 1];
 
                 this->items[pos]->getRenderName(line, sizeof(line));
-                strlcpy(text, &line[this->scrollPos], sizeof(text));
+                strlcpy(text, &line[this->scrollSelectedLine.getPosition()], sizeof(text));
             } else {
                 this->items[pos]->getRenderName(text, sizeof(text));
             }
@@ -169,7 +170,7 @@ void Menu::renderList(DisplayInterface &display)
     }
 }
 
-void Menu::renderScroll(DisplayInterface &display)
+void Menu::renderSelectedLine(DisplayInterface &display)
 {
     char text[display.getWidth() - 1];
     int y = this->currentPos - this->startPos;
@@ -178,7 +179,7 @@ void Menu::renderScroll(DisplayInterface &display)
     char line[textFullLength + 1];
 
     this->items[this->currentPos]->getRenderName(line, sizeof(line));
-    strlcpy(text, &line[this->scrollPos], sizeof(text));
+    strlcpy(text, &line[this->scrollSelectedLine.getPosition()], sizeof(text));
 
     display.hideCursor();
     display.deselectChar();
@@ -194,17 +195,17 @@ void Menu::render(DisplayInterface &display)
     }
     if (this->redrawList) {
         this->redrawList = false;
-        this->redrawScroll = false;
+        this->scrollSelectedLine.setRedraw(false);
         this->renderList(display);
     }
     this->MenuScreen::render(display);
 }
 
-void Menu::resetScroll()
+void Menu::resetScrollSelectedLine()
 {
-    int prevPos = this->scrollPos;
-    this->MenuScreen::resetScroll();
-    if (prevPos != this->scrollPos)
+    int prevPos = this->scrollSelectedLine.getPosition();
+    this->scrollSelectedLine.reset();
+    if (prevPos != this->scrollSelectedLine.getPosition())
         this->redrawList = true;
 }
 
@@ -213,7 +214,7 @@ void Menu::process()
     int xMax = this->getMenuManager().getDisplay().getWidth() - 2;
     int lineLength = this->items[this->currentPos]->getRenderName(NULL, xMax);
     
-    this->scroll(lineLength, xMax);
+    this->scrollSelectedLine.scroll(lineLength, xMax);
 }
 
 };

@@ -46,12 +46,12 @@ bool MenuItemValue::next()
     return s;
 }
 
-void MenuItemValue::renderScroll(DisplayInterface &display)
+void MenuItemValue::renderSelectedLine(DisplayInterface &display)
 {
     display.hideCursor();
     display.deselectChar();
     
-    this->MenuItemEdit::renderScroll(display);
+    this->MenuItemEdit::renderSelectedLine(display);
 }
 
 void MenuItemValue::renderValue(DisplayInterface &display)
