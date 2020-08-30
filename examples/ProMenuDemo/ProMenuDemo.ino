@@ -23,7 +23,7 @@ using namespace promenu::managers;
 constexpr int LED_PIN = 13;
 constexpr int BACKLIGHT_PIN = 10;
 
-// LcdShieldDisplay display{16, 2, 14, 1, 1, 1};
+//LcdShieldDisplay display{16, 2, 14, 1, 1, 1};
 LcdShieldDisplay display{};
 
 MenuManager menuManager(display);
@@ -173,12 +173,12 @@ const MenuItemCheckbox checkbox1(0, "Feature1 long", checkboxManager);
 const MenuItemCheckbox checkbox2(1, "Feature2", checkboxManager);
 
 const MenuItem *menuMisc2Items[] = {&action31, &action32, &checkbox1, &checkbox2};
-Menu menuMisc2("misc3", menuMisc2Items, sizeof(menuMisc2Items) / sizeof(menuMisc2Items[0]));
+Menu menuMisc2("miscelanous others items", menuMisc2Items, sizeof(menuMisc2Items) / sizeof(menuMisc2Items[0]));
 
 
 const MenuItemValue enum1(0, "State Machine", valueEnumManager);
 const MenuItemValue enum2(1, "Functional", valueEnumManager);
-const MenuItemValue number1(0, "ValueS test1 test2 test3", valueLongManager);
+const MenuItemValue number1(0, "ValueS test", valueLongManager);
 const MenuItemValue number2(1, "ValueU", valueLongManager);
 const MenuItemValue number3(2, "ValueF", valueLongManager);
 const MenuItemText string1(0, "String", valueTextManager);

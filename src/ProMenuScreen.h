@@ -22,12 +22,14 @@ public:
 
     virtual bool enter();
     virtual void reset();
+    
+    virtual void process();
 
 protected:
-    virtual void renderSelectedLine(DisplayInterface &display) = 0;
+    virtual void renderHeaderLine(DisplayInterface &display);
     virtual void redraw();
 
-    ScrollLine scrollSelectedLine;
+    ScrollLine scrollHeaderLine;
 
 };
 

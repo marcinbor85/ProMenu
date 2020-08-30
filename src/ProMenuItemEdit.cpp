@@ -49,17 +49,6 @@ bool MenuItemEdit::enter()
     return this->MenuScreen::exit();
 }
 
-void MenuItemEdit::renderSelectedLine(DisplayInterface &display)
-{
-    char line[display.getWidth() + 1];
-
-    if (display.getHeight() > 1) {
-        strlcpy(line, &this->MenuItem::name[this->scrollSelectedLine.getPosition()], sizeof(line));
-        utils::rightPaddingText(line, sizeof(line), ' ');
-        display.setText(0, 0, line);
-    }
-}
-
 void MenuItemEdit::render(DisplayInterface &display)
 {
     this->MenuScreen::render(display);
@@ -67,20 +56,6 @@ void MenuItemEdit::render(DisplayInterface &display)
         this->redrawValue = false;
         this->renderValue(display);
     }
-}
-
-void MenuItemEdit::process()
-{
-    int xMax;
-    int lineLength;
-
-    if (this->getMenuManager().getDisplay().getHeight() < 2)
-        return;
-
-    xMax = this->getMenuManager().getDisplay().getWidth();
-    lineLength = strlen(this->MenuItem::name);
-
-    this->scrollSelectedLine.scroll(lineLength, xMax);
 }
 
 };

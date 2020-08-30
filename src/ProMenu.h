@@ -44,6 +44,7 @@ private:
     void renderList(DisplayInterface &display);
 
     void resetScrollSelectedLine();
+    ScrollLine scrollSelectedLine;
 };
 
 };

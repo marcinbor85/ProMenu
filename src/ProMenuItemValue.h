@@ -31,7 +31,7 @@ protected:
     virtual MenuItemEditInterface& getInterface();
 
     virtual void renderValue(DisplayInterface &display);
-    virtual void renderSelectedLine(DisplayInterface &display);
+    virtual void renderHeaderLine(DisplayInterface &display);
 
 private:
     MenuItemValueInterface &interface;

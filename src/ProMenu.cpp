@@ -14,6 +14,7 @@ namespace promenu {
 
 Menu::Menu(char *name, MenuItem **items, int itemsNum):
     MenuScreen(name),
+    scrollSelectedLine(),
     items(items),
     itemsNum(itemsNum),
     currentPos(0),
@@ -25,6 +26,7 @@ Menu::Menu(char *name, MenuItem **items, int itemsNum):
 void Menu::begin(MenuManager *manager, int pos)
 {
     this->MenuScreen::begin(manager, pos);
+    this->resetScrollSelectedLine();
 
     if (manager != NULL) {
         this->currentPos = pos;
@@ -72,7 +74,12 @@ bool Menu::next()
         this->redrawCursor = true;
     }
 
-    if (this->currentPos >= (this->startPos + this->manager->getDisplay().getHeight())) {
+    int yStart = this->manager->getDisplay().getHeight();
+    
+    if (yStart >= 2)
+        yStart --;
+
+    if (this->currentPos >= (this->startPos + yStart)) {
         this->startPos++;
         this->redrawList = true;
     }
@@ -90,12 +97,14 @@ void Menu::redraw()
 bool Menu::enter()
 {
     this->MenuScreen::enter();
+    this->resetScrollSelectedLine();
     return this->items[this->currentPos]->selectFromMenu(this);
 }
 
 void Menu::reset()
 {
     this->MenuScreen::reset();
+    this->resetScrollSelectedLine();
     this->currentPos = 0;
     this->startPos = 0;
 }
@@ -107,8 +116,10 @@ void Menu::renderCursor(DisplayInterface &display)
     display.hideCursor();
     display.deselectChar();
 
-    for (int y = 0; y <= yMax; y++) {
-        int pos = this->startPos + y;
+    int yStart = (display.getHeight() >= 2) ? 1 : 0;
+
+    for (int y = yStart; y <= yMax; y++) {
+        int pos = this->startPos + y - yStart;
         char ch = (pos == this->currentPos) ? '>' : ' ';
         display.setChar(0, y, ch);
     }
@@ -124,8 +135,10 @@ void Menu::renderList(DisplayInterface &display)
     display.hideCursor();
     display.deselectChar();
 
-    for (int y = 0; y <= yMax; y++) {
-        int pos = this->startPos + y;
+    int yStart = (display.getHeight() >= 2) ? 1 : 0;
+
+    for (int y = yStart; y <= yMax; y++) {
+        int pos = this->startPos + y - yStart;
 
         if (pos <= posMax) {
             if (pos == this->currentPos) {
@@ -141,8 +154,8 @@ void Menu::renderList(DisplayInterface &display)
             utils::rightPaddingText(text, sizeof(text), ' ');
             display.setText(1, y, text);
 
-            if (yMax > 0) {   
-                if ((y == 0) && (pos > 0)) {
+            if (yMax > yStart) {   
+                if ((y == yStart) && (pos > 0)) {
                     ch = display.getArrowUp();
                 } else if ((y == yMax && (pos < posMax))) {
                     ch = display.getArrowDown();
@@ -173,7 +186,8 @@ void Menu::renderList(DisplayInterface &display)
 void Menu::renderSelectedLine(DisplayInterface &display)
 {
     char text[display.getWidth() - 1];
-    int y = this->currentPos - this->startPos;
+    int yStart = (display.getHeight() >= 2) ? 1 : 0;
+    int y = this->currentPos - this->startPos + yStart;
 
     int textFullLength = this->items[this->currentPos]->getRenderName(NULL, sizeof(text));
     char line[textFullLength + 1];
@@ -198,6 +212,10 @@ void Menu::render(DisplayInterface &display)
         this->scrollSelectedLine.setRedraw(false);
         this->renderList(display);
     }
+    if (this->scrollSelectedLine.isRedraw()) {
+        this->scrollSelectedLine.setRedraw(false);
+        this->renderSelectedLine(display);
+    }
     this->MenuScreen::render(display);
 }
 
@@ -211,10 +229,15 @@ void Menu::resetScrollSelectedLine()
 
 void Menu::process()
 {
-    int xMax = this->getMenuManager().getDisplay().getWidth() - 2;
-    int lineLength = this->items[this->currentPos]->getRenderName(NULL, xMax);
+    int xMax;
+    int lineLength;
+
+    xMax = this->getMenuManager().getDisplay().getWidth() - 2;
+    lineLength = this->items[this->currentPos]->getRenderName(NULL, xMax);
     
     this->scrollSelectedLine.scroll(lineLength, xMax);
+
+    this->MenuScreen::process();
 }
 
 };

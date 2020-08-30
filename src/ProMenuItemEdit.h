@@ -30,7 +30,6 @@ public:
     virtual bool enter();
 
     virtual void render(DisplayInterface &display);
-    virtual void process();
 
 protected:
     virtual MenuItemEditInterface& getInterface() = 0;
@@ -39,7 +38,6 @@ protected:
     bool redrawValue;
 
     virtual void renderValue(DisplayInterface &display) = 0;
-    virtual void renderSelectedLine(DisplayInterface &display);
     
 };
 
