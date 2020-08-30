@@ -1,6 +1,7 @@
 #include "ProMenuItemEdit.h"
 
 #include "ProMenuManager.h"
+#include "ProMenuScreen.h"
 #include "ProMenuDisplay.h"
 #include "ProMenuUtils.h"
 #include "ProMenu.h"
@@ -12,7 +13,7 @@ namespace promenu {
 
 MenuItemEdit::MenuItemEdit(int id, char *name, char *prefix):
     MenuItem(id, name, prefix),
-    MenuScreen()
+    MenuScreen(name)
 {
 
 }

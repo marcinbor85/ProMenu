@@ -4,8 +4,8 @@
 
 namespace promenu {
 
-MenuScreen::MenuScreen():
-    MenuBase()
+MenuScreen::MenuScreen(char *name):
+    MenuBase(name)
 {
 
 }

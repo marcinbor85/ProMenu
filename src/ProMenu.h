@@ -32,8 +32,6 @@ protected:
     virtual void redraw();
     virtual void renderScroll(DisplayInterface &display);
 
-    const char *name;
-
 private:
     MenuItem* const *items;
     const int itemsNum;

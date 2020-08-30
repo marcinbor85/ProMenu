@@ -13,7 +13,7 @@ class DisplayInterface;
 class MenuScreen: public MenuBase {
 
 public:
-    MenuScreen();
+    MenuScreen(char *name);
 
     virtual void begin(MenuManager *manager, int pos);
 
